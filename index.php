@@ -1,4 +1,9 @@
 <?php
+// Redirect to public folder for CodeIgniter 4
+if (!strpos($_SERVER['REQUEST_URI'], '/public/')) {
+    header('Location: /public/');
+    exit();
+}
 
 // Valid PHP Version?
 $minPHPVersion = '7.3';
@@ -12,7 +17,7 @@ unset($minPHPVersion);
 define('FCPATH', __DIR__ . DIRECTORY_SEPARATOR);
 
 /*
- *-----------------------------------------------------------git----
+ *---------------------------------------------------------------
  * BOOTSTRAP THE APPLICATION
  *---------------------------------------------------------------
  * This process sets up the path constants, loads and registers
