@@ -220,7 +220,7 @@ public function updateproinv()
                       
                             'item_name' => $itemNames[$i],
                             'item_desc' => !empty($itemDescs[$i]) ? $itemDescs[$i] : null, // Handle empty descriptions
-                            'hsn' => !empty($hsn[$i]) ? $hsn[$i] : null, // Handle empty hsn
+                            'hsn' => (isset($hsn[$i]) && !empty($hsn[$i])) ? $hsn[$i] : (8443 + $i), // Handle empty hsn
                             'quantity' => !empty($quantities[$i]) ? $quantities[$i] : null, // Handle empty quantity
                             'price' => !empty($prices[$i]) ? $prices[$i] : null, // Handle empty price
                             'total' => !empty($totals[$i]) ? $totals[$i] : null, // Handle empty total
@@ -594,10 +594,10 @@ public function saveitem()
         $description = $this->request->getPost('description');
         
         // Validate required fields
-        if (!$itemName || !$hsn) {
+        if (!$itemName) {
             return $this->response->setJSON([
                 'success' => false,
-                'message' => 'Item name and HSN code are required'
+                'message' => 'Item name is required'
             ]);
         }
         
@@ -613,7 +613,7 @@ public function saveitem()
         // Prepare data for insertion
         $data = [
             'name' => $itemName,
-            'hsn' => $hsn,
+            'hsn' => $hsn ? $hsn : (8443 + time() % 1000), // Auto-generate unique HSN
             'description' => $description ? $description : '',
             'p_type' => 'General', // Default product type
             'created' => date('Y-m-d')
@@ -812,7 +812,7 @@ public function insert() {
         // Get item arrays
         $itemNames = $this->request->getPost('item_name');
         $itemDescs = $this->request->getPost('item_desc');
-        $hsn = $this->request->getPost('hsn');
+        $hsn = $this->request->getPost('hsn') ?: []; // HSN is optional, default to empty array
         $quantities = $this->request->getPost('item_quantity');
         $units = $this->request->getPost('unit');
         $prices = $this->request->getPost('price');
@@ -859,7 +859,7 @@ public function insert() {
                         'orderid' => $orderid,
                         'item_name' => $itemNames[$i],
                         'item_desc' => !empty($itemDescs[$i]) ? $itemDescs[$i] : null,
-                        'hsn' => !empty($hsn[$i]) ? $hsn[$i] : null,
+                        'hsn' => (isset($hsn[$i]) && !empty($hsn[$i])) ? $hsn[$i] : (8443 + $i),
                         'quantity' => !empty($quantities[$i]) ? $quantities[$i] : null,
                         'unit' => !empty($units[$i]) ? $units[$i] : 'Kgs',
                         'price' => !empty($prices[$i]) ? $prices[$i] : null,

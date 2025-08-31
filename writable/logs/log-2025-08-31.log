@@ -1,0 +1,69 @@
+INFO - 2025-08-31 15:21:38 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-08-31 15:21:44 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+ERROR - 2025-08-31 15:21:49 --> Error connecting to the database: No connection could be made because the target machine actively refused it.
+
+CRITICAL - 2025-08-31 15:21:49 --> Unable to connect to the database.
+#0 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\system\Database\BaseConnection.php(618): CodeIgniter\Database\BaseConnection->initialize()
+#1 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\system\Database\BaseBuilder.php(1866): CodeIgniter\Database\BaseConnection->query('SELECT *\nFROM `...', Array, false)
+#2 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\system\Model.php(247): CodeIgniter\Database\BaseBuilder->get()
+#3 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\system\BaseModel.php(624): CodeIgniter\Model->doFirst()
+#4 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\app\Controllers\Login.php(46): CodeIgniter\BaseModel->first()
+#5 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\system\CodeIgniter.php(936): App\Controllers\Login->userlogin()
+#6 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\system\CodeIgniter.php(432): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Login))
+#7 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\system\CodeIgniter.php(333): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#8 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\index.php(44): CodeIgniter\CodeIgniter->run()
+#9 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\router.php(50): require_once('C:\\WORK\\BIITEEK...')
+#10 {main}
+INFO - 2025-08-31 15:21:49 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+ERROR - 2025-08-31 15:21:53 --> Error connecting to the database: No connection could be made because the target machine actively refused it.
+
+CRITICAL - 2025-08-31 15:21:53 --> Unable to connect to the database.
+#0 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\system\Database\BaseConnection.php(618): CodeIgniter\Database\BaseConnection->initialize()
+#1 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\system\Database\BaseBuilder.php(1866): CodeIgniter\Database\BaseConnection->query('SELECT *\nFROM `...', Array, false)
+#2 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\system\Model.php(247): CodeIgniter\Database\BaseBuilder->get()
+#3 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\system\BaseModel.php(624): CodeIgniter\Model->doFirst()
+#4 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\app\Controllers\Login.php(46): CodeIgniter\BaseModel->first()
+#5 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\system\CodeIgniter.php(936): App\Controllers\Login->userlogin()
+#6 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\system\CodeIgniter.php(432): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Login))
+#7 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\system\CodeIgniter.php(333): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#8 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\index.php(44): CodeIgniter\CodeIgniter->run()
+#9 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\router.php(50): require_once('C:\\WORK\\BIITEEK...')
+#10 {main}
+INFO - 2025-08-31 15:22:04 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+ERROR - 2025-08-31 15:22:08 --> Error connecting to the database: No connection could be made because the target machine actively refused it.
+
+CRITICAL - 2025-08-31 15:22:08 --> Unable to connect to the database.
+#0 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\system\Database\BaseConnection.php(618): CodeIgniter\Database\BaseConnection->initialize()
+#1 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\system\Database\BaseBuilder.php(1866): CodeIgniter\Database\BaseConnection->query('SELECT *\nFROM `...', Array, false)
+#2 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\system\Model.php(247): CodeIgniter\Database\BaseBuilder->get()
+#3 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\system\BaseModel.php(624): CodeIgniter\Model->doFirst()
+#4 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\app\Controllers\Login.php(46): CodeIgniter\BaseModel->first()
+#5 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\system\CodeIgniter.php(936): App\Controllers\Login->userlogin()
+#6 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\system\CodeIgniter.php(432): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Login))
+#7 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\system\CodeIgniter.php(333): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#8 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\index.php(44): CodeIgniter\CodeIgniter->run()
+#9 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\router.php(50): require_once('C:\\WORK\\BIITEEK...')
+#10 {main}
+INFO - 2025-08-31 15:22:09 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+ERROR - 2025-08-31 15:22:13 --> Error connecting to the database: No connection could be made because the target machine actively refused it.
+
+CRITICAL - 2025-08-31 15:22:13 --> Unable to connect to the database.
+#0 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\system\Database\BaseConnection.php(618): CodeIgniter\Database\BaseConnection->initialize()
+#1 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\system\Database\BaseBuilder.php(1866): CodeIgniter\Database\BaseConnection->query('SELECT *\nFROM `...', Array, false)
+#2 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\system\Model.php(247): CodeIgniter\Database\BaseBuilder->get()
+#3 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\system\BaseModel.php(624): CodeIgniter\Model->doFirst()
+#4 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\app\Controllers\Login.php(46): CodeIgniter\BaseModel->first()
+#5 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\system\CodeIgniter.php(936): App\Controllers\Login->userlogin()
+#6 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\system\CodeIgniter.php(432): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Login))
+#7 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\system\CodeIgniter.php(333): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#8 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\index.php(44): CodeIgniter\CodeIgniter->run()
+#9 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\router.php(50): require_once('C:\\WORK\\BIITEEK...')
+#10 {main}
+INFO - 2025-08-31 15:22:17 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-08-31 15:22:18 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-08-31 15:22:25 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-08-31 15:22:25 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-08-31 15:22:30 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-08-31 15:22:31 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-08-31 15:22:37 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-08-31 15:24:21 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.

@@ -49,7 +49,7 @@
             
  	</br></br>
   	<div align="center">
-  	<img src ="<?= base_url()?>/public/dist/img/logo.png" class="" alt="CODETECH Logo" height="150" width="210"></div>
+  	<img src ="<?= base_url()?>/public/dist/img/Emax_logo.jpg" class="" alt="Emax Logo" height="150" width="210"></div>
   </br>
     <p class="login-box-msg">Sign in to start your session</p>
 
@@ -86,10 +86,16 @@
         <div class="box-footer" style="margin-right: 10px; ">
               <label class="col-sm-1"></label>
               <input type="submit" name="login" value="Login" class="btn btn-info col-sm-10" id="submit"></br>
+              <div id="loginMessage" style="margin-top: 10px;"></div>
               <div id="dberror" style="color:red;"><?php if(isset($error)){
                 echo "*Invalid Login credentials";
               }
               ?></br></br></br>
+        </div>
+        
+        <!-- Register Link -->
+        <div class="box-footer" style="text-align: center; padding-top: 0;">
+            <p>Don't have an account? <a href="<?= base_url('/login/register') ?>" class="text-center">Create Account</a></p>
         </div>
     </div>
               

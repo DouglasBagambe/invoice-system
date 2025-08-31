@@ -1,0 +1,267 @@
+INFO - 2025-08-30 00:02:16 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-08-30 00:06:03 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-08-30 00:06:23 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-08-30 00:06:28 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-08-30 00:06:29 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-08-30 00:06:31 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-08-30 00:11:05 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-08-30 00:11:24 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-08-30 00:11:31 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-08-30 00:11:59 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-08-30 00:12:01 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-08-30 00:12:03 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+ERROR - 2025-08-30 00:12:03 --> mysqli_sql_exception: Column 'hsn' cannot be null in C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\system\Database\MySQLi\Connection.php:314
+Stack trace:
+#0 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\system\Database\MySQLi\Connection.php(314): mysqli->query('INSERT INTO `pr...')
+#1 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\system\Database\BaseConnection.php(713): CodeIgniter\Database\MySQLi\Connection->execute('INSERT INTO `pr...')
+#2 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\system\Database\BaseConnection.php(641): CodeIgniter\Database\BaseConnection->simpleQuery('INSERT INTO `pr...')
+#3 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\system\Database\BaseBuilder.php(2107): CodeIgniter\Database\BaseConnection->query('INSERT INTO `pr...', Array, false)
+#4 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\system\Model.php(323): CodeIgniter\Database\BaseBuilder->insertBatch(Array, NULL, 100)
+#5 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\system\BaseModel.php(843): CodeIgniter\Model->doInsertBatch(Array, NULL, 100, false)
+#6 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\app\Controllers\Proinv.php(898): CodeIgniter\BaseModel->insertBatch(Array)
+#7 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\system\CodeIgniter.php(936): App\Controllers\Proinv->insert()
+#8 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\system\CodeIgniter.php(432): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Proinv))
+#9 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\system\CodeIgniter.php(333): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#10 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\index.php(44): CodeIgniter\CodeIgniter->run()
+#11 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\router.php(50): require_once('C:\\WORK\\BIITEEK...')
+#12 {main}
+ERROR - 2025-08-30 00:12:03 --> Exception in invoice insert: Column 'hsn' cannot be null
+ERROR - 2025-08-30 00:12:03 --> Exception trace: #0 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\system\Database\MySQLi\Connection.php(314): mysqli->query('INSERT INTO `pr...')
+#1 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\system\Database\BaseConnection.php(713): CodeIgniter\Database\MySQLi\Connection->execute('INSERT INTO `pr...')
+#2 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\system\Database\BaseConnection.php(641): CodeIgniter\Database\BaseConnection->simpleQuery('INSERT INTO `pr...')
+#3 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\system\Database\BaseBuilder.php(2107): CodeIgniter\Database\BaseConnection->query('INSERT INTO `pr...', Array, false)
+#4 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\system\Model.php(323): CodeIgniter\Database\BaseBuilder->insertBatch(Array, NULL, 100)
+#5 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\system\BaseModel.php(843): CodeIgniter\Model->doInsertBatch(Array, NULL, 100, false)
+#6 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\app\Controllers\Proinv.php(898): CodeIgniter\BaseModel->insertBatch(Array)
+#7 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\system\CodeIgniter.php(936): App\Controllers\Proinv->insert()
+#8 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\system\CodeIgniter.php(432): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Proinv))
+#9 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\system\CodeIgniter.php(333): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#10 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\index.php(44): CodeIgniter\CodeIgniter->run()
+#11 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\router.php(50): require_once('C:\\WORK\\BIITEEK...')
+#12 {main}
+INFO - 2025-08-30 00:12:12 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-08-30 00:12:16 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-08-30 00:12:35 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+ERROR - 2025-08-30 00:12:35 --> mysqli_sql_exception: Column 'hsn' cannot be null in C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\system\Database\MySQLi\Connection.php:314
+Stack trace:
+#0 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\system\Database\MySQLi\Connection.php(314): mysqli->query('INSERT INTO `pr...')
+#1 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\system\Database\BaseConnection.php(713): CodeIgniter\Database\MySQLi\Connection->execute('INSERT INTO `pr...')
+#2 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\system\Database\BaseConnection.php(641): CodeIgniter\Database\BaseConnection->simpleQuery('INSERT INTO `pr...')
+#3 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\system\Database\BaseBuilder.php(2107): CodeIgniter\Database\BaseConnection->query('INSERT INTO `pr...', Array, false)
+#4 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\system\Model.php(323): CodeIgniter\Database\BaseBuilder->insertBatch(Array, NULL, 100)
+#5 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\system\BaseModel.php(843): CodeIgniter\Model->doInsertBatch(Array, NULL, 100, false)
+#6 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\app\Controllers\Proinv.php(898): CodeIgniter\BaseModel->insertBatch(Array)
+#7 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\system\CodeIgniter.php(936): App\Controllers\Proinv->insert()
+#8 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\system\CodeIgniter.php(432): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Proinv))
+#9 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\system\CodeIgniter.php(333): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#10 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\index.php(44): CodeIgniter\CodeIgniter->run()
+#11 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\router.php(50): require_once('C:\\WORK\\BIITEEK...')
+#12 {main}
+ERROR - 2025-08-30 00:12:35 --> Exception in invoice insert: Column 'hsn' cannot be null
+ERROR - 2025-08-30 00:12:35 --> Exception trace: #0 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\system\Database\MySQLi\Connection.php(314): mysqli->query('INSERT INTO `pr...')
+#1 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\system\Database\BaseConnection.php(713): CodeIgniter\Database\MySQLi\Connection->execute('INSERT INTO `pr...')
+#2 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\system\Database\BaseConnection.php(641): CodeIgniter\Database\BaseConnection->simpleQuery('INSERT INTO `pr...')
+#3 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\system\Database\BaseBuilder.php(2107): CodeIgniter\Database\BaseConnection->query('INSERT INTO `pr...', Array, false)
+#4 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\system\Model.php(323): CodeIgniter\Database\BaseBuilder->insertBatch(Array, NULL, 100)
+#5 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\system\BaseModel.php(843): CodeIgniter\Model->doInsertBatch(Array, NULL, 100, false)
+#6 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\app\Controllers\Proinv.php(898): CodeIgniter\BaseModel->insertBatch(Array)
+#7 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\system\CodeIgniter.php(936): App\Controllers\Proinv->insert()
+#8 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\system\CodeIgniter.php(432): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Proinv))
+#9 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\system\CodeIgniter.php(333): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#10 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\index.php(44): CodeIgniter\CodeIgniter->run()
+#11 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\router.php(50): require_once('C:\\WORK\\BIITEEK...')
+#12 {main}
+INFO - 2025-08-30 00:20:24 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-08-30 00:20:41 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-08-30 00:20:45 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-08-30 00:20:47 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-08-30 00:20:53 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-08-30 00:21:28 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+ERROR - 2025-08-30 00:21:28 --> mysqli_sql_exception: Column 'hsn' cannot be null in C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\system\Database\MySQLi\Connection.php:314
+Stack trace:
+#0 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\system\Database\MySQLi\Connection.php(314): mysqli->query('INSERT INTO `pr...')
+#1 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\system\Database\BaseConnection.php(713): CodeIgniter\Database\MySQLi\Connection->execute('INSERT INTO `pr...')
+#2 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\system\Database\BaseConnection.php(641): CodeIgniter\Database\BaseConnection->simpleQuery('INSERT INTO `pr...')
+#3 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\system\Database\BaseBuilder.php(2107): CodeIgniter\Database\BaseConnection->query('INSERT INTO `pr...', Array, false)
+#4 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\system\Model.php(323): CodeIgniter\Database\BaseBuilder->insertBatch(Array, NULL, 100)
+#5 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\system\BaseModel.php(843): CodeIgniter\Model->doInsertBatch(Array, NULL, 100, false)
+#6 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\app\Controllers\Proinv.php(898): CodeIgniter\BaseModel->insertBatch(Array)
+#7 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\system\CodeIgniter.php(936): App\Controllers\Proinv->insert()
+#8 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\system\CodeIgniter.php(432): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Proinv))
+#9 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\system\CodeIgniter.php(333): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#10 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\index.php(44): CodeIgniter\CodeIgniter->run()
+#11 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\router.php(50): require_once('C:\\WORK\\BIITEEK...')
+#12 {main}
+ERROR - 2025-08-30 00:21:28 --> Exception in invoice insert: Column 'hsn' cannot be null
+ERROR - 2025-08-30 00:21:28 --> Exception trace: #0 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\system\Database\MySQLi\Connection.php(314): mysqli->query('INSERT INTO `pr...')
+#1 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\system\Database\BaseConnection.php(713): CodeIgniter\Database\MySQLi\Connection->execute('INSERT INTO `pr...')
+#2 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\system\Database\BaseConnection.php(641): CodeIgniter\Database\BaseConnection->simpleQuery('INSERT INTO `pr...')
+#3 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\system\Database\BaseBuilder.php(2107): CodeIgniter\Database\BaseConnection->query('INSERT INTO `pr...', Array, false)
+#4 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\system\Model.php(323): CodeIgniter\Database\BaseBuilder->insertBatch(Array, NULL, 100)
+#5 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\system\BaseModel.php(843): CodeIgniter\Model->doInsertBatch(Array, NULL, 100, false)
+#6 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\app\Controllers\Proinv.php(898): CodeIgniter\BaseModel->insertBatch(Array)
+#7 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\system\CodeIgniter.php(936): App\Controllers\Proinv->insert()
+#8 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\system\CodeIgniter.php(432): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Proinv))
+#9 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\system\CodeIgniter.php(333): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#10 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\index.php(44): CodeIgniter\CodeIgniter->run()
+#11 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\router.php(50): require_once('C:\\WORK\\BIITEEK...')
+#12 {main}
+INFO - 2025-08-30 00:21:34 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-08-30 00:21:43 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-08-30 00:25:23 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-08-30 00:25:37 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-08-30 00:25:39 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-08-30 00:25:41 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-08-30 00:26:03 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+ERROR - 2025-08-30 00:26:03 --> Main invoice insert failed: ""
+INFO - 2025-08-30 00:26:10 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-08-30 00:26:19 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-08-30 00:26:22 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-08-30 00:27:52 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-08-30 00:28:27 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-08-30 00:28:29 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-08-30 00:28:32 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-08-30 00:29:48 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-08-30 00:29:52 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-08-30 00:29:54 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+ERROR - 2025-08-30 00:29:54 --> Main invoice insert failed: ""
+INFO - 2025-08-30 00:29:58 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-08-30 00:30:08 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-08-30 00:30:10 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-08-30 00:30:44 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-08-30 00:30:51 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-08-30 00:30:52 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-08-30 00:30:53 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-08-30 00:30:53 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-08-30 00:30:54 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-08-30 00:31:11 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-08-30 00:31:15 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-08-30 00:46:34 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-08-30 01:03:35 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-08-30 01:08:47 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-08-30 01:20:04 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-08-30 01:21:11 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-08-30 01:22:07 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-08-30 01:22:13 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-08-30 01:30:50 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-08-30 01:31:05 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-08-30 01:32:15 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-08-30 01:32:19 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-08-30 01:46:15 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+ERROR - 2025-08-30 01:46:15 --> mysqli_sql_exception: Duplicate entry '0' for key 'PRIMARY' in C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\system\Database\MySQLi\Connection.php:314
+Stack trace:
+#0 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\system\Database\MySQLi\Connection.php(314): mysqli->query('INSERT INTO `ad...')
+#1 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\system\Database\BaseConnection.php(713): CodeIgniter\Database\MySQLi\Connection->execute('INSERT INTO `ad...')
+#2 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\system\Database\BaseConnection.php(641): CodeIgniter\Database\BaseConnection->simpleQuery('INSERT INTO `ad...')
+#3 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\system\Database\BaseBuilder.php(2263): CodeIgniter\Database\BaseConnection->query('INSERT INTO `ad...', Array, false)
+#4 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\system\Model.php(278): CodeIgniter\Database\BaseBuilder->insert()
+#5 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\system\BaseModel.php(758): CodeIgniter\Model->doInsert(Array)
+#6 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\system\Model.php(705): CodeIgniter\BaseModel->insert(Array, true)
+#7 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\app\Controllers\Login.php(296): CodeIgniter\Model->insert(Array)
+#8 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\system\CodeIgniter.php(936): App\Controllers\Login->insertCompanyUsers()
+#9 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\system\CodeIgniter.php(432): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Login))
+#10 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\system\CodeIgniter.php(333): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#11 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\index.php(44): CodeIgniter\CodeIgniter->run()
+#12 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\router.php(50): require_once('C:\\WORK\\BIITEEK...')
+#13 {main}
+CRITICAL - 2025-08-30 01:46:15 --> Duplicate entry '0' for key 'PRIMARY'
+#0 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\system\Database\MySQLi\Connection.php(314): mysqli->query('INSERT INTO `ad...')
+#1 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\system\Database\BaseConnection.php(713): CodeIgniter\Database\MySQLi\Connection->execute('INSERT INTO `ad...')
+#2 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\system\Database\BaseConnection.php(641): CodeIgniter\Database\BaseConnection->simpleQuery('INSERT INTO `ad...')
+#3 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\system\Database\BaseBuilder.php(2263): CodeIgniter\Database\BaseConnection->query('INSERT INTO `ad...', Array, false)
+#4 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\system\Model.php(278): CodeIgniter\Database\BaseBuilder->insert()
+#5 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\system\BaseModel.php(758): CodeIgniter\Model->doInsert(Array)
+#6 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\system\Model.php(705): CodeIgniter\BaseModel->insert(Array, true)
+#7 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\app\Controllers\Login.php(296): CodeIgniter\Model->insert(Array)
+#8 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\system\CodeIgniter.php(936): App\Controllers\Login->insertCompanyUsers()
+#9 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\system\CodeIgniter.php(432): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Login))
+#10 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\system\CodeIgniter.php(333): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#11 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\index.php(44): CodeIgniter\CodeIgniter->run()
+#12 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\router.php(50): require_once('C:\\WORK\\BIITEEK...')
+#13 {main}
+INFO - 2025-08-30 01:46:37 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-08-30 01:46:38 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-08-30 01:46:40 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-08-30 01:46:40 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-08-30 01:49:14 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-08-30 01:49:21 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-08-30 01:49:26 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+ERROR - 2025-08-30 01:49:26 --> mysqli_sql_exception: Duplicate entry '0' for key 'PRIMARY' in C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\system\Database\MySQLi\Connection.php:314
+Stack trace:
+#0 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\system\Database\MySQLi\Connection.php(314): mysqli->query('INSERT INTO `ad...')
+#1 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\system\Database\BaseConnection.php(713): CodeIgniter\Database\MySQLi\Connection->execute('INSERT INTO `ad...')
+#2 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\system\Database\BaseConnection.php(641): CodeIgniter\Database\BaseConnection->simpleQuery('INSERT INTO `ad...')
+#3 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\system\Database\BaseBuilder.php(2263): CodeIgniter\Database\BaseConnection->query('INSERT INTO `ad...', Array, false)
+#4 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\system\Model.php(278): CodeIgniter\Database\BaseBuilder->insert()
+#5 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\system\BaseModel.php(758): CodeIgniter\Model->doInsert(Array)
+#6 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\system\Model.php(705): CodeIgniter\BaseModel->insert(Array, true)
+#7 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\app\Controllers\Login.php(296): CodeIgniter\Model->insert(Array)
+#8 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\system\CodeIgniter.php(936): App\Controllers\Login->insertCompanyUsers()
+#9 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\system\CodeIgniter.php(432): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Login))
+#10 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\system\CodeIgniter.php(333): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#11 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\index.php(44): CodeIgniter\CodeIgniter->run()
+#12 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\router.php(50): require_once('C:\\WORK\\BIITEEK...')
+#13 {main}
+CRITICAL - 2025-08-30 01:49:26 --> Duplicate entry '0' for key 'PRIMARY'
+#0 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\system\Database\MySQLi\Connection.php(314): mysqli->query('INSERT INTO `ad...')
+#1 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\system\Database\BaseConnection.php(713): CodeIgniter\Database\MySQLi\Connection->execute('INSERT INTO `ad...')
+#2 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\system\Database\BaseConnection.php(641): CodeIgniter\Database\BaseConnection->simpleQuery('INSERT INTO `ad...')
+#3 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\system\Database\BaseBuilder.php(2263): CodeIgniter\Database\BaseConnection->query('INSERT INTO `ad...', Array, false)
+#4 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\system\Model.php(278): CodeIgniter\Database\BaseBuilder->insert()
+#5 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\system\BaseModel.php(758): CodeIgniter\Model->doInsert(Array)
+#6 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\system\Model.php(705): CodeIgniter\BaseModel->insert(Array, true)
+#7 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\app\Controllers\Login.php(296): CodeIgniter\Model->insert(Array)
+#8 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\system\CodeIgniter.php(936): App\Controllers\Login->insertCompanyUsers()
+#9 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\system\CodeIgniter.php(432): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Login))
+#10 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\system\CodeIgniter.php(333): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#11 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\index.php(44): CodeIgniter\CodeIgniter->run()
+#12 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\router.php(50): require_once('C:\\WORK\\BIITEEK...')
+#13 {main}
+INFO - 2025-08-30 02:02:05 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-08-30 02:03:00 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+ERROR - 2025-08-30 02:03:01 --> mysqli_sql_exception: Duplicate entry '0' for key 'PRIMARY' in C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\system\Database\MySQLi\Connection.php:314
+Stack trace:
+#0 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\system\Database\MySQLi\Connection.php(314): mysqli->query('INSERT INTO `ad...')
+#1 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\system\Database\BaseConnection.php(713): CodeIgniter\Database\MySQLi\Connection->execute('INSERT INTO `ad...')
+#2 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\system\Database\BaseConnection.php(641): CodeIgniter\Database\BaseConnection->simpleQuery('INSERT INTO `ad...')
+#3 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\system\Database\BaseBuilder.php(2263): CodeIgniter\Database\BaseConnection->query('INSERT INTO `ad...', Array, false)
+#4 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\system\Model.php(278): CodeIgniter\Database\BaseBuilder->insert()
+#5 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\system\BaseModel.php(758): CodeIgniter\Model->doInsert(Array)
+#6 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\system\Model.php(705): CodeIgniter\BaseModel->insert(Array, true)
+#7 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\app\Controllers\Login.php(296): CodeIgniter\Model->insert(Array)
+#8 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\system\CodeIgniter.php(936): App\Controllers\Login->insertCompanyUsers()
+#9 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\system\CodeIgniter.php(432): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Login))
+#10 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\system\CodeIgniter.php(333): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#11 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\index.php(44): CodeIgniter\CodeIgniter->run()
+#12 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\router.php(50): require_once('C:\\WORK\\BIITEEK...')
+#13 {main}
+CRITICAL - 2025-08-30 02:03:01 --> Duplicate entry '0' for key 'PRIMARY'
+#0 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\system\Database\MySQLi\Connection.php(314): mysqli->query('INSERT INTO `ad...')
+#1 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\system\Database\BaseConnection.php(713): CodeIgniter\Database\MySQLi\Connection->execute('INSERT INTO `ad...')
+#2 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\system\Database\BaseConnection.php(641): CodeIgniter\Database\BaseConnection->simpleQuery('INSERT INTO `ad...')
+#3 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\system\Database\BaseBuilder.php(2263): CodeIgniter\Database\BaseConnection->query('INSERT INTO `ad...', Array, false)
+#4 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\system\Model.php(278): CodeIgniter\Database\BaseBuilder->insert()
+#5 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\system\BaseModel.php(758): CodeIgniter\Model->doInsert(Array)
+#6 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\system\Model.php(705): CodeIgniter\BaseModel->insert(Array, true)
+#7 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\app\Controllers\Login.php(296): CodeIgniter\Model->insert(Array)
+#8 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\system\CodeIgniter.php(936): App\Controllers\Login->insertCompanyUsers()
+#9 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\system\CodeIgniter.php(432): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Login))
+#10 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\system\CodeIgniter.php(333): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#11 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\index.php(44): CodeIgniter\CodeIgniter->run()
+#12 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\router.php(50): require_once('C:\\WORK\\BIITEEK...')
+#13 {main}
+INFO - 2025-08-30 02:03:11 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-08-30 02:03:35 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-08-30 02:07:20 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-08-30 11:43:00 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-08-30 11:43:34 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-08-30 12:11:41 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-08-30 12:11:41 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-08-30 12:11:48 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-08-30 12:11:48 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-08-30 12:19:46 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-08-30 12:20:18 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-08-30 12:20:19 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-08-30 12:21:32 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-08-30 12:21:34 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+INFO - 2025-08-30 12:22:01 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.

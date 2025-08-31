@@ -206,8 +206,19 @@
         </li>
  -->
          
-
-
+  <!-- Generate Section -->
+  <li class="treeview <?= set_active('proinv/genproinv') || set_active('taxinv/gentaxinv') ? 'active' : '' ?>">
+    <a href="#">
+        <i class="fa fa-fw fa-print"></i> <span> Create Invoice </span>
+        <span class="pull-right-container">
+            <i class="fa fa-angle-left pull-right"></i>
+        </span>
+    </a>
+    <ul class="treeview-menu" style="display: block;">
+        <li class="<?= set_active('proinv/genproinv') ?>"><a href="<?= base_url('/proinv/genproinv') ?>"><i class="glyphicon glyphicon-floppy-saved"></i> Create Proforma Invoice </a></li>
+        <li class="<?= set_active('taxinv/gentaxinv') ?>"><a href="<?= base_url('/taxinv/gentaxinv') ?>"><i class="glyphicon glyphicon-barcode"></i> Gen. Tax Invoice</a></li>
+    </ul>
+</li>
 
 <li class="treeview <?= set_active('proinv/showprodata') || set_active('taxinv/showtaxdata') ? 'active' : '' ?>">
     <a href="#">
@@ -223,36 +234,12 @@
     </ul>
 </li>
 
-
-
-
  <li class="<?= set_active('transaction/managetransaction'); ?>">
           <a href="<?=base_url()?>/transaction/managetransaction">
             <i class="fa fa-fw fa-rupee"></i> <span>Transaction </span>
             
           </a>
         </li>
-
-
-
-
-  <!-- Generate Section -->
-<li class="treeview <?= set_active('proinv/genproinv') || set_active('taxinv/gentaxinv') ? 'active' : '' ?>">
-    <a href="#">
-        <i class="fa fa-fw fa-print"></i> <span> Generate </span>
-        <span class="pull-right-container">
-            <i class="fa fa-angle-left pull-right"></i>
-        </span>
-    </a>
-    <ul class="treeview-menu" style="display: block;">
-        <li class="<?= set_active('proinv/genproinv') ?>"><a href="<?= base_url('/proinv/genproinv') ?>"><i class="glyphicon glyphicon-floppy-saved"></i> Gen. Proforma Invoice </a></li>
-        <li class="<?= set_active('taxinv/gentaxinv') ?>"><a href="<?= base_url('/taxinv/gentaxinv') ?>"><i class="glyphicon glyphicon-barcode"></i> Gen. Tax Invoice</a></li>
-    </ul>
-</li>
-
-
-        
-
 
        <!-- Sales Report Section -->
       <li class="treeview <?= set_active('quickquote/quickquotereport')|| set_active('quote/quoteitemreport') || set_active('quote/quotereport') ? 'active' : '' ?>">

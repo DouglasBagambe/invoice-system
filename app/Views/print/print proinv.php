@@ -200,6 +200,7 @@ page {
 
 .quotation-table .ship-header {
   width: 50%;
+  text-align: right;
 }
 
 .quotation-table .company-name-cell {
@@ -565,23 +566,20 @@ page {
                 Email: emaxsuppliesandlogisticsltd@gmail.com&nbsp;&nbsp;&nbsp;&nbsp;Mobile: +256708519877, +256706377611
             </div>
         </div>
-        
-        <!-- <div class="proforma-info">
-            <div><strong>Proforma #:</strong></div>
-            <div><strong><?= $invDetails[0]['invid']; ?></strong></div>
-            <div style="margin-top: 8px;"><strong>Date:</strong> <?= date("Y-m-d", strtotime($invDetails[0]['created'])); ?></div>
-        </div> -->
     </div>
 
     <!-- Quotation Table -->
     <table class="quotation-table">
         <tr>
             <th class="quotation-header">Quotation for</th>
-            <th class="ship-header">Ship To</th>
+            <th class="ship-header">Proforma Details</th>
         </tr>
         <tr>
             <td class="company-name-cell"><?= $invDetails[0]['c_name']; ?></td>
-            <td>&nbsp;</td>
+            <td style="text-align: right; padding-right: 20px;">
+                <div style="margin-bottom: 8px;"><strong>Proforma #:</strong> <?= $invDetails[0]['invid']; ?></div>
+                <div><strong>Date:</strong> <?= date("Y-m-d", strtotime($invDetails[0]['created'])); ?></div>
+            </td>
         </tr>
     </table>
 
@@ -640,7 +638,12 @@ page {
                         <div class="total-amount"><strong><?= number_format($invDetails[0]['subtotal'], 0); ?></strong></div>
                     </div>
                     <div class="total-row">
-                        <div class="total-label">Vat (<?= number_format($invDetails[0]['taxrate'], 2); ?>%)</div>
+                        <div class="total-label">VAT (<?= number_format($invDetails[0]['taxrate'], 2); ?>%) 
+                            <?php 
+                            $vatType = isset($invDetails[0]['vat_type']) ? $invDetails[0]['vat_type'] : 'exclusive';
+                            echo $vatType === 'inclusive' ? '(Inclusive)' : '(Exclusive)';
+                            ?>
+                        </div>
                         <div class="total-amount"><?= number_format($invDetails[0]['taxamount'], 0); ?></div>
                     </div>
                     <div class="total-row">
@@ -685,7 +688,7 @@ page {
     <table class="vat-table">
         <thead>
             <tr>
-                <th>Vat</th>
+                <th>VAT Status</th>
                 <th>Taxable Amount</th>
                 <th>Rate</th>
                 <th>Tax Amount</th>
@@ -693,7 +696,16 @@ page {
         </thead>
         <tbody>
             <tr>
-                <td><?= ($invDetails[0]['taxrate'] > 0) ? 'Taxable' : 'Exempt' ?></td>
+                <td>
+                    <?php 
+                    if ($invDetails[0]['taxrate'] > 0) {
+                        $vatType = isset($invDetails[0]['vat_type']) ? $invDetails[0]['vat_type'] : 'exclusive';
+                        echo 'Taxable (' . ucfirst($vatType) . ')';
+                    } else {
+                        echo 'Exempt';
+                    }
+                    ?>
+                </td>
                 <td><?= number_format($invDetails[0]['subtotal'], 0); ?></td>
                 <td><?= number_format($invDetails[0]['taxrate'], 2); ?>%</td>
                 <td><?= number_format($invDetails[0]['taxamount'], 0); ?></td>
@@ -712,7 +724,7 @@ page {
             <tr>
                 <td>
                     <strong>Validity Period:</strong> <?= isset($invDetails[0]['validity_period']) ? $invDetails[0]['validity_period'] : '90' ?> Days<br>
-                    <strong>Delivery Period:</strong> <?= isset($invDetails[0]['delivery_period']) ? $invDetails[0]['delivery_period'] : '4' ?> Days
+                    <strong>Delivery Period: Delivery is within</strong> <?= isset($invDetails[0]['delivery_period']) ? $invDetails[0]['delivery_period'] : '4' ?> days after LPO
                 </td>
             </tr>
         </tbody>

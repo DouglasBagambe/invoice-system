@@ -32,6 +32,9 @@ $routes->post('backup', 'BackupController::dbbackup');
 $routes->post('userlogin', 'UserController::userlogin');
 
 $routes->get('/', 'Login::index'); // Ensure 'Login' matches your controller class name
+$routes->get('/login', 'Login::index'); // Login page
+$routes->get('/login/register', 'Login::register'); // Register page
+$routes->post('/login/userregister', 'Login::userregister'); // Register processing
 // Replace 'Auth' with your actual controller name
 
 
