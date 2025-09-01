@@ -56,22 +56,7 @@ class Dashboard extends Controller
             return redirect()->to(base_url().'/login');
         }
 
-        // Test database connection with detailed error reporting
-        try {
-            $db = \Config\Database::connect();
-            if (!$db->connID) {
-                // Try to get more specific error information
-                $error = mysqli_connect_error();
-                throw new \Exception('Database connection failed: ' . ($error ?: 'Unknown error'));
-            }
-            
-            // Test if we can actually query the database
-            $db->query("SELECT 1");
-            
-        } catch (\Exception $e) {
-            log_message('error', 'Database connection test failed: ' . $e->getMessage());
-            throw new \Exception('Database connection failed: ' . $e->getMessage());
-        }
+        // Skip database connection test for now - let individual methods handle their own connections
 
     $crudModel = new Client_model();
 

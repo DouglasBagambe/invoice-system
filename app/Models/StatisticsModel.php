@@ -8,6 +8,13 @@ class StatisticsModel extends Model
 {
     protected $tableClients = 'client';
     protected $tableInvoices = 'invtest2';
+    
+    public function __construct()
+    {
+        parent::__construct();
+        // Force database connection
+        $this->db = \Config\Database::connect();
+    }
 
     public function getClientCountForCurrentMonth()
     {
