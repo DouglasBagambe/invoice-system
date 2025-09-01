@@ -1,9 +1,16 @@
-<IfModule mod_rewrite.c>
-    RewriteEngine On
-    RewriteBase /C4/
+RewriteEngine On
 
-    # Remove public folder from URL
-    RewriteCond %{REQUEST_FILENAME} !-f
-    RewriteCond %{REQUEST_FILENAME} !-d
-    RewriteRule ^(.*)$ public/$1 [L]
-</IfModule>
+# Handle static files in public directory
+RewriteCond %{REQUEST_URI} ^/(public/.*)$
+RewriteCond %{REQUEST_FILENAME} -f
+RewriteRule ^(.*)$ $1 [L]
+
+# Handle static files in public directory (without /public/ prefix)
+RewriteCond %{REQUEST_URI} \.(css|js|png|jpg|jpeg|gif|ico|woff|woff2|ttf|eot|svg)$
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^(.*)$ public/$1 [L]
+
+# All other requests go to index.php
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.*)$ index.php/$1 [L]
