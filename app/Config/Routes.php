@@ -48,11 +48,8 @@ $routes->get('account/getLedgerByFY/(:num)', 'Account::getLedgerByFY/$1');
  * --------------------------------------------------------------------
  */
 
-// Dashboard route - bypass CodeIgniter completely
-$routes->get('/dashboard', function() {
-    header('Location: https://invoice.biiteeksms.com/dashboard_pure.php');
-    exit;
-});
+// Dashboard route - back to fixed CodeIgniter version
+$routes->get('/dashboard', 'DashboardFixed::index');
 $routes->get('/home', 'SimpleDashboard::index');
 $routes->get('/dashboard-fixed', 'DashboardFixed::index'); // CodeIgniter version
 $routes->get('/dashboard-original', 'Dashboard::index'); // Keep original for debugging

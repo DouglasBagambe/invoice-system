@@ -495,7 +495,7 @@ function completeUpload(success, fileName) {
                       </div>
                       <!-- Image update link -->
                       <div align="center">
-                        <img class="profile-user-img img-responsive img-circle" src="<?= esc(session()->get('company_logo'));  ?>" id="imagePreviews" style="height: 150px; width:150px; z-index: -1;" alt="Company Logo">
+                        <img class="profile-user-img img-responsive img-circle" src="<?= safe_esc(safe_session_get('company_logo', 'public/dist/img/uploads/logo.png'));  ?>" id="imagePreviews" style="height: 150px; width:150px; z-index: -1;" alt="Company Logo">
                       </div>
                     </div>
                     </br> </br>

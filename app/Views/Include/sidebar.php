@@ -4,10 +4,10 @@
       <!-- Sidebar user panel -->
       <div class="user-panel" style="padding: 2px; padding-top: 10px;">
         <div class="pull-left image">
-          <img src="<?= esc(session()->get('user_image')); ?>" id="imagePreview5" style="height: 45px; width: 45px; " class="img-circle" alt="User Image">
+          <img src="<?= safe_esc(safe_session_get('user_image', 'public/dist/img/uploads/default.png')); ?>" id="imagePreview5" style="height: 45px; width: 45px; " class="img-circle" alt="User Image">
         </div>
         <div class="pull-left info">
-          <p><?= esc(session()->get('name')); ?></p>
+          <p><?= safe_esc(safe_session_get('name', 'User')); ?></p>
           
           <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
         </div>

@@ -63,5 +63,5 @@ class Autoload extends AutoloadConfig
 	 * @var array<string, string>
 	 */
 	public $classmap = [];
-	public $helpers = ['url', 'navigation','number_to_words_helper','getState'];
+	public $helpers = ['url', 'navigation','number_to_words_helper','getState','session_safe'];
 }

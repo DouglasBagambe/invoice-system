@@ -65,16 +65,16 @@
           <!-- User Account: style can be found in dropdown.less -->
           <li class="dropdown user user-menu">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-              <img src="<?= esc(session()->get('user_image')); ?>" class="user-image" alt="User Image" id="imagePreview3">
-              <span class="hidden-xs"><?= esc(session()->get('name')); ?></span>
+              <img src="<?= safe_esc(safe_session_get('user_image', 'public/dist/img/uploads/default.png')); ?>" class="user-image" alt="User Image" id="imagePreview3">
+              <span class="hidden-xs"><?= safe_esc(safe_session_get('name', 'User')); ?></span>
             </a>
             <ul class="dropdown-menu">
               <!-- User image -->
               <li class="user-header">
-                <img src="<?= esc(session()->get('user_image')); ?>" class="img-circle" alt="User Image" id="imagePreview4">
+                <img src="<?= safe_esc(safe_session_get('user_image', 'public/dist/img/uploads/default.png')); ?>" class="img-circle" alt="User Image" id="imagePreview4">
 
                 <p>
-                  <?= esc(session()->get('name')); ?> - Web Developer
+                  <?= safe_esc(safe_session_get('name', 'User')); ?> - Web Developer
                   <small>Member since Nov. 2018</small>
                 </p>
               </li>
