@@ -46,20 +46,31 @@ class Dashboard extends Controller
     public function index()
    {
     try {
-        // Enable error reporting for debugging
+        // Enable error reporting for debugging but suppress deprecation warnings
         ini_set('display_errors', 1);
         ini_set('display_startup_errors', 1);
-        error_reporting(E_ALL);
+        error_reporting(E_ALL & ~E_DEPRECATED & ~E_STRICT);
         
         $session = session();
         if (!$session->has('user_id')) {
             return redirect()->to(base_url().'/login');
         }
 
-        // Test database connection
-        $db = \Config\Database::connect();
-        if (!$db->connID) {
-            throw new \Exception('Database connection failed');
+        // Test database connection with detailed error reporting
+        try {
+            $db = \Config\Database::connect();
+            if (!$db->connID) {
+                // Try to get more specific error information
+                $error = mysqli_connect_error();
+                throw new \Exception('Database connection failed: ' . ($error ?: 'Unknown error'));
+            }
+            
+            // Test if we can actually query the database
+            $db->query("SELECT 1");
+            
+        } catch (\Exception $e) {
+            log_message('error', 'Database connection test failed: ' . $e->getMessage());
+            throw new \Exception('Database connection failed: ' . $e->getMessage());
         }
 
     $crudModel = new Client_model();

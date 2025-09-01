@@ -33,6 +33,7 @@ $routes->post('/login/userlogin', 'Login::userlogin');
 
 $routes->get('/test-connection', 'TestConnection::index'); // Test database connection
 $routes->get('/debug/dashboard', 'Debug::dashboard'); // Debug dashboard issues
+$routes->get('/test-db', 'DatabaseTest::index'); // Test database connection
 $routes->get('/', 'Login::index'); // Login page as default
 $routes->get('/login', 'Login::index'); // Login page
 $routes->get('/login/register', 'Login::register'); // Register page
