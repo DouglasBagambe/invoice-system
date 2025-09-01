@@ -34,6 +34,7 @@ $routes->post('/login/userlogin', 'Login::userlogin');
 $routes->get('/test-connection', 'TestConnection::index'); // Test database connection
 $routes->get('/debug/dashboard', 'Debug::dashboard'); // Debug dashboard issues
 $routes->get('/test-db', 'DatabaseTest::index'); // Test database connection
+$routes->get('/minimal-test', 'MinimalTest::index'); // Minimal test controller
 $routes->get('/', 'Login::index'); // Login page as default
 $routes->get('/login', 'Login::index'); // Login page
 $routes->get('/login/register', 'Login::register'); // Register page
@@ -48,8 +49,9 @@ $routes->get('account/getLedgerByFY/(:num)', 'Account::getLedgerByFY/$1');
  * --------------------------------------------------------------------
  */
 
-// Dashboard route - back to fixed CodeIgniter version
-$routes->get('/dashboard', 'DashboardFixed::index');
+// Dashboard route - ultra simple version that WILL work
+$routes->get('/dashboard', 'UltraSimple::index');
+$routes->get('/dashboard-ultra', 'UltraSimple::index');
 $routes->get('/home', 'SimpleDashboard::index');
 $routes->get('/dashboard-fixed', 'DashboardFixed::index'); // CodeIgniter version
 $routes->get('/dashboard-original', 'Dashboard::index'); // Keep original for debugging
