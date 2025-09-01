@@ -29,8 +29,10 @@ $routes->get('/quickquote/printquickquote', 'Quickquote::printquickquote');
 
 $routes->post('backup', 'BackupController::dbbackup');
 
-$routes->post('userlogin', 'UserController::userlogin');
+$routes->post('/login/userlogin', 'Login::userlogin');
 
+$routes->get('/test-connection', 'TestConnection::index'); // Test database connection
+$routes->get('/debug/dashboard', 'Debug::dashboard'); // Debug dashboard issues
 $routes->get('/', 'Login::index'); // Login page as default
 $routes->get('/login', 'Login::index'); // Login page
 $routes->get('/login/register', 'Login::register'); // Register page

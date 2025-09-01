@@ -46,24 +46,60 @@ class Dashboard extends Controller
     public function index()
    {
     try {
+        // Enable error reporting for debugging
+        ini_set('display_errors', 1);
+        ini_set('display_startup_errors', 1);
+        error_reporting(E_ALL);
+        
         $session = session();
         if (!$session->has('user_id')) {
             return redirect()->to(base_url().'/login');
         }
 
-        
+        // Test database connection
+        $db = \Config\Database::connect();
+        if (!$db->connID) {
+            throw new \Exception('Database connection failed');
+        }
 
     $crudModel = new Client_model();
 
-    $fy=$this->statisticsModel->getFinancialYears();
-
-    $clientcount=$this->statisticsModel->getClientCountForCurrentMonth();
-
-    $monthturn=$this->statisticsModel->getInvoiceTotalForCurrentMonth();
-
-    $invcount=$this->statisticsModel->getInvCountForCurrentMonth();
-
-    $bounceRate = $this->statisticsModel->getBounceRate(); // Fetch bounce rate
+    // Initialize with safe defaults
+    $fy = [];
+    $clientcount = 0;
+    $monthturn = 0;
+    $invcount = 0;
+    $bounceRate = 0;
+    
+    try {
+        $fy = $this->statisticsModel->getFinancialYears();
+    } catch (\Exception $e) {
+        log_message('error', 'Error getting financial years: ' . $e->getMessage());
+    }
+    
+    try {
+        $clientcount = $this->statisticsModel->getClientCountForCurrentMonth();
+    } catch (\Exception $e) {
+        log_message('error', 'Error getting client count: ' . $e->getMessage());
+    }
+    
+    try {
+        $monthturn = $this->statisticsModel->getInvoiceTotalForCurrentMonth();
+    } catch (\Exception $e) {
+        log_message('error', 'Error getting monthly turnover: ' . $e->getMessage());
+    }
+    
+    try {
+        $invcount = $this->statisticsModel->getInvCountForCurrentMonth();
+    } catch (\Exception $e) {
+        log_message('error', 'Error getting invoice count: ' . $e->getMessage());
+    }
+    
+    try {
+        $bounceRate = $this->statisticsModel->getBounceRate(); // Fetch bounce rate
+    } catch (\Exception $e) {
+        log_message('error', 'Error getting bounce rate: ' . $e->getMessage());
+    }
 
     $currentDate = date('Y-m-d');  // Get the current date
 
@@ -80,9 +116,26 @@ class Dashboard extends Controller
             $endYear = $year;
         } 
 
-     $mainchart=$this->statisticsModel->getInvoiceStatsForFinancialYear($startYear, $endYear);
-
-     $productcategorycount2=$this->statisticsModel->productcategorycount2($startYear, $endYear);
+     // Initialize with safe defaults
+     $mainchart = (object) [
+         'total_invoices' => 0,
+         'total_items' => 0,
+         'total_amount' => 0,
+         'total_tax' => 0
+     ];
+     $productcategorycount2 = [];
+     
+     try {
+         $mainchart = $this->statisticsModel->getInvoiceStatsForFinancialYear($startYear, $endYear);
+     } catch (\Exception $e) {
+         log_message('error', 'Error getting main chart data: ' . $e->getMessage());
+     }
+     
+     try {
+         $productcategorycount2 = $this->statisticsModel->productcategorycount2($startYear, $endYear);
+     } catch (\Exception $e) {
+         log_message('error', 'Error getting product category count: ' . $e->getMessage());
+     }
 
 
          
@@ -107,8 +160,15 @@ class Dashboard extends Controller
     
     return view('layout/dashboard-layout', $data);
     } catch (\Exception $e) {
-        log_message('error', 'Dashboard error: ' . $e->getMessage());
-        return view('errors/html/error_500', ['message' => 'An error occurred while loading the dashboard. Please try again later.']);
+        log_message('error', 'Dashboard error: ' . $e->getMessage() . ' in ' . $e->getFile() . ' on line ' . $e->getLine());
+        log_message('error', 'Dashboard error trace: ' . $e->getTraceAsString());
+        
+        // In development, show detailed error
+        if (ENVIRONMENT === 'development') {
+            throw $e;
+        }
+        
+        return view('errors/html/error_500', ['message' => 'Dashboard error: ' . $e->getMessage()]);
     }
     }
 

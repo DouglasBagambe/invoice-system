@@ -1,4 +1,4 @@
-CI_ENVIRONMENT = production
+CI_ENVIRONMENT = development
 
 app.baseURL = 'https://invoice.biiteeksms.com/'
 
