@@ -48,9 +48,10 @@ $routes->get('account/getLedgerByFY/(:num)', 'Account::getLedgerByFY/$1');
  * --------------------------------------------------------------------
  */
 
-// Dashboard route - using fixed version
-$routes->get('/dashboard', 'DashboardFixed::index');
-$routes->get('/home', 'DashboardFixed::index');
+// Dashboard route - using simple version that will definitely work
+$routes->get('/dashboard', 'SimpleDashboard::index');
+$routes->get('/home', 'SimpleDashboard::index');
+$routes->get('/dashboard-fixed', 'DashboardFixed::index'); // CodeIgniter version
 $routes->get('/dashboard-original', 'Dashboard::index'); // Keep original for debugging
 $routes->post('savedata', 'Crud::savedata');
 $routes->get('crud/edit/(:num)', 'Crud::edit/$1');

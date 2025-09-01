@@ -136,7 +136,7 @@ class DashboardFixed extends Controller
 
             $mysqli->close();
 
-            return view('layout/dashboard-layout', $data);
+            return view('layout/Dashboard-layout', $data);
             
         } catch (\Exception $e) {
             log_message('error', 'Dashboard Fixed error: ' . $e->getMessage());
