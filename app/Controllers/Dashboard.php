@@ -54,7 +54,6 @@ class Dashboard extends Controller
         
 
     $crudModel = new Client_model();
-    $crudModel2 = new Invtest_model2();
 
     $fy=$this->statisticsModel->getFinancialYears();
 

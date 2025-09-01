@@ -46,8 +46,8 @@ $routes->get('account/getLedgerByFY/(:num)', 'Account::getLedgerByFY/$1');
  */
 
 // Dashboard route
-$routes->get('/dashboard', 'Home::index');
-$routes->get('/home', 'Home::index');
+$routes->get('/dashboard', 'Dashboard::index');
+$routes->get('/home', 'Dashboard::index');
 $routes->post('savedata', 'Crud::savedata');
 $routes->get('crud/edit/(:num)', 'Crud::edit/$1');
 $routes->post('crud/update', 'Crud::update');
