@@ -21,18 +21,19 @@ class Dashboard extends Controller
 
     public function __construct()
     {
-    
-        
+
+
         $this->statisticsModel = new StatisticsModel();
         //$this->crudModel = new Client_model(); // Load model
 
-        helper(['url', 'navigation', 'getProfileImage', 'money_format']); 
+        helper(['url', 'navigation', 'getProfileImage', 'money_format']);
 
         helper('getState');
 
 
         $this->session = \Config\Services::session();
         $this->validation = \Config\Services::validation();
+        $this->cache = \Config\Services::cache();
     }
 
     public function Dashboard2()
@@ -116,13 +117,19 @@ class Dashboard extends Controller
         $invoiceTotal = $this->statisticsModel->getInvoiceTotalForCurrentMonth();
         //$turnover = $this->statisticsModel->getTurnoverForCurrentMonth();
 
-        $treechart=$this->statisticsModel->gettreechart();
+        // Cache expensive queries for 1 hour (3600 seconds)
+        $cacheKey = 'dashboard_treechart';
+        $treechart = $this->cache->get($cacheKey);
+        if (!$treechart) {
+            $treechart = $this->statisticsModel->gettreechart();
+            $this->cache->save($cacheKey, $treechart, 3600);
+        }
 
 
         $currentDate = date('Y-m-d');  // Get the current date
 
         $month = date('m');  // Get the current month
-        $year = date('Y'); 
+        $year = date('Y');
 
                 if ($month >= 4) {
             // For months from April to December, the current financial year is the current year and next year
@@ -134,25 +141,68 @@ class Dashboard extends Controller
             $endYear = $year;
         }
 
-    $consumables=$this->statisticsModel->consumablesSold($startYear, $endYear);
+        $cacheKey = 'dashboard_consumables_' . $startYear . '_' . $endYear;
+        $consumables = $this->cache->get($cacheKey);
+        if (!$consumables) {
+            $consumables = $this->statisticsModel->consumablesSold($startYear, $endYear);
+            $this->cache->save($cacheKey, $consumables, 3600);
+        }
 
-    $productcategorycount=$this->statisticsModel->productcategorycount();
+        $cacheKey = 'dashboard_productcategorycount';
+        $productcategorycount = $this->cache->get($cacheKey);
+        if (!$productcategorycount) {
+            $productcategorycount = $this->statisticsModel->productcategorycount();
+            $this->cache->save($cacheKey, $productcategorycount, 3600);
+        }
 
-    $usercategory=$this->statisticsModel->usercategoryCount();
+        $cacheKey = 'dashboard_usercategory';
+        $usercategory = $this->cache->get($cacheKey);
+        if (!$usercategory) {
+            $usercategory = $this->statisticsModel->usercategoryCount();
+            $this->cache->save($cacheKey, $usercategory, 3600);
+        }
 
-    $countrycount = $this->statisticsModel->clientcountryCount();
+        $cacheKey = 'dashboard_countrycount';
+        $countrycount = $this->cache->get($cacheKey);
+        if (!$countrycount) {
+            $countrycount = $this->statisticsModel->clientcountryCount();
+            $this->cache->save($cacheKey, $countrycount, 3600);
+        }
 
-    $doccount = $this->statisticsModel->docCount();
+        $cacheKey = 'dashboard_doccount';
+        $doccount = $this->cache->get($cacheKey);
+        if (!$doccount) {
+            $doccount = $this->statisticsModel->docCount();
+            $this->cache->save($cacheKey, $doccount, 3600);
+        }
 
-    $doczcount=$this->statisticsModel->doczCount($startYear, $endYear);
+        $cacheKey = 'dashboard_doczcount_' . $startYear . '_' . $endYear;
+        $doczcount = $this->cache->get($cacheKey);
+        if (!$doczcount) {
+            $doczcount = $this->statisticsModel->doczCount($startYear, $endYear);
+            $this->cache->save($cacheKey, $doczcount, 3600);
+        }
 
+        $cacheKey = 'dashboard_allyeardata';
+        $allyeardata = $this->cache->get($cacheKey);
+        if (!$allyeardata) {
+            $allyeardata = $this->statisticsModel->allyeardata();
+            $this->cache->save($cacheKey, $allyeardata, 3600);
+        }
 
-    $allyeardata= $this->statisticsModel->allyeardata();
+        $cacheKey = 'dashboard_clientcategorycount';
+        $clientcategorycount = $this->cache->get($cacheKey);
+        if (!$clientcategorycount) {
+            $clientcategorycount = $this->statisticsModel->getclienttypecount();
+            $this->cache->save($cacheKey, $clientcategorycount, 3600);
+        }
 
-    $clientcategorycount=$this->statisticsModel->getclienttypecount();
-
-
-    $allyearsalesdata=$this->statisticsModel->allyearsalesdata($startYear, $endYear);
+        $cacheKey = 'dashboard_allyearsalesdata_' . $startYear . '_' . $endYear;
+        $allyearsalesdata = $this->cache->get($cacheKey);
+        if (!$allyearsalesdata) {
+            $allyearsalesdata = $this->statisticsModel->allyearsalesdata($startYear, $endYear);
+            $this->cache->save($cacheKey, $allyearsalesdata, 3600);
+        }
 
     
  $data = [

@@ -1,5 +1,8 @@
 RewriteEngine On
 
+# Increase PHP execution time for dashboard
+php_value max_execution_time 300
+
 # Handle static files in public directory
 RewriteCond %{REQUEST_URI} ^/(public/.*)$
 RewriteCond %{REQUEST_FILENAME} -f

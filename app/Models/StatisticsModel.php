@@ -242,50 +242,66 @@ $result = $this->db->query($query)->getResultArray();
 
 
 public function allyeardata(){
-    $query = "WITH ItemData AS ( SELECT CONCAT( YEAR(inv2.created) - IF(MONTH(inv2.created) < 4, 1, 0), '-', 
-            YEAR(inv2.created) - IF(MONTH(inv2.created) < 4, 0, -1)) AS financial_year, inv.item_name, SUM(inv.quantity) AS total_quantity, 
-        ROW_NUMBER() OVER(
-            PARTITION BY CONCAT(
-                YEAR(inv2.created) - IF(MONTH(inv2.created) < 4, 1, 0), 
-                '-', 
-                YEAR(inv2.created) - IF(MONTH(inv2.created) < 4, 0, -1)
-            ) 
-            ORDER BY SUM(inv.quantity) DESC, SUM(inv.quantity * inv.price) DESC) AS row_num FROM invtest inv 
-        INNER JOIN products ON products.name = inv.item_name AND products.p_type = 'Machine' 
-        JOIN invtest2 inv2 ON inv.orderid = inv2.orderid GROUP BY 
-        CONCAT(
-            YEAR(inv2.created) - IF(MONTH(inv2.created) < 4, 1, 0), 
-            '-', 
-            YEAR(inv2.created) - IF(MONTH(inv2.created) < 4, 0, -1)
-        ), 
-        inv.item_name), FinancialYearData AS (
-    SELECT CONCAT( YEAR(created) - IF(MONTH(created) < 4, 1, 0), 
-            '-', 
-            YEAR(created) - IF(MONTH(created) < 4, 0, -1)) AS financial_year, SUM(taxamount) AS GST, SUM(totalamount) AS Turnover FROM invtest2 GROUP BY financial_year) SELECT i.item_name,  i.total_quantity,  i.financial_year,  f.GST,  f.Turnover FROM ItemData i JOIN FinancialYearData f ON i.financial_year = f.financial_year WHERE i.row_num = 1  ORDER BY  i.financial_year DESC,i.item_name";
-
-            
+    // Simplified query to avoid CTEs and window functions that can cause timeouts
+    $query = "SELECT
+        CONCAT(YEAR(inv2.created) - IF(MONTH(inv2.created) < 4, 1, 0), '-',
+               YEAR(inv2.created) - IF(MONTH(inv2.created) < 4, 0, -1)) AS financial_year,
+        inv.item_name,
+        SUM(inv.quantity) AS total_quantity,
+        SUM(inv2.taxamount) AS GST,
+        SUM(inv2.totalamount) AS Turnover
+    FROM invtest inv
+    INNER JOIN products ON products.name = inv.item_name AND products.p_type = 'Machine'
+    INNER JOIN invtest2 inv2 ON inv.orderid = inv2.orderid
+    GROUP BY financial_year, inv.item_name
+    ORDER BY financial_year DESC, total_quantity DESC
+    LIMIT 20";
 
     $result = $this->db->query($query)->getResultArray();
-    $data13=array();
+    $data13 = array();
 
     foreach ($result as $row) {
-        $data13[] = array("y" => $row['financial_year'] , "a" =>($row['Turnover']), 
-          "b" =>($row['GST']), "c" =>($row['total_quantity']),"label" =>($row['item_name']));
-    } 
+        $data13[] = array(
+            "y" => $row['financial_year'],
+            "a" => ($row['Turnover']),
+            "b" => ($row['GST']),
+            "c" => ($row['total_quantity']),
+            "label" => ($row['item_name'])
+        );
+    }
     return $data13;
 }
 
 
 public function allyearsalesdata($startyear, $endyear){
-    $query = "SELECT query1.Months, query1.Turnover, query1.Tax, query2.item_name, query2.item_sold FROM ( select date_format(created,'%b') 'Months',sum(totalamount) 'Turnover',sum(taxamount) 'Tax' from invtest2 WHERE created between '$startyear-04-01' AND '$endyear-03-31' group by year(created),month(created) ) query1 JOIN ( SELECT DATE_FORMAT(invtest2.created, '%b') AS Months, item_name, COUNT(item_name) AS item_sold, invtest2.created, RANK() OVER (PARTITION BY DATE_FORMAT(invtest2.created, '%Y-%m') ORDER BY COUNT(item_name) DESC, SUM(total) DESC) AS item_rank FROM invtest INNER JOIN invtest2 ON invtest.orderid = invtest2.orderid INNER JOIN products ON invtest.item_name = products.name WHERE products.p_type = 'Machine' AND invtest2.created BETWEEN '$startyear-04-01' AND '$endyear-03-31' GROUP BY item_name, DATE_FORMAT(invtest2.created, '%Y-%m') ) query2 ON query1.Months = query2.Months WHERE query2.item_rank = 1";
+    // Simplified query to avoid window functions
+    $query = "SELECT
+        DATE_FORMAT(inv2.created, '%b') AS Months,
+        SUM(inv2.totalamount) AS Turnover,
+        SUM(inv2.taxamount) AS Tax,
+        inv.item_name,
+        COUNT(inv.item_name) AS item_sold
+    FROM invtest inv
+    INNER JOIN invtest2 inv2 ON inv.orderid = inv2.orderid
+    INNER JOIN products ON inv.item_name = products.name
+    WHERE products.p_type = 'Machine'
+    AND inv2.created BETWEEN '$startyear-04-01' AND '$endyear-03-31'
+    GROUP BY DATE_FORMAT(inv2.created, '%Y-%m'), inv.item_name
+    ORDER BY DATE_FORMAT(inv2.created, '%Y-%m'), COUNT(inv.item_name) DESC
+    LIMIT 12";
 
     $result = $this->db->query($query)->getResultArray();
-    $data14=array();
+    $data14 = array();
 
     foreach ($result as $row) {
-        $data14[] = array("y" => $row['Months'] , "a" =>($row['Turnover']), 
-          "b" =>($row['Tax']), "c" =>($row['item_sold']),"label" =>($row['item_name']));
-    } 
+        $data14[] = array(
+            "y" => $row['Months'],
+            "a" => ($row['Turnover']),
+            "b" => ($row['Tax']),
+            "c" => ($row['item_sold']),
+            "label" => ($row['item_name'])
+        );
+    }
     return $data14;
 }
 
