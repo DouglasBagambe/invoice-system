@@ -1,10 +1,4 @@
 <?php
-// Redirect to public folder for CodeIgniter 4
-// Only redirect if we're not already in public and not using CLI server
-if (php_sapi_name() !== 'cli-server' && !strpos($_SERVER['REQUEST_URI'], '/public/')) {
-    header('Location: /public/');
-    exit();
-}
 
 // Valid PHP Version?
 $minPHPVersion = '7.3';
@@ -27,11 +21,11 @@ define('FCPATH', __DIR__ . DIRECTORY_SEPARATOR);
  */
 
 // Ensure the current directory is pointing to the front controller's directory
-chdir(__DIR__);
+chdir(FCPATH);
 
 // Load our paths config file
 // This is the line that might need to be changed, depending on your folder structure.
-require realpath(FCPATH . 'app/Config/Paths.php') ?: FCPATH . '../app/Config/Paths.php';
+require realpath(FCPATH . '../app/Config/Paths.php') ?: FCPATH . '../app/Config/Paths.php';
 // ^^^ Change this if you move your application folder
 
 $paths = new Config\Paths();

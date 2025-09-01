@@ -5,7 +5,7 @@ if (php_sapi_name() == 'cli-server') {
     
     // First check if file exists in public directory
     $publicFile = __DIR__ . '/public' . $path;
-    if (file_exists($publicFile)) {
+    if (file_exists($publicFile) && !is_dir($publicFile)) {
         // Set proper MIME type
         $ext = pathinfo($publicFile, PATHINFO_EXTENSION);
         switch ($ext) {
