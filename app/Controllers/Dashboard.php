@@ -45,11 +45,9 @@ class Dashboard extends Controller
 
     public function index()
    {
-
-    $session = session(); 
-    if ($session->has('user_id')) {
-            //echo "User ID: " . $session->get('user_id');
-        } else {
+    try {
+        $session = session();
+        if (!$session->has('user_id')) {
             return redirect()->to(base_url().'/login');
         }
 
@@ -109,6 +107,10 @@ class Dashboard extends Controller
 
     
     return view('layout/dashboard-layout', $data);
+    } catch (\Exception $e) {
+        log_message('error', 'Dashboard error: ' . $e->getMessage());
+        return view('errors/html/error_500', ['message' => 'An error occurred while loading the dashboard. Please try again later.']);
+    }
     }
 
     public function getCurrentMonthStatistics()
