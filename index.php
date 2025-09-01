@@ -1,88 +1,11 @@
 <?php
-// Root index.php - Works exactly like localhost setup
-// This file acts as the router for cPanel, just like router.php does for localhost
+// Simple redirect to public folder
+// This ensures CSS and all static files work properly
 
-// Valid PHP Version?
-$minPHPVersion = '7.3';
-if (version_compare(PHP_VERSION, $minPHPVersion, '<'))
-{
-	die("Your PHP version must be {$minPHPVersion} or higher to run CodeIgniter. Current version: " . PHP_VERSION);
+// Check if we're already in public
+if (strpos($_SERVER['REQUEST_URI'], '/public/') === false) {
+    // Redirect to public folder
+    header('Location: /public/');
+    exit();
 }
-unset($minPHPVersion);
-
-// Handle static files first (like router.php does)
-$path = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
-
-// Check if it's a static file in public directory
-$publicFile = __DIR__ . '/public' . $path;
-if (file_exists($publicFile) && !is_dir($publicFile)) {
-    // Set proper MIME type
-    $ext = pathinfo($publicFile, PATHINFO_EXTENSION);
-    switch ($ext) {
-        case 'css':
-            header('Content-Type: text/css');
-            break;
-        case 'js':
-            header('Content-Type: text/javascript');
-            break;
-        case 'png':
-            header('Content-Type: image/png');
-            break;
-        case 'jpg':
-        case 'jpeg':
-            header('Content-Type: image/jpeg');
-            break;
-        case 'gif':
-            header('Content-Type: image/gif');
-            break;
-        case 'ico':
-            header('Content-Type: image/x-icon');
-            break;
-        case 'woff':
-            header('Content-Type: font/woff');
-            break;
-        case 'woff2':
-            header('Content-Type: font/woff2');
-            break;
-    }
-    readfile($publicFile);
-    exit;
-}
-
-// If not a static file, serve the CodeIgniter app directly
-// Don't redirect to /public/ - serve it from here
-
-// Path to the front controller (this file)
-define('FCPATH', __DIR__ . DIRECTORY_SEPARATOR);
-
-/*
- *---------------------------------------------------------------
- * BOOTSTRAP THE APPLICATION
- *---------------------------------------------------------------
- * This process sets up the path constants, loads and registers
- * our autoloader, along with Composer's, loads our constants
- * and fires up an environment-specific bootstrapping.
- */
-
-// Ensure the current directory is pointing to the front controller's directory
-chdir(__DIR__);
-
-// Load our paths config file
-// This is the line that might need to be changed, depending on your folder structure.
-require realpath(FCPATH . 'app/Config/Paths.php') ?: FCPATH . 'app/Config/Paths.php';
-// ^^^ Change this if you move your application folder
-
-$paths = new Config\Paths();
-
-// Location of the framework bootstrap file.
-$bootstrap = rtrim($paths->systemDirectory, '\\/ ') . DIRECTORY_SEPARATOR . 'bootstrap.php';
-$app       = require realpath($bootstrap) ?: $bootstrap;
-
-/*
- *---------------------------------------------------------------
- * LAUNCH THE APPLICATION
- *---------------------------------------------------------------
- * Now that everything is setup, it's time to actually fire
- * up the engines and make this app do its thang.
- */
-$app->run();
+?>
