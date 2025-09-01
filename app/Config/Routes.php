@@ -31,18 +31,13 @@ $routes->post('backup', 'BackupController::dbbackup');
 
 $routes->post('userlogin', 'UserController::userlogin');
 
-$routes->get('/', 'Login::index'); // Ensure 'Login' matches your controller class name
+$routes->get('/', 'Login::index'); // Login page as default
 $routes->get('/login', 'Login::index'); // Login page
 $routes->get('/login/register', 'Login::register'); // Register page
 $routes->post('/login/userregister', 'Login::userregister'); // Register processing
-// Replace 'Auth' with your actual controller name
-
-
 
 // $routes->get('account/getledger/(:num)', 'Account::getLedger/$1');
-
 $routes->get('account/getLedgerByFY/(:num)', 'Account::getLedgerByFY/$1');
-
 
 /*
  * --------------------------------------------------------------------
@@ -50,9 +45,9 @@ $routes->get('account/getLedgerByFY/(:num)', 'Account::getLedgerByFY/$1');
  * --------------------------------------------------------------------
  */
 
-// We get a performance increase by specifying the default
-// route since we don't have to scan directories.
-$routes->get('/', 'Home::index');
+// Dashboard route
+$routes->get('/dashboard', 'Home::index');
+$routes->get('/home', 'Home::index');
 $routes->post('savedata', 'Crud::savedata');
 $routes->get('crud/edit/(:num)', 'Crud::edit/$1');
 $routes->post('crud/update', 'Crud::update');

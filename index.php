@@ -49,11 +49,8 @@ if (file_exists($publicFile) && !is_dir($publicFile)) {
     exit;
 }
 
-// If not a static file, redirect to public folder
-if (!strpos($_SERVER['REQUEST_URI'], '/public/')) {
-    header('Location: /public/');
-    exit();
-}
+// If not a static file, serve the CodeIgniter app directly
+// Don't redirect to /public/ - serve it from here
 
 // Path to the front controller (this file)
 define('FCPATH', __DIR__ . DIRECTORY_SEPARATOR);
@@ -72,7 +69,7 @@ chdir(__DIR__);
 
 // Load our paths config file
 // This is the line that might need to be changed, depending on your folder structure.
-require realpath(FCPATH . 'app/Config/Paths.php') ?: FCPATH . '../app/Config/Paths.php';
+require realpath(FCPATH . 'app/Config/Paths.php') ?: FCPATH . 'app/Config/Paths.php';
 // ^^^ Change this if you move your application folder
 
 $paths = new Config\Paths();
