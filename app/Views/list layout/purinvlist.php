@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <title>AdminLTE 2 | Advanced form elements</title>
 
-<?= $this->include('include/links.php');?>
+<?= $this->include('Include/links.php');?>
 
  
 <style type="text/css">
@@ -20,10 +20,10 @@
 <div class="wrapper">
 
 
-<?= $this->include('include/header.php');?>
+<?= $this->include('Include/header.php');?>
 
 
-  <?= $this->include('include/sidebar.php');?>
+  <?= $this->include('Include/sidebar.php');?>
 
 
   <!-- Content Wrapper. Contains page content -->
@@ -137,9 +137,9 @@
 </section>
 
 
-<?= $this->include('include/footer.php');?>
+<?= $this->include('Include/footer.php');?>
 
-<?= $this->include('include/settings.php');?>
+<?= $this->include('Include/settings.php');?>
 
 
 

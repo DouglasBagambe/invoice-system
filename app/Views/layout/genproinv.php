@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <title>AdminLTE 2 | Generate Proforma Invoice</title>
-  <?= $this->include('include/links.php');?>
+  <?= $this->include('Include/links.php');?>
   <style>
     [class^='select2'] { border-radius: 0px !important; line-height: 25px !important; }
     .form-horizontal .has-feedback .form-control-feedback { right: 67px; }
@@ -169,8 +169,8 @@
 <div id="loader"></div>
 <div class="wrapper">
 
-<?= $this->include('include/header.php');?>
-<?= $this->include('include/sidebar.php');?>
+<?= $this->include('Include/header.php');?>
+<?= $this->include('Include/sidebar.php');?>
 
 <div class="content-wrapper">
   <section class="content-header">
@@ -464,8 +464,8 @@
   </section>
 </div>
  
-<?= $this->include('include/settings.php');?>
-<?= $this->include('include/footer.php');?>
+<?= $this->include('Include/settings.php');?>
+<?= $this->include('Include/footer.php');?>
  
 <script type="text/javascript">
 var base_url = "<?= base_url(); ?>";

@@ -9,7 +9,7 @@
 
   
 
-  <?= $this->include('include/links.php');?>
+  <?= $this->include('Include/links.php');?>
 
 
   <style>
@@ -117,10 +117,10 @@ input .error{
 </head>
 <body class="hold-transition skin-blue sidebar-mini">
 <div class="wrapper">
-<?= $this->include('include/header.php');?>
+<?= $this->include('Include/header.php');?>
 
 
-  <?= $this->include('include/sidebar.php');?>
+  <?= $this->include('Include/sidebar.php');?>
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
     <!-- Content Header (Page header) -->
@@ -205,9 +205,9 @@ input .error{
     <!-- /.content -->
   </div>
  
-  <?= $this->include('include/footer.php');?>
+  <?= $this->include('Include/footer.php');?>
 
-  <?= $this->include('include/settings.php');?> 
+  <?= $this->include('Include/settings.php');?> 
   <!-- Add the sidebar's background. This div must be placed
        immediately after the control sidebar -->
   <div class="control-sidebar-bg"></div>

@@ -10,7 +10,7 @@
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
   <!-- Bootstrap 3.3.7 -->
-    <?= $this->include('include/links.php');?>
+    <?= $this->include('Include/links.php');?>
 
     <link rel="stylesheet" type="text/css" href="<?= base_url();?>/public/dist/css/stylefortimer.css">
 
@@ -48,9 +48,9 @@
     
 <div class="wrapper">
 
-<?= $this->include('include/header.php'); ?>
+<?= $this->include('Include/header.php'); ?>
   
-<?= $this->include('include/sidebar.php'); ?> 
+<?= $this->include('Include/sidebar.php'); ?> 
 
 
   <!-- Content Wrapper. Contains page content -->
@@ -601,8 +601,8 @@
     <!-- /.content -->
   </div>
   <!-- /.content-wrapper -->
-  <?= $this->include('include/footer.php');?>
-<?= $this->include('include/settings.php');?>
+  <?= $this->include('Include/footer.php');?>
+<?= $this->include('Include/settings.php');?>
    <!-- Add the sidebar's background. This div must be placed
        immediately after the control sidebar -->
   <div class="control-sidebar-bg"></div>

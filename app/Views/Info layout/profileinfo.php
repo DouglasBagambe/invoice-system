@@ -6,7 +6,7 @@
   <title>AdminLTE 2 | User Profile</title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
-    <?= $this->include('include/links.php');?>
+    <?= $this->include('Include/links.php');?>
   
     <script >
       $(document).ready(function () {
@@ -172,8 +172,8 @@ function completeUpload(success, fileName) {
 <body class="hold-transition skin-blue sidebar-mini" style="min-height: 100% !important">
 <div class="wrapper">
 
-    <?= $this->include('include/header.php');?>
-    <?= $this->include('include/sidebar.php');?>
+    <?= $this->include('Include/header.php');?>
+    <?= $this->include('Include/sidebar.php');?>
 
 
     <div class="content-wrapper" style="min-height: 100% !important">
@@ -606,8 +606,8 @@ function completeUpload(success, fileName) {
 
       </div>
 
-        <?= $this->include('include/settings.php');?>
-      <?= $this->include('include/footer.php');?>
+        <?= $this->include('Include/settings.php');?>
+      <?= $this->include('Include/footer.php');?>
 
       <!-- <?php //include_once"footer.php"; ?>
         <?php //include_once"settings.php"; ?>

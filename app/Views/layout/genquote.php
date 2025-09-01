@@ -5,7 +5,7 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <title>AdminLTE 2 | General Form Elements</title>
-  <?= $this->include('include/links.php');?>
+  <?= $this->include('Include/links.php');?>
   <style>
 
     [class^='select2'] {
@@ -117,10 +117,10 @@ select {
 <div id="loader"></div>
 <div class="wrapper">
 
-<?= $this->include('include/header.php');?>
+<?= $this->include('Include/header.php');?>
 
 
-  <?= $this->include('include/sidebar.php');?>
+  <?= $this->include('Include/sidebar.php');?>
   <!-- Content Wrapper. Contains page content -->
     <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
@@ -333,8 +333,8 @@ select {
     <!-- /.content -->
   </div>
  
-  <?= $this->include('include/settings.php');?>
-    <?= $this->include('include/footer.php');?>
+  <?= $this->include('Include/settings.php');?>
+    <?= $this->include('Include/footer.php');?>
  
 
 <!-- <script>

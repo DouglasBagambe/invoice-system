@@ -18,7 +18,7 @@
 
 
 
- <?= $this->include('include/links.php');?>
+ <?= $this->include('Include/links.php');?>
 
  <link rel="stylesheet" href="<?= base_url(); ?>/public/script/daterangepicker/daterangepicker-bs3.css">
 
@@ -107,10 +107,10 @@
 
 <div class="wrapper">
 
-  <?= $this->include('include/header.php');?>
+  <?= $this->include('Include/header.php');?>
 
 
-  <?= $this->include('include/sidebar.php');?>
+  <?= $this->include('Include/sidebar.php');?>
 
 
 
@@ -323,8 +323,8 @@
     <!-- /.content -->
   </div>
   <!-- /.content-wrapper -->
-   <?= $this->include('include/settings.php');?>
-    <?= $this->include('include/footer.php');?>
+   <?= $this->include('Include/settings.php');?>
+    <?= $this->include('Include/footer.php');?>
    <!-- Add the sidebar's background. This div must be placed
        immediately after the control sidebar -->
   <div class="control-sidebar-bg"></div>

@@ -7,7 +7,7 @@
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
   <!-- Bootstrap 3.3.7 -->
-   <?= $this->include('include/links.php');?>
+   <?= $this->include('Include/links.php');?>
   <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
   <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
   <!--[if lt IE 9]>
@@ -22,9 +22,9 @@
 <body class="hold-transition skin-blue sidebar-mini">
 <div class="wrapper">
 
-<?= $this->include('include/header.php'); ?>
+<?= $this->include('Include/header.php'); ?>
   
-<?= $this->include('include/sidebar.php'); ?>
+<?= $this->include('Include/sidebar.php'); ?>
 
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
@@ -866,9 +866,9 @@
   </div>
   <!-- /.content-wrapper -->
 
-   <?= $this->include('include/footer.php');?>
+   <?= $this->include('Include/footer.php');?>
 
-   <?= $this->include('include/settings.php');?>
+   <?= $this->include('Include/settings.php');?>
 
 
   <!-- /.control-sidebar -->

@@ -6,7 +6,7 @@
   <title>AdminLTE 2 | General Form Elements</title>
    <link href="<?= base_url()?>/public/bower_components/intl-tel-input/build/css/intlTelInput.min.css" rel="stylesheet"/>
 
-  <?= $this->include('include/links.php');?>
+  <?= $this->include('Include/links.php');?>
 
 
 
@@ -195,10 +195,10 @@ label {
 <div id="loader"></div>
 <div class="wrapper">
 
-<?= $this->include('include/header.php');?>
+<?= $this->include('Include/header.php');?>
 
     
-<?= $this->include('include/sidebar.php');?> 
+<?= $this->include('Include/sidebar.php');?> 
 
 
   <div class="content-wrapper">
@@ -226,8 +226,8 @@ label {
 
   </div>
  
-<?= $this->include('include/footer.php');?>
-<?= $this->include('include/settings.php');?>
+<?= $this->include('Include/footer.php');?>
+<?= $this->include('Include/settings.php');?>
  
 
 
