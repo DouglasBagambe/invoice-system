@@ -143,7 +143,6 @@ if(!password)
 </script>
 <script>
   var base_url = "<?= base_url(); ?>"; 
-  console.log("Base URL set to: " + base_url);
 </script>
 <script>
   $(document).ready(function() {
@@ -159,7 +158,6 @@ if(!password)
         formData.append('username',username);
         formData.append('password',password);
 
-      console.log("Sending AJAX to: " + base_url + '/login/userlogin');
       $.ajax({
     url: base_url+'/login/userlogin',
     type: "POST",

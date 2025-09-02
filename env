@@ -1,11 +1,12 @@
-CI_ENVIRONMENT = development
+CI_ENVIRONMENT = production
 
-app.baseURL = 'http://localhost:8000/'
+app.baseURL = 'https://invoice.biiteeksms.com/'
 
 database.default.hostname = localhost
-database.default.database = db
-database.default.username = root
-database.default.password = 
+database.default.database = biiteeks_invoice_db
+database.default.username = biiteeks_invoice
+database.default.password = L+.a72a7dZuA6F
 database.default.DBDriver = MySQLi
+database.default.port = 3306
 
 cache.handler = dummy
