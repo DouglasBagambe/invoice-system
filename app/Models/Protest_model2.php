@@ -90,7 +90,7 @@ class Protest_model2 extends Model
 public function getprotest($startyear = null, $endyear = null, $client = null, $product = null, $limit, $offset)
 {
     $builder = $this->db->table('protest2')
-                        ->select('protest2.*, client.c_name, client.c_add, GROUP_CONCAT(protest.item_name SEPARATOR ", ") AS item_names, SUBSTRING_INDEX(client.c_add, ",", -1) as location')
+                        ->select('protest2.*, client.c_name, client.c_add, GROUP_CONCAT(protest.item_name SEPARATOR ", ") AS item_name, SUBSTRING_INDEX(client.c_add, ",", -1) as location')
                         ->join('client', 'protest2.cid = client.cid', 'left')
                         ->join('protest', 'protest2.orderid = protest.orderid', 'left');
 

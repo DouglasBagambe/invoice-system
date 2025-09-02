@@ -647,10 +647,6 @@ public function showprodata()
     // Load the model
     $protest_model2 = new Protest_model2();
 
-    // Debug: Check if there's any data in protest2 table
-    $debug_query = $protest_model2->db->table('protest2')->countAllResults();
-    log_message('debug', 'Total records in protest2: ' . $debug_query);
-
     // Fetch all data - no year filtering, ordered by created date (latest first)
     $invoices = $protest_model2->getprotest(
         null,  // No year filtering
@@ -661,10 +657,6 @@ public function showprodata()
         $offset
     );
 
-    // Debug: Log the query and results
-    log_message('debug', 'Query: ' . $protest_model2->db->getLastQuery()->getQuery());
-    log_message('debug', 'Invoices found: ' . count($invoices));
-
     // Count total number of records for pagination
     $total_records = $protest_model2->countAllInvoices(
         null,  // No year filtering
@@ -672,8 +664,6 @@ public function showprodata()
         $selectedClient, 
         $selectedProduct
     );
-
-    log_message('debug', 'Total records count: ' . $total_records);
 
     // Prepare data to return
     $data = [
