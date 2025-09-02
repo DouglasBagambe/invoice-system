@@ -89,11 +89,9 @@ class Protest_model2 extends Model
 
 public function getprotest($startyear = null, $endyear = null, $client = null, $product = null, $limit, $offset)
 {
-    // Use a simpler approach with a subquery to get the first item name
+    // Start with a simple query to get basic data first
     $builder = $this->db->table('protest2')
-                        ->select('protest2.*, client.c_name, 
-                                 SUBSTRING_INDEX(client.c_add, ",", -1) as location,
-                                 (SELECT protest.item_name FROM protest WHERE protest.orderid = protest2.orderid ORDER BY protest.orderno LIMIT 1) as item_name')
+                        ->select('protest2.*, client.c_name, client.c_add')
                         ->join('client', 'protest2.cid = client.cid', 'left');
 
     // Check if year parameters are provided, otherwise show all invoices
@@ -112,17 +110,37 @@ public function getprotest($startyear = null, $endyear = null, $client = null, $
         $builder->where('protest2.orderid IN (SELECT orderid FROM protest WHERE item_name = ?)', $product);
     }
 
-    // Log the query for debugging
-    log_message('debug', 'getprotest query: ' . $builder->getCompiledSelect());
-
     // Apply limit and offset for pagination
     $result = $builder->limit($limit, $offset)
-                   ->orderBy('protest2.created', 'DESC')  // Order by creation date
+                   ->orderBy('protest2.created', 'DESC')
                    ->get()
                    ->getResult();
     
-    // Log the result for debugging
-    log_message('debug', 'getprotest result: ' . json_encode($result));
+    // Now add item_name and location to each result
+    foreach ($result as $row) {
+        // Get the first item name for this order
+        $itemQuery = $this->db->table('protest')
+                              ->select('item_name')
+                              ->where('orderid', $row->orderid)
+                              ->orderBy('orderno', 'ASC')
+                              ->limit(1)
+                              ->get();
+        
+        if ($itemQuery->getNumRows() > 0) {
+            $itemRow = $itemQuery->getRow();
+            $row->item_name = $itemRow->item_name;
+        } else {
+            $row->item_name = 'No items';
+        }
+        
+        // Extract location from address
+        if (!empty($row->c_add)) {
+            $addressParts = explode(',', $row->c_add);
+            $row->location = trim(end($addressParts));
+        } else {
+            $row->location = 'No address';
+        }
+    }
     
     return $result;
 }
