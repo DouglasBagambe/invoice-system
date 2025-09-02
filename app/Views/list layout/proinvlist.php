@@ -311,28 +311,34 @@ function updatePagination(totalRecords, resultsPerPage, currentPage) {
 
 
 
- $('#product').select2({
-       placeholder: "Select product",
+$('#product').select2({
+    placeholder: "Select product",
     allowClear: true,
-            ajax: {
-            url: "<?= base_url();?>/proinv/getproducts", // Controller method
-            type: "GET",
-            dataType: "json",
-            delay: 250, // Add a delay to limit requests for better performance
-            data: function(params) {
-            // Send the current input value to the server as 'category_name'
+    ajax: {
+        url: "<?= base_url();?>/proinv/getproducts",
+        type: "GET",
+        dataType: "json",
+        delay: 250,
+        data: function(params) {
             return {
-                category_name: params.term || '' // params.term is the search term
+                category_name: params.term || ''
             };
         },
         processResults: function(data) {
-            console.log(data); // For debugging, remove this after testing
-            // Process the returned data array and map it to Select2 format
+            console.log('Product data received:', data); // Debug log
+            
+            // Check if data is an array and has items
+            if (!Array.isArray(data) || data.length === 0) {
+                console.log('No product data or empty array');
+                return { results: [] };
+            }
+            
+            // Map the data correctly
             return {
                 results: data.map(function(item) {
                     return {
-                        id: item.name, // This will be used as the value of the option
-                        text: item.name // This will be displayed in the dropdown
+                        id: item.id || item.name, // Use id if available, fallback to name
+                        text: item.name || item.text // Use name if available, fallback to text
                     };
                 })
             };
