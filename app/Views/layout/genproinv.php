@@ -506,15 +506,11 @@ $(document).ready(function() {
                 dataType: 'json',
                 delay: 250,
                 data: function (params) { 
-                    console.log('Searching for:', params.term);
                     return { category_name: params.term }; 
                 },
                 processResults: function (data) { 
-                    console.log('Product data received:', data);
-                    
                     // Check if data is an array and has items
                     if (!Array.isArray(data) || data.length === 0) {
-                        console.log('No product data or empty array');
                         return { results: [] };
                     }
                     
@@ -528,12 +524,10 @@ $(document).ready(function() {
                         } else if (item.name) {
                             return { id: item.id || item.name, text: item.name };
                         } else {
-                            console.warn('Unknown item format:', item);
                             return { id: item.id || item, text: item.text || item.name || item };
                         }
                     });
                     
-                    console.log('Processed results:', results);
                     return { results: results };
                 },
                 cache: true

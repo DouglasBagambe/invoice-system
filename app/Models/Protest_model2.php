@@ -9,7 +9,7 @@ class Protest_model2 extends Model
     protected $table = 'protest2'; // Specify your table name
     //protected $primaryKey = 'invid'; // Specify your primary key column
 
-    protected $allowedFields = ['invid','cid', 'orderid', 'totalitems','subtotal','taxrate','taxamount','totalamount','created']; // Specify allowed fields
+    protected $allowedFields = ['invid','cid', 'orderid', 'totalitems','subtotal','taxrate','taxamount','totalamount','created','bank_id','validity_period','delivery_period','payment_terms','signature_path','notes']; // Specify allowed fields
 
     // Optionally, you can define validation rules
     // protected $validationRules = [

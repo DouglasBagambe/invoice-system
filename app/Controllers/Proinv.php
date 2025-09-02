@@ -765,6 +765,27 @@ public function insert() {
         $taxamount = $this->request->getPost('taxAmount');
         $totalaftertax = $this->request->getPost('totalAftertax');
         
+        // Get additional fields
+        $bank_id = $this->request->getPost('bank_id');
+        $validity_period = $this->request->getPost('validity_period');
+        $delivery_period = $this->request->getPost('delivery_period');
+        $payment_terms = $this->request->getPost('payment_terms');
+        
+        // Handle signature file upload
+        $signature_path = null;
+        $signatureFile = $this->request->getFile('signature');
+        if ($signatureFile && $signatureFile->isValid() && !$signatureFile->hasMoved()) {
+            // Create uploads directory if it doesn't exist
+            $uploadPath = ROOTPATH . 'public/uploads/signatures/';
+            if (!is_dir($uploadPath)) {
+                mkdir($uploadPath, 0755, true);
+            }
+            
+            $newName = time() . '_' . uniqid() . '.' . $signatureFile->getExtension();
+            $signatureFile->move($uploadPath, $newName);
+            $signature_path = 'public/uploads/signatures/' . $newName;
+        }
+        
         // Generate unique order ID
         $orderid = uniqid();
         
@@ -798,6 +819,11 @@ public function insert() {
             'taxamount' => $taxamount,
             'totalamount' => $totalaftertax,
             'created' => date('Y-m-d H:i:s'),
+            'bank_id' => $bank_id,
+            'validity_period' => $validity_period,
+            'delivery_period' => $delivery_period,
+            'payment_terms' => $payment_terms,
+            'signature_path' => $signature_path,
         ];
         
         // Insert data using working version approach
