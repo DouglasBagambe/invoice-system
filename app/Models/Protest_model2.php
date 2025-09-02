@@ -89,11 +89,10 @@ class Protest_model2 extends Model
 
 public function getprotest($startyear = null, $endyear = null, $client = null, $product = null, $limit, $offset)
 {
-    // Use a single query with LEFT JOIN to get all data efficiently
+    // First, get the main invoice data with client information
     $builder = $this->db->table('protest2')
-                        ->select('protest2.*, client.c_name, client.c_add, protest.item_name')
-                        ->join('client', 'protest2.cid = client.cid', 'left')
-                        ->join('protest', 'protest2.orderid = protest.orderid', 'left');
+                        ->select('protest2.*, client.c_name, client.c_add')
+                        ->join('client', 'protest2.cid = client.cid', 'left');
 
     // Check if year parameters are provided, otherwise show all invoices
     if ($startyear && $endyear) {
@@ -108,11 +107,11 @@ public function getprotest($startyear = null, $endyear = null, $client = null, $
 
     // Apply product filter only if a product (item_name) is selected
     if ($product) {
-        $builder->where('protest.item_name', $product);
+        // If filtering by product, we need to join with protest table
+        $builder->join('protest', 'protest2.orderid = protest.orderid', 'inner')
+                ->where('protest.item_name', $product)
+                ->groupBy('protest2.orderid'); // Group to avoid duplicates
     }
-
-    // Group by orderid to avoid duplicates when there are multiple items per invoice
-    $builder->groupBy('protest2.orderid');
 
     // Apply limit and offset for pagination
     $result = $builder->limit($limit, $offset)
@@ -120,10 +119,23 @@ public function getprotest($startyear = null, $endyear = null, $client = null, $
                    ->get()
                    ->getResult();
 
-    // Process each result to handle item names and location extraction
+    // Now get item names for each invoice
     foreach ($result as $row) {
-        // Handle case where no items exist for this invoice
-        if (empty($row->item_name)) {
+        // Get all item names for this orderid
+        $itemBuilder = $this->db->table('protest')
+                               ->select('item_name')
+                               ->where('orderid', $row->orderid);
+        
+        $items = $itemBuilder->get()->getResult();
+        
+        if (!empty($items)) {
+            // If multiple items, concatenate them with commas
+            $itemNames = array_column($items, 'item_name');
+            $row->item_name = implode(', ', $itemNames);
+            
+            // If you only want the first item name, use this instead:
+            // $row->item_name = $items[0]->item_name;
+        } else {
             $row->item_name = 'No items';
         }
 
@@ -143,8 +155,7 @@ public function getprotest($startyear = null, $endyear = null, $client = null, $
 public function countAllInvoices($startyear = null, $endyear = null, $client = null, $product = null)
 {
     $builder = $this->db->table('protest2')
-                        ->join('client', 'protest2.cid = client.cid', 'left')
-                        ->join('protest', 'protest2.orderid = protest.orderid', 'left');
+                        ->join('client', 'protest2.cid = client.cid', 'left');
 
     // Apply date range filters only if year is specified
     if ($startyear && $endyear) {
@@ -157,13 +168,10 @@ public function countAllInvoices($startyear = null, $endyear = null, $client = n
         $builder->where('protest2.cid', $client);
     }
 
-    // Apply product filter
+    // Apply product filter using EXISTS subquery
     if ($product) {
-        $builder->where('protest.item_name', $product);
+        $builder->where("EXISTS (SELECT 1 FROM protest WHERE protest.orderid = protest2.orderid AND protest.item_name = '$product')");
     }
-
-    // Group by orderid to avoid duplicates when there are multiple items per invoice
-    $builder->groupBy('protest2.orderid');
 
     // Return the count of unique rows
     return $builder->countAllResults();
