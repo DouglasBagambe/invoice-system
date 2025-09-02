@@ -675,8 +675,9 @@ public function showprodata()
     
     // Only apply year filtering if a specific year is selected
     if ($selectedYear !== null && $selectedYear !== '') {
-        $startyear = substr($selectedYear, 0, 4);
-        $endyear = substr($selectedYear, 5, 8);
+        // Fix: Correct substring extraction for financial year format "XX-YY"
+        $startyear = substr($selectedYear, 0, 2);  // Get first 2 characters
+        $endyear = substr($selectedYear, 3, 2);   // Get last 2 characters (skip the dash)
     }
     // If no year is selected, don't apply any year filtering (show all records)
 
