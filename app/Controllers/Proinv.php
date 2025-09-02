@@ -315,27 +315,57 @@ public function savebank()
     if ($this->request->getMethod() === 'post' || $this->request->isAJAX()) {
         $bankModel = new Bank_model();
         
-        $data = [
-            'bname' => $this->request->getPost('bname'),
-            'ac' => $this->request->getPost('ac'),
-            'ifsc' => $this->request->getPost('ifsc'),
-            'branch' => $this->request->getPost('branch')
-        ];
+        // Get form data
+        $bname = $this->request->getPost('bname');
+        $ac = $this->request->getPost('ac');
+        $ifsc = $this->request->getPost('ifsc');
+        $account_name = $this->request->getPost('account_name');
         
-        if ($bankModel->insert($data)) {
-            return $this->response->setJSON([
-                'success' => true,
-                'message' => 'Bank details saved successfully',
-                'bank_id' => $bankModel->getInsertID()
-            ]);
-        } else {
-            $errors = $bankModel->errors();
+        // Validate required fields
+        if (!$bname || !$ac || !$ifsc) {
             return $this->response->setJSON([
                 'success' => false,
-                'message' => 'Failed to save bank details: ' . implode(', ', $errors)
+                'message' => 'Bank name, account number, and bank code are required'
+            ]);
+        }
+        
+        // Use account_name as branch if provided, otherwise use a default
+        $branch = $account_name ? $account_name : 'Main Branch';
+        
+        $data = [
+            'bname' => $bname,
+            'ac' => $ac,
+            'ifsc' => $ifsc,
+            'branch' => $branch
+        ];
+        
+        try {
+            if ($bankModel->insert($data)) {
+                $insertId = $bankModel->getInsertID();
+                return $this->response->setJSON([
+                    'success' => true,
+                    'message' => 'Bank details saved successfully',
+                    'bank_id' => $insertId
+                ]);
+            } else {
+                $errors = $bankModel->errors();
+                return $this->response->setJSON([
+                    'success' => false,
+                    'message' => 'Failed to save bank details: ' . implode(', ', $errors)
+                ]);
+            }
+        } catch (\Exception $e) {
+            return $this->response->setJSON([
+                'success' => false,
+                'message' => 'Database error: ' . $e->getMessage()
             ]);
         }
     }
+    
+    return $this->response->setJSON([
+        'success' => false,
+        'message' => 'Invalid request method'
+    ]);
 }
 
 public function proreport(){

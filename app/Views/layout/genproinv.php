@@ -611,23 +611,56 @@ $(document).ready(function() {
     });
     
     $('#saveBankDetails').click(function() {
-        var bankName = $('#new_bank_name').val();
-        var accountNumber = $('#new_account_number').val();
-        var bankCode = $('#new_bank_code').val();
-        var accountName = $('#new_account_name').val();
+        var bankName = $('#new_bank_name').val().trim();
+        var accountNumber = $('#new_account_number').val().trim();
+        var bankCode = $('#new_bank_code').val().trim();
+        var accountName = $('#new_account_name').val().trim();
         
-        if (!bankName || !accountNumber || !bankCode || !accountName) { alert('Please fill all bank details'); return; }
+        // Clear previous errors
+        $('.bank-form .error').removeClass('error');
+        $('.bank-form [id$="_error"]').text('');
+        
+        // Validation
+        if (!bankName) { $('#new_bank_name').addClass('error'); return; }
+        if (!accountNumber) { $('#new_account_number').addClass('error'); return; }
+        if (!bankCode) { $('#new_bank_code').addClass('error'); return; }
+        if (!accountName) { $('#new_account_name').addClass('error'); return; }
+        
+        // Disable button to prevent double clicks
+        $(this).prop('disabled', true).html('<i class="fa fa-spinner fa-spin"></i> Saving...');
         
         $.ajax({
             url: base_url + '/proinv/savebank',
             method: 'POST',
-            data: { bname: bankName, ac: accountNumber, ifsc: bankCode, account_name: accountName },
+            dataType: 'json',
+            data: { 
+                bname: bankName, 
+                ac: accountNumber, 
+                ifsc: bankCode, 
+                account_name: accountName 
+            },
             success: function(response) {
-                if (response.success) {
+                if (response && response.success) {
+                    // Add new option to bank dropdown
                     var newOption = new Option(bankName + ' - ' + accountNumber, response.bank_id, true, true);
                     $('#bank_id').append(newOption).trigger('change');
-                    $('#bankDetailsForm').slideUp(); $('#bank_id').prop('disabled', false); clearBankForm(); alert('Bank saved successfully');
-                } else { alert('Failed to save bank details'); }
+                    
+                    // Close form and reset
+                    $('#bankDetailsForm').slideUp(300);
+                    $('#bank_id').prop('disabled', false);
+                    clearBankForm();
+                    
+                    alert('Bank saved successfully!');
+                } else {
+                    alert('Failed to save bank details: ' + (response.message || 'Unknown error'));
+                }
+            },
+            error: function(xhr, status, error) {
+                alert('Error saving bank details: ' + error);
+            },
+            complete: function() {
+                // Re-enable button
+                $('#saveBankDetails').prop('disabled', false).html('Save Bank');
             }
         });
     });
@@ -736,16 +769,31 @@ $(document).ready(function() {
         var formData = new FormData(this);
         
         $.ajax({
-            url: $(this).attr('action'), type: 'POST', data: formData, contentType: false, processData: false,
+            url: $(this).attr('action'), 
+            type: 'POST', 
+            data: formData, 
+            contentType: false, 
+            processData: false,
+            dataType: 'json',
             success: function(response) {
-                if (response.success) {
+                if (response && response.success) {
                     alert('Proforma Invoice created successfully!');
-                    if (response.orderid) { window.open(base_url + '/proinv/printproinv?orderid=' + response.orderid, '_blank'); }
-                    $('#proformaForm')[0].reset(); location.reload();
-                } else { alert('Error: ' + (response.message || 'Failed to create invoice')); }
+                    if (response.orderid) { 
+                        window.open(base_url + '/proinv/printproinv?orderid=' + response.orderid, '_blank'); 
+                    }
+                    $('#proformaForm')[0].reset(); 
+                    location.reload();
+                } else { 
+                    alert('Error: ' + (response.message || 'Failed to create invoice')); 
+                }
             },
-            error: function() { alert('An error occurred while saving'); },
-            complete: function() { $('#submitbtn').prop('disabled', false).val('Save Invoice'); }
+            error: function(xhr, status, error) { 
+                console.error('AJAX Error:', xhr.responseText);
+                alert('An error occurred while saving: ' + error); 
+            },
+            complete: function() { 
+                $('#submitbtn').prop('disabled', false).val('Save Invoice'); 
+            }
         });
     });
 });

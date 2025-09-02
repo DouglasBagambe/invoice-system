@@ -121,6 +121,12 @@ $routes->group('proinv', function($routes) {
     $routes->get('edit/(:num)', 'Proinv::edit/$1');
     $routes->get('delete/(:num)', 'Proinv::delete/$1');
     $routes->post('update', 'Proinv::update');
+    $routes->post('savebank', 'Proinv::savebank');
+    $routes->post('saveitem', 'Proinv::saveitem');
+    $routes->get('getclient', 'Proinv::getclient');
+    $routes->get('getproducts', 'Proinv::getproducts');
+    $routes->get('getproducthsn', 'Proinv::getproducthsn');
+    $routes->get('printproinv', 'Proinv::printproinv');
 });
 
 // Tax Invoice Routes  
