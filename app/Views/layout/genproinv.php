@@ -776,6 +776,7 @@ $(document).ready(function() {
             processData: false,
             dataType: 'json',
             success: function(response) {
+                console.log('Response received:', response); // Debug log
                 if (response && response.success) {
                     alert('Proforma Invoice created successfully!');
                     if (response.orderid) { 
@@ -788,8 +789,27 @@ $(document).ready(function() {
                 }
             },
             error: function(xhr, status, error) { 
-                console.error('AJAX Error:', xhr.responseText);
-                alert('An error occurred while saving: ' + error); 
+                console.error('AJAX Error Details:');
+                console.error('Status:', status);
+                console.error('Error:', error);
+                console.error('Response Text:', xhr.responseText);
+                console.error('Response JSON:', xhr.responseJSON);
+                
+                // Try to parse the response as JSON
+                let errorMessage = 'An error occurred while saving';
+                try {
+                    const response = JSON.parse(xhr.responseText);
+                    if (response && response.message) {
+                        errorMessage = response.message;
+                    }
+                } catch (e) {
+                    // If not JSON, use the response text or default message
+                    if (xhr.responseText) {
+                        errorMessage = xhr.responseText;
+                    }
+                }
+                
+                alert('Error: ' + errorMessage); 
             },
             complete: function() { 
                 $('#submitbtn').prop('disabled', false).val('Save Invoice'); 

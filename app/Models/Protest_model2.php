@@ -89,17 +89,20 @@ class Protest_model2 extends Model
 
 public function getprotest($startyear = null, $endyear = null, $client = null, $product = null, $limit, $offset)
 {
-    $builder = $this->db->table('protest')
-                        ->select('protest.orderid, protest2.invid, protest.item_name, protest2.*, SUM(protest2.totalamount) as total_amount, client.c_name, GROUP_CONCAT(protest.item_name SEPARATOR ", ") AS item_names, SUBSTRING_INDEX(client.c_add, ",", -1) as location')
-                        ->join('protest2', 'protest.orderid = protest2.orderid', 'left')  // Use LEFT JOIN for protest2
-                        ->join('client', 'protest2.cid = client.cid', 'left');  // Always filter by u_type
+    // Start with protest2 as the main table to ensure we get all invoices
+    $builder = $this->db->table('protest2')
+                        ->select('protest2.*, client.c_name, 
+                                 GROUP_CONCAT(DISTINCT protest.item_name SEPARATOR ", ") AS item_names,
+                                 SUBSTRING_INDEX(client.c_add, ",", -1) as location,
+                                 (SELECT protest.item_name FROM protest WHERE protest.orderid = protest2.orderid LIMIT 1) as item_name')
+                        ->join('client', 'protest2.cid = client.cid', 'left')
+                        ->join('protest', 'protest.orderid = protest2.orderid', 'left');
 
-      // Check if year parameters are provided, otherwise show all invoices
+    // Check if year parameters are provided, otherwise show all invoices
     if ($startyear && $endyear) {
         $builder->where('protest2.created >=', "$startyear-04-01")
                 ->where('protest2.created <=', "$endyear-03-31");
     }
-    // Removed default year filtering - now shows all invoices
 
     // Apply client filter only if a client is selected
     if ($client) {
@@ -111,23 +114,21 @@ public function getprotest($startyear = null, $endyear = null, $client = null, $
         $builder->where('protest.item_name', $product);
     }
 
-    // Group by orderid and client id to avoid duplicate rows
-    $builder->groupBy('protest.orderid, protest2.cid');
+    // Group by orderid to avoid duplicate rows
+    $builder->groupBy('protest2.orderid');
 
     // Apply limit and offset for pagination
     return $builder->limit($limit, $offset)
-                   ->orderBy('protest.orderid', 'DESC')  // Order by orderid
+                   ->orderBy('protest2.created', 'DESC')  // Order by creation date
                    ->get()
                    ->getResult();
-
-
 }
 
 
 public function countAllInvoices($startyear = null, $endyear = null, $client = null, $product = null)
 {
     $builder = $this->db->table('protest2')
-                        ->join('client', 'protest2.cid = client.cid')
+                        ->join('client', 'protest2.cid = client.cid', 'left')
                         ->join('protest', 'protest2.orderid = protest.orderid', 'left');
 
     // Apply date range filters only if year is specified
@@ -135,11 +136,10 @@ public function countAllInvoices($startyear = null, $endyear = null, $client = n
         $builder->where('protest2.created >=', "$startyear-04-01")
                 ->where('protest2.created <=', "$endyear-03-31");
     }
-    // Removed default year filtering - now counts all invoices
 
     // Apply client filter
     if ($client) {
-        $builder->where('client.cid', $client);
+        $builder->where('protest2.cid', $client);
     }
 
     // Apply product filter
@@ -147,8 +147,8 @@ public function countAllInvoices($startyear = null, $endyear = null, $client = n
         $builder->where('protest.item_name', $product);
     }
 
-    // Group by orderid and cid to count unique records
-    $builder->groupBy('protest2.orderid, protest2.cid');
+    // Group by orderid to count unique records
+    $builder->groupBy('protest2.orderid');
 
     // Return the count of unique rows
     return count($builder->get()->getResult());
