@@ -94,28 +94,6 @@ public function getprotest($startyear = null, $endyear = null, $client = null, $
                         ->join('protest2', 'protest.orderid = protest2.orderid', 'left')  // Use LEFT JOIN for protest2
                         ->join('client', 'protest2.cid = client.cid', 'left');  // Always filter by u_type
 
-      // Check if year parameters are provided, otherwise set default year
-    if ($startyear && $endyear) {
-        $builder->where('protest2.created >=', "$startyear-04-01")
-                ->where('protest2.created <=', "$endyear-03-31");
-    }   elseif (!$client) { 
-        // If no client is selected, apply default year filter (last financial year)
-        $currentYear = date('Y');
-        $currentMonth = date('m');
-
-        if ($currentMonth > 3) {
-            $defaultStartYear = $currentYear; // Current year
-            $defaultEndYear = $currentYear + 1; // Next year
-        } else {
-            $defaultStartYear = $currentYear - 1; // Previous year
-            $defaultEndYear = $currentYear; // Current year
-        }
-
-
-        $builder->where('protest2.created >=', "$defaultStartYear-04-01")
-                ->where('protest2.created <=', "$defaultEndYear-03-31");
-    }
-
     // Apply client filter only if a client is selected
     if ($client) {
         $builder->where('protest2.cid', $client);
@@ -129,9 +107,9 @@ public function getprotest($startyear = null, $endyear = null, $client = null, $
     // Group by orderid and client id to avoid duplicate rows
     $builder->groupBy('protest.orderid, protest2.cid');
 
-    // Apply limit and offset for pagination
+    // Apply limit and offset for pagination - Order by ID (latest first)
     return $builder->limit($limit, $offset)
-                   ->orderBy('protest.orderid', 'DESC')  // Order by orderid
+                   ->orderBy('protest2.id', 'DESC')  // Order by ID (latest first)
                    ->get()
                    ->getResult();
 }
@@ -142,27 +120,6 @@ public function countAllInvoices($startyear = null, $endyear = null, $client = n
     $builder = $this->db->table('protest2')
                         ->join('client', 'protest2.cid = client.cid')
                         ->join('protest', 'protest2.orderid = protest.orderid', 'left');
-
-    // Apply date range filters
-    if ($startyear && $endyear) {
-        $builder->where('protest2.created >=', "$startyear-04-01")
-                ->where('protest2.created <=', "$endyear-03-31");
-    } else {
-        // Set default financial year range
-        $currentYear = date('Y');
-        $currentMonth = date('m');
-
-        if ($currentMonth > 3) {
-            $defaultStartYear = $currentYear;
-            $defaultEndYear = $currentYear + 1;
-        } else {
-            $defaultStartYear = $currentYear - 1;
-            $defaultEndYear = $currentYear;
-        }
-
-        $builder->where('protest2.created >=', "$defaultStartYear-04-01")
-                ->where('protest2.created <=', "$defaultEndYear-03-31");
-    }
 
     // Apply client filter
     if ($client) {

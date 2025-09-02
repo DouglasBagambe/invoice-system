@@ -78,15 +78,7 @@
                     </div>
                 </div>
                 
-                <!-- Select Year -->
-                <div class="col-md-3">
-                    <div class="form-group">
-                        <label>Select Year:</label>
-                        <select name="year" id="year" class="form-control select2" style="height: 35px !important;width:100% !important;">
-                            <option value=""></option>
-                        </select>
-                    </div>
-                </div>
+
 
                 <!-- Submit Button -->
                 <div class="col-md-2">
@@ -164,7 +156,6 @@
   
 
   // Global variables to store current filter selections
-let selectedYear = '';
 let selectedClient = '';
 let selectedProduct = '';
 
@@ -177,7 +168,6 @@ function loadInvoices(page = 1) {
             type: 'GET',
             data: { 
               page: page,
-              year: selectedYear,
               client: selectedClient,
               product: selectedProduct
             },
@@ -348,43 +338,18 @@ $('#product').select2({
 });
 
 
-   $('#year').select2({
-    placeholder: "Select Year",
-    allowClear: true,
-    ajax: {
-        url: "<?= base_url();?>/proinv/getyear", // Controller method
-        type: "GET",
-        dataType: "json",
-        delay: 250, // Add a delay to limit requests for better performance
-        processResults: function(data) {
-            // Format the response data for Select2
-            return {
-                results: $.map(data, function(item) {
-                    return {
-                        id: item.id, // Use the financial year as the id
-                        text: item.text // Display the financial year as the text
-                    };
-                })
-            };
-        }
-    }
-});
+
 
 
 
         $('#client').on('select2:select', function() {
     selectedClient = $(this).val();
-    loadInvoices(1, selectedYear, selectedClient, selectedProduct);
+    loadInvoices(1);
 });
 
 $('#product').on('select2:select', function() {
     selectedProduct = $(this).val();
-    loadInvoices(1, selectedYear, selectedClient, selectedProduct);
-});
-
-$('#year').on('select2:select', function() {
-    selectedYear = $(this).val();
-    loadInvoices(1, selectedYear, selectedClient, selectedProduct);
+    loadInvoices(1);
 });
 
 

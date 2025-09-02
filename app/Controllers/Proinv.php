@@ -635,35 +635,10 @@ public function saveitem()
 
 public function showprodata()
 {
-    // Get the selected year from request, if any
-    $selectedYear = $this->request->getVar('year');
+    // Get the selected client and product from request
     $selectedClient = $this->request->getVar('client');
     $selectedProduct = $this->request->getVar('product');
     
-    // Initialize start and end year variables
-    $startyear = null;
-    $endyear = null;
-    
-    // Only apply year filtering if a specific year is selected
-    if ($selectedYear !== null && $selectedYear !== '') {
-        // Fix: Correct substring extraction for financial year format "XXXX-YYYY"
-        $startyear = substr($selectedYear, 0, 4);  // Get first 4 characters
-        $endyear = substr($selectedYear, 5, 4);   // Get last 4 characters (skip the dash)
-    }
-    // If no year is selected, don't apply any year filtering (show all records)
-
-    // Initialize filters array
-    $filters = [];
-
-    // Build the filters for client and product
-    if ($selectedClient !== null && $selectedClient !== '') {
-        $filters['client'] = $selectedClient;
-    }
-
-    if ($selectedProduct !== null && $selectedProduct !== '') {
-        $filters['product'] = $selectedProduct;
-    }
-
     // Pagination logic
     $results_per_page = 20; // Number of results per page
     $page = $this->request->getVar('page') ? (int)$this->request->getVar('page') : 1; // Current page
@@ -672,29 +647,23 @@ public function showprodata()
     // Load the model
     $protest_model2 = new Protest_model2();
 
-    // Fetch filtered data - pass null for years if no specific year selected
+    // Fetch all data - no year filtering, ordered by ID (latest first)
     $invoices = $protest_model2->getprotest(
-        $startyear, 
-        $endyear, 
+        null,  // No year filtering
+        null,  // No year filtering
         $selectedClient, 
         $selectedProduct, 
         $results_per_page, 
         $offset
     );
 
-    // Log the query for debugging
-    log_message('debug', $protest_model2->db->getLastQuery()->getQuery());
-
     // Count total number of records for pagination
     $total_records = $protest_model2->countAllInvoices(
-        $startyear, 
-        $endyear, 
+        null,  // No year filtering
+        null,  // No year filtering
         $selectedClient, 
         $selectedProduct
     );
-
-    // Log the total record count query for debugging
-    log_message('debug', $protest_model2->db->getLastQuery()->getQuery());
 
     // Prepare data to return
     $data = [
