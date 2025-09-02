@@ -89,9 +89,13 @@ class Protest_model2 extends Model
 
 public function getprotest($startyear = null, $endyear = null, $client = null, $product = null, $limit, $offset)
 {
-    // First, get the main invoice data with client information
+    // Use a subquery to get concatenated item names
+    $itemSubquery = "(SELECT GROUP_CONCAT(item_name SEPARATOR ', ') 
+                      FROM protest 
+                      WHERE protest.orderid = protest2.orderid) as item_name";
+
     $builder = $this->db->table('protest2')
-                        ->select('protest2.*, client.c_name, client.c_add')
+                        ->select("protest2.*, client.c_name, client.c_add, $itemSubquery")
                         ->join('client', 'protest2.cid = client.cid', 'left');
 
     // Check if year parameters are provided, otherwise show all invoices
@@ -107,10 +111,8 @@ public function getprotest($startyear = null, $endyear = null, $client = null, $
 
     // Apply product filter only if a product (item_name) is selected
     if ($product) {
-        // If filtering by product, we need to join with protest table
-        $builder->join('protest', 'protest2.orderid = protest.orderid', 'inner')
-                ->where('protest.item_name', $product)
-                ->groupBy('protest2.orderid'); // Group to avoid duplicates
+        // Use EXISTS subquery for product filtering
+        $builder->where("EXISTS (SELECT 1 FROM protest WHERE protest.orderid = protest2.orderid AND protest.item_name = '$product')");
     }
 
     // Apply limit and offset for pagination
@@ -119,23 +121,10 @@ public function getprotest($startyear = null, $endyear = null, $client = null, $
                    ->get()
                    ->getResult();
 
-    // Now get item names for each invoice
+    // Process each result to handle empty item names and location extraction
     foreach ($result as $row) {
-        // Get all item names for this orderid
-        $itemBuilder = $this->db->table('protest')
-                               ->select('item_name')
-                               ->where('orderid', $row->orderid);
-        
-        $items = $itemBuilder->get()->getResult();
-        
-        if (!empty($items)) {
-            // If multiple items, concatenate them with commas
-            $itemNames = array_column($items, 'item_name');
-            $row->item_name = implode(', ', $itemNames);
-            
-            // If you only want the first item name, use this instead:
-            // $row->item_name = $items[0]->item_name;
-        } else {
+        // Handle case where no items exist for this invoice
+        if (empty($row->item_name) || is_null($row->item_name)) {
             $row->item_name = 'No items';
         }
 
