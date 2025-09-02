@@ -782,7 +782,7 @@ public function insert() {
                         'orderid' => $orderid,
                         'item_name' => $itemNames[$i],
                         'item_desc' => !empty($itemDescs[$i]) ? $itemDescs[$i] : null,
-                        'hsn' => !empty($hsn[$i]) ? $hsn[$i] : null,
+                        'hsn' => !empty($hsn[$i]) ? $hsn[$i] : 8443, // Default HSN if not provided
                         'quantity' => !empty($quantities[$i]) ? $quantities[$i] : null,
                         'price' => !empty($prices[$i]) ? $prices[$i] : null,
                         'total' => !empty($totals[$i]) ? $totals[$i] : null,
@@ -810,12 +810,28 @@ public function insert() {
         log_message('debug', 'Inserting into protest2 table: ' . json_encode($insertData2));
         
         // Insert data using working version approach
-        $protestResult = $this->crudModel->insertBatch($insertData);
-        $protest2Result = $this->crudModel4->insertBatch($insertData2);
-        
-        // Debug: Log the results
-        log_message('debug', 'Protest insert result: ' . ($protestResult ? 'SUCCESS' : 'FAILED'));
-        log_message('debug', 'Protest2 insert result: ' . ($protest2Result ? 'SUCCESS' : 'FAILED'));
+        try {
+            $protestResult = $this->crudModel->insertBatch($insertData);
+            $protest2Result = $this->crudModel4->insertBatch($insertData2);
+            
+            // Debug: Log the results
+            log_message('debug', 'Protest insert result: ' . ($protestResult ? 'SUCCESS' : 'FAILED'));
+            log_message('debug', 'Protest2 insert result: ' . ($protest2Result ? 'SUCCESS' : 'FAILED'));
+            
+            // Log any database errors
+            if (!$protestResult) {
+                log_message('error', 'Protest insert error: ' . json_encode($this->crudModel->errors()));
+            }
+            if (!$protest2Result) {
+                log_message('error', 'Protest2 insert error: ' . json_encode($this->crudModel4->errors()));
+            }
+        } catch (\Exception $e) {
+            log_message('error', 'Database insert exception: ' . $e->getMessage());
+            return $this->response->setJSON([
+                'success' => false,
+                'message' => 'Database error: ' . $e->getMessage(),
+            ]);
+        }
         
         if ($protestResult && $protest2Result) {
             return $this->response->setJSON([
