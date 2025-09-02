@@ -89,14 +89,12 @@ class Protest_model2 extends Model
 
 public function getprotest($startyear = null, $endyear = null, $client = null, $product = null, $limit, $offset)
 {
-    // Start with protest2 as the main table to ensure we get all invoices
+    // Use a simpler approach with a subquery to get the first item name
     $builder = $this->db->table('protest2')
                         ->select('protest2.*, client.c_name, 
-                                 GROUP_CONCAT(DISTINCT protest.item_name SEPARATOR ", ") AS item_names,
                                  SUBSTRING_INDEX(client.c_add, ",", -1) as location,
-                                 (SELECT protest.item_name FROM protest WHERE protest.orderid = protest2.orderid LIMIT 1) as item_name')
-                        ->join('client', 'protest2.cid = client.cid', 'left')
-                        ->join('protest', 'protest.orderid = protest2.orderid', 'left');
+                                 (SELECT protest.item_name FROM protest WHERE protest.orderid = protest2.orderid ORDER BY protest.orderno LIMIT 1) as item_name')
+                        ->join('client', 'protest2.cid = client.cid', 'left');
 
     // Check if year parameters are provided, otherwise show all invoices
     if ($startyear && $endyear) {
@@ -111,11 +109,8 @@ public function getprotest($startyear = null, $endyear = null, $client = null, $
 
     // Apply product filter only if a product (item_name) is selected
     if ($product) {
-        $builder->where('protest.item_name', $product);
+        $builder->where('protest2.orderid IN (SELECT orderid FROM protest WHERE item_name = ?)', $product);
     }
-
-    // Group by orderid to avoid duplicate rows
-    $builder->groupBy('protest2.orderid');
 
     // Apply limit and offset for pagination
     return $builder->limit($limit, $offset)
@@ -128,8 +123,7 @@ public function getprotest($startyear = null, $endyear = null, $client = null, $
 public function countAllInvoices($startyear = null, $endyear = null, $client = null, $product = null)
 {
     $builder = $this->db->table('protest2')
-                        ->join('client', 'protest2.cid = client.cid', 'left')
-                        ->join('protest', 'protest2.orderid = protest.orderid', 'left');
+                        ->join('client', 'protest2.cid = client.cid', 'left');
 
     // Apply date range filters only if year is specified
     if ($startyear && $endyear) {
@@ -144,14 +138,11 @@ public function countAllInvoices($startyear = null, $endyear = null, $client = n
 
     // Apply product filter
     if ($product) {
-        $builder->where('protest.item_name', $product);
+        $builder->where('protest2.orderid IN (SELECT orderid FROM protest WHERE item_name = ?)', $product);
     }
 
-    // Group by orderid to count unique records
-    $builder->groupBy('protest2.orderid');
-
     // Return the count of unique rows
-    return count($builder->get()->getResult());
+    return $builder->countAllResults();
 }
 
 

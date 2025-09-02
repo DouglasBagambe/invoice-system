@@ -925,6 +925,9 @@ public function insert() {
                 ]);
             }
             
+            // Log success for debugging
+            log_message('debug', 'Invoice created successfully with orderid: ' . $orderid);
+            
             return $this->response->setJSON([
                 'success' => true,
                 'message' => 'Proforma Invoice created successfully!',
