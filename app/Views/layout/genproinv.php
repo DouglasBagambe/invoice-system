@@ -505,8 +505,37 @@ $(document).ready(function() {
                 url: base_url + '/proinv/getproducts',
                 dataType: 'json',
                 delay: 250,
-                data: function (params) { return { category_name: params.term }; },
-                processResults: function (data) { return { results: data }; },
+                data: function (params) { 
+                    console.log('Searching for:', params.term);
+                    return { category_name: params.term }; 
+                },
+                processResults: function (data) { 
+                    console.log('Product data received:', data);
+                    
+                    // Check if data is an array and has items
+                    if (!Array.isArray(data) || data.length === 0) {
+                        console.log('No product data or empty array');
+                        return { results: [] };
+                    }
+                    
+                    // Map the data correctly - handle different response formats
+                    var results = data.map(function(item) {
+                        // Handle different possible data structures
+                        if (typeof item === 'string') {
+                            return { id: item, text: item };
+                        } else if (item.id && item.text) {
+                            return { id: item.id, text: item.text };
+                        } else if (item.name) {
+                            return { id: item.id || item.name, text: item.name };
+                        } else {
+                            console.warn('Unknown item format:', item);
+                            return { id: item.id || item, text: item.text || item.name || item };
+                        }
+                    });
+                    
+                    console.log('Processed results:', results);
+                    return { results: results };
+                },
                 cache: true
             }
         });
@@ -767,6 +796,44 @@ $(document).ready(function() {
         
         $('#submitbtn').prop('disabled', true).val('Saving...');
         var formData = new FormData(this);
+        
+        // DEBUG CODE - Check what's being submitted
+        console.log('=== DEBUGGING FORM DATA ===');
+        
+        // Debug: Log all form data
+        for (let pair of formData.entries()) {
+            console.log(pair[0], ':', pair[1]);
+        }
+        
+        // Debug: Specifically check item data
+        console.log('=== ITEM DATA ANALYSIS ===');
+        $('.datarow').each(function(index) {
+            var row = $(this);
+            var itemName = row.find('.item_name').val();
+            var itemDesc = row.find('.item_desc').val();
+            var quantity = row.find('.quantity').val();
+            var price = row.find('.price').val();
+            
+            console.log(`Row ${index + 1}:`, {
+                itemName: itemName,
+                itemDesc: itemDesc,
+                quantity: quantity,
+                price: price,
+                hasValue: !!itemName
+            });
+        });
+        
+        // Debug: Check what the select2 elements actually contain
+        console.log('=== SELECT2 DEBUG ===');
+        $('.item_name').each(function(index) {
+            var $select = $(this);
+            console.log(`Select2 ${index + 1}:`, {
+                id: $select.attr('id'),
+                value: $select.val(),
+                selectedOption: $select.find('option:selected').text(),
+                allOptions: $select.find('option').length
+            });
+        });
         
         $.ajax({
             url: $(this).attr('action'), 
