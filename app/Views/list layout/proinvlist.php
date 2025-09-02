@@ -174,8 +174,9 @@ function loadInvoices(page = 1) {
 
             dataType: 'json',
             success: function(response) {
-                console.log("res"+response);
-                //console.log(response.debug); // Inspect the response structure
+                console.log("Full response:", response);
+                console.log("Invoices:", response.invoices);
+                console.log("Total records:", response.total_records);
 
                 if (response.invoices && Array.isArray(response.invoices)) {
                     $('#tinvoices').empty(); // Clear previous data
