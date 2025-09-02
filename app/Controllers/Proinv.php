@@ -634,35 +634,31 @@ public function saveitem()
 
 public function showprodata()
 {
-    // Default start and end year based on the current fiscal year
-    if (date('m') > 3) {
-        $defaultYear = date('Y') . "-" . (date('Y') + 1);
-    } else {
-        $defaultYear = (date('Y') - 1) . "-" . date('Y');
-    }
-
-    // Variables for start and end years
-    $startyear = substr($defaultYear, 0, 4);
-    $endyear = substr($defaultYear, 5, 8);
+    // Get the selected year from request, if any
+    $selectedYear = $this->request->getVar('year');
     $selectedClient = $this->request->getVar('client');
     $selectedProduct = $this->request->getVar('product');
-    $selectedYear = $this->request->getVar('year');
-
-    // If year is selected, override default fiscal year
-    if ($selectedYear !== null) {
+    
+    // Initialize start and end year variables
+    $startyear = null;
+    $endyear = null;
+    
+    // Only apply year filtering if a specific year is selected
+    if ($selectedYear !== null && $selectedYear !== '') {
         $startyear = substr($selectedYear, 0, 4);
         $endyear = substr($selectedYear, 5, 8);
     }
+    // If no year is selected, don't apply any year filtering (show all records)
 
     // Initialize filters array
     $filters = [];
 
     // Build the filters for client and product
-    if ($selectedClient !== null) {
+    if ($selectedClient !== null && $selectedClient !== '') {
         $filters['client'] = $selectedClient;
     }
 
-    if ($selectedProduct !== null) {
+    if ($selectedProduct !== null && $selectedProduct !== '') {
         $filters['product'] = $selectedProduct;
     }
 
@@ -674,7 +670,7 @@ public function showprodata()
     // Load the model
     $protest_model2 = new Protest_model2();
 
-    // Fetch filtered data
+    // Fetch filtered data - pass null for years if no specific year selected
     $invoices = $protest_model2->getprotest(
         $startyear, 
         $endyear, 
