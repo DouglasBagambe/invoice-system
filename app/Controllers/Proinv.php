@@ -56,33 +56,17 @@ class Proinv extends Controller
         $date = date('Y-m-d');
 
 
-        // SQL query to get the next invoice ID
-        $datalogger = "
-            SELECT CONCAT_WS('/', '$year', COALESCE(LPAD(
-                CASE 
-                    WHEN '$date' >= DATE_FORMAT('$date','%Y-04-01') 
-                    THEN SUM(created >= DATE_FORMAT('$date','%Y-04-01')) 
-                    ELSE SUM(created BETWEEN DATE_FORMAT('$date','%Y-04-01') - INTERVAL 1 YEAR AND DATE_FORMAT('$date','%Y-04-01'))
-                END + 1, 4, 0)
-            , LPAD(1, 4, 0))) AS invid 
-            FROM Protest2";
-
-        //echo $datalogger;    
-
+        // Simple query to get the next invoice ID
+        $datalogger = "SELECT COUNT(*) as count FROM protest2 WHERE invid LIKE 'PI/$year/%'";
+        
         // Execute the query
         $stmt = $db->query($datalogger);
         $row = $stmt->getRow();
 
         // Determine the invoice number
-        if ($row) {
-            $value2 = $row->invid;
-
-            // Separate numeric part
-            $value2 = substr($value2, 6, 4);
-
-            // Concatenate incremented value
-            $value2 = "\n PI/" . $year . "/" . sprintf('%04s', $value2);
-            $value = $value2;
+        if ($row && $row->count > 0) {
+            $nextNumber = $row->count + 1;
+            $value = "PI/" . $year . "/" . sprintf('%04d', $nextNumber);
         } else {
             // No records found, start from 0001
             $value = "PI/" . $year . "/0001";
@@ -335,8 +319,7 @@ public function savebank()
             'bname' => $this->request->getPost('bname'),
             'ac' => $this->request->getPost('ac'),
             'ifsc' => $this->request->getPost('ifsc'),
-            'account_name' => $this->request->getPost('account_name'),
-            'created_at' => date('Y-m-d H:i:s')
+            'branch' => $this->request->getPost('branch')
         ];
         
         if ($bankModel->insert($data)) {
@@ -346,9 +329,10 @@ public function savebank()
                 'bank_id' => $bankModel->getInsertID()
             ]);
         } else {
+            $errors = $bankModel->errors();
             return $this->response->setJSON([
                 'success' => false,
-                'message' => 'Failed to save bank details'
+                'message' => 'Failed to save bank details: ' . implode(', ', $errors)
             ]);
         }
     }
@@ -911,7 +895,7 @@ public function insert() {
                 log_message('error', 'Main invoice insert failed: ' . json_encode($errors));
                 return $this->response->setJSON([
                     'success' => false,
-                    'message' => 'Failed to save main invoice data: ' . json_encode($errors),
+                    'message' => 'Failed to save main invoice data: ' . implode(', ', $errors),
                 ]);
             }
             

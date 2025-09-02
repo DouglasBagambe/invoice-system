@@ -217,7 +217,7 @@
                   <div class="form-group">
                     <label class="col-sm-4 control-label">Invoice ID</label>
                     <div class="col-sm-8">
-                      <input type="text" class="form-control" name="invid" id="invid" value="<?= esc($invoice_id); ?>" readonly>
+                      <input type="text" class="form-control" name="invid" id="invid" value="<?= esc($invoice_id); ?>">
                       <div id="invid_error" style="color: red;"></div>
                     </div>
                   </div>

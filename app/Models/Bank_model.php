@@ -11,7 +11,7 @@ class Bank_model extends Model
 
     
 
-    protected $allowedFields = ['bname', 'ac','ifsc','branch','account_name']; // Specify allowed fields
+    protected $allowedFields = ['bname', 'ac','ifsc','branch']; // Specify allowed fields
 
     // Optionally, you can define validation rules
     // protected $validationRules = [
