@@ -50,7 +50,7 @@ $routes->get('account/getLedgerByFY/(:num)', 'Account::getLedgerByFY/$1');
  */
 
 // Dashboard route - ultra simple version that WILL work
-$routes->get('/dashboard', 'UltraSimple::index');
+$routes->get('/dashboard', 'Dashboard::index');
 $routes->get('/dashboard-ultra', 'UltraSimple::index');
 $routes->get('/home', 'SimpleDashboard::index');
 $routes->get('/dashboard-fixed', 'DashboardFixed::index'); // CodeIgniter version
@@ -112,6 +112,36 @@ $routes->group('purchaseinv', function($routes) {
 
 
 // app/Config/Routes.php
+
+// Proforma Invoice Routes
+$routes->group('proinv', function($routes) {
+    $routes->get('genproinv', 'Proinv::genproinv');
+    $routes->get('showprodata', 'Proinv::showprodata');
+    $routes->post('insert', 'Proinv::insert');
+    $routes->get('edit/(:num)', 'Proinv::edit/$1');
+    $routes->get('delete/(:num)', 'Proinv::delete/$1');
+    $routes->post('update', 'Proinv::update');
+});
+
+// Tax Invoice Routes  
+$routes->group('taxinv', function($routes) {
+    $routes->get('gentaxinv', 'Taxinv::gentaxinv');
+    $routes->get('showtaxdata', 'Taxinv::showtaxdata');
+    $routes->post('insert', 'Taxinv::insert');
+    $routes->get('edit/(:num)', 'Taxinv::edit/$1');
+    $routes->get('delete/(:num)', 'Taxinv::delete/$1');
+    $routes->post('update', 'Taxinv::update');
+});
+
+// Quote Routes
+$routes->group('quote', function($routes) {
+    $routes->get('genquote', 'Quote::genquote');
+    $routes->get('showquotedata', 'Quote::showquotedata');
+    $routes->post('insert', 'Quote::insert');
+    $routes->get('edit/(:num)', 'Quote::edit/$1');
+    $routes->get('delete/(:num)', 'Quote::delete/$1');
+    $routes->post('update', 'Quote::update');
+});
 
 $routes->set404Override('App\Controllers\Errors::show404');
 

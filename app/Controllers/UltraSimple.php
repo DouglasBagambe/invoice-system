@@ -8,14 +8,10 @@ class UltraSimple
     {
         // No inheritance, no sessions, no nothing - just pure PHP
         
-        // Check if user is logged in using pure PHP
-        if (!isset($_SESSION)) {
-            session_start();
-        }
-        
-        if (!isset($_SESSION['user_id'])) {
-            header('Location: https://invoice.biiteeksms.com/login');
-            exit;
+        // Check if user is logged in using CodeIgniter session
+        $session = session();
+        if (!$session->has('user_id')) {
+            return redirect()->to('/login');
         }
         
         // Get basic data
@@ -23,7 +19,7 @@ class UltraSimple
         $invcount = 0;
         
         try {
-            $mysqli = new \mysqli('localhost', 'biiteeks_invoice', 'L+.a72a7dZuA6F', 'biiteeks_invoice_db', 3306);
+            $mysqli = new \mysqli('localhost', 'root', '', 'db', 3306);
             if (!$mysqli->connect_error) {
                 $result = $mysqli->query("SELECT COUNT(*) as count FROM client");
                 if ($result && $row = $result->fetch_assoc()) {
@@ -49,10 +45,10 @@ class UltraSimple
     <title>Dashboard - Working!</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="https://invoice.biiteeksms.com/public/bower_components/bootstrap/dist/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://invoice.biiteeksms.com/public/bower_components/font-awesome/css/font-awesome.min.css">
-    <link rel="stylesheet" href="https://invoice.biiteeksms.com/public/dist/css/AdminLTE.min.css">
-    <link rel="stylesheet" href="https://invoice.biiteeksms.com/public/dist/css/skins/_all-skins.min.css">
+    <link rel="stylesheet" href="http://localhost:8000/bower_components/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="http://localhost:8000/bower_components/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="http://localhost:8000/dist/css/AdminLTE.min.css">
+    <link rel="stylesheet" href="http://localhost:8000/dist/css/skins/_all-skins.min.css">
 </head>
 <body class="hold-transition skin-blue sidebar-mini">
 <div class="wrapper">

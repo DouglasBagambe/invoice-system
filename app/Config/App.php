@@ -23,7 +23,7 @@ class App extends BaseConfig
 	 *
 	 * @var string
 	 */
-	public $baseURL = 'https://invoice.biiteeksms.com/';
+	public $baseURL = 'http://localhost:8000/';
 
 	/**
 	 * --------------------------------------------------------------------------

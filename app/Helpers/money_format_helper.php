@@ -21,3 +21,4 @@ if (!function_exists('moneyFormatIndia')) {
         return $thecash;
     }
 }
+?>

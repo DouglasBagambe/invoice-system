@@ -26,8 +26,7 @@ class Quote extends Controller
     public function __construct()
     {
         $this->crudModel = new Quote_model(); // Load model
-        helper('url');
-        helper('navigation');
+        helper(['url', 'navigation', 'session_safe']);
         $this->session = \Config\Services::session();
         $this->validation = \Config\Services::validation();
     }

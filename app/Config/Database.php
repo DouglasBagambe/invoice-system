@@ -33,9 +33,9 @@ class Database extends Config
 	public $default = [
 		'DSN'      => '',
 		'hostname' => 'localhost',
-		'username' => 'biiteeks_invoice',
-		'password' => 'L+.a72a7dZuA6F',
-		'database' => 'biiteeks_invoice_db',
+		'username' => 'root',
+		'password' => '',
+		'database' => 'db',
 		'DBDriver' => 'MySQLi',
 		'DBPrefix' => '',
 		'pConnect' => false,

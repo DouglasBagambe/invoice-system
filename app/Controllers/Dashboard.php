@@ -26,7 +26,7 @@ class Dashboard extends Controller
         $this->statisticsModel = new StatisticsModel();
         //$this->crudModel = new Client_model(); // Load model
 
-        helper(['url', 'navigation', 'getProfileImage', 'money_format']);
+        helper(['url', 'navigation', 'getProfileImage', 'money_format', 'session_safe']);
 
         helper('getState');
 
@@ -92,7 +92,7 @@ class Dashboard extends Controller
     }
     
     try {
-        $bounceRate = $this->statisticsModel->getBounceRate(); // Fetch bounce rate
+    $bounceRate = $this->statisticsModel->getBounceRate(); // Fetch bounce rate
     } catch (\Exception $e) {
         log_message('error', 'Error getting bounce rate: ' . $e->getMessage());
     }

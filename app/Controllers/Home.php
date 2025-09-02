@@ -6,6 +6,9 @@ class Home extends BaseController
 {
 	public function index()
 	{
+		// Load required helpers
+		helper(['session_safe', 'dashboard']);
+		
 		// Check if user is logged in
 		$session = session();
 		if (!$session->has('user_id')) {
@@ -30,6 +33,6 @@ class Home extends BaseController
 			'productcategorycount2' => []
 		];
 		
-		return view('layout/dashboard-layout', $data);
+		return view('Dashboard/home', $data);
 	}
 }
