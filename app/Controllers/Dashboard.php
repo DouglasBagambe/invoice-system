@@ -154,7 +154,7 @@ class Dashboard extends Controller
     }
 
     
-    return view('layout/dashboard-layout', $data);
+    return view('Dashboard/home', $data);
     } catch (\Exception $e) {
         log_message('error', 'Dashboard error: ' . $e->getMessage() . ' in ' . $e->getFile() . ' on line ' . $e->getLine());
         log_message('error', 'Dashboard error trace: ' . $e->getTraceAsString());
@@ -328,7 +328,7 @@ public function clientreminder() {
         'results2' => json_encode($results2)
     ];
 
-    return view('layout/dashboard-layout', $data);
+    return view('Dashboard/home', $data);
 }
 
 
