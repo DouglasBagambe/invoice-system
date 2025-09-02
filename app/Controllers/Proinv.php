@@ -161,9 +161,6 @@ public function updateproinv()
         $prices = $this->request->getPost('price'); // Array
         $totals = $this->request->getPost('total'); // Array
 
-        // $formattedDate = (new \DateTime($datepicker))->format('Y-m-d');
-
-
          $dateParts = explode('-', $datepicker);
     if (count($dateParts) === 3) {
         $formattedDate = (new \DateTime("{$dateParts[2]}-{$dateParts[1]}-{$dateParts[0]}"))->format('Y-m-d');
@@ -171,15 +168,10 @@ public function updateproinv()
         throw new \Exception('Invalid date format');
     }
 
-
-
-        //print_r($itemNames);
-
         // Prepare data for updating main invoice
         $updateData = [
             'invid' => $invid,
             'cid' => $supplier,
-            //'invdate' => $formattedDate,
             'totalitems' => count($itemNames),
             'subtotal' => $subtotal,
             'taxrate' => $taxrate,
@@ -188,67 +180,46 @@ public function updateproinv()
             'created' => $formattedDate
         ];
 
-        //print_r($updateData);
-        
-        $updateItemsData = [];
-        $newItemsData = [];
-
+        $itemData = [];
         if (!empty($itemNames) && is_array($itemNames)) {
             for ($i = 0; $i < count($itemNames); $i++) {
                 if (!empty($itemNames[$i])) {
-
                     $itemData[] = [
                         'orderno'=> null,
                         'orderid' => $orderid,
-                      
-                            'item_name' => $itemNames[$i],
-                            'item_desc' => !empty($itemDescs[$i]) ? $itemDescs[$i] : null, // Handle empty descriptions
-                            'hsn' => (isset($hsn[$i]) && !empty($hsn[$i])) ? $hsn[$i] : (8443 + $i), // Handle empty hsn
-                            'quantity' => !empty($quantities[$i]) ? $quantities[$i] : null, // Handle empty quantity
-                            'price' => !empty($prices[$i]) ? $prices[$i] : null, // Handle empty price
-                            'total' => !empty($totals[$i]) ? $totals[$i] : null, // Handle empty total
+                        'item_name' => $itemNames[$i],
+                        'item_desc' => !empty($itemDescs[$i]) ? $itemDescs[$i] : null,
+                        'hsn' => (isset($hsn[$i]) && !empty($hsn[$i])) ? $hsn[$i] : (8443 + $i),
+                        'quantity' => !empty($quantities[$i]) ? $quantities[$i] : null,
+                        'price' => !empty($prices[$i]) ? $prices[$i] : null,
+                        'total' => !empty($totals[$i]) ? $totals[$i] : null,
                     ];
-                    
-                    //print_r($itemData);
-
-
                 }
             }
         }
 
+        // Update the main invoice
+        $mainUpdate = $this->crudModel4->updaterecord(['orderid' => $orderid], $updateData);
+        
+        // Always update items by deleting old and inserting new
+        $this->crudModel->deleterecord($orderid);
+        $itemsInsert = $this->crudModel->insertBatch($itemData);
 
-// Update the main invoice
-if (!$this->crudModel4->updaterecord(['orderid' => $orderid], $updateData)) {
-    //echo $this->crudModel4->getLastQuery();
-
-    $this->crudModel->deleterecord($orderid);
-//echo $this->crudModel->getLastQuery();
-
-    if ($this->crudModel->insertBatch($itemData)) {
-                         $lastQuery = $this->crudModel->getLastQuery(); // Ensure this retrieves the last executed query
-                            //echo $lastQuery;
-
-
-                        return $this->response->setJSON([
-                            'success' => true,
-                            'message' => 'Proforma Invoice Data updated!',
-                            'orderid' => $orderid,
-                        ]);
-
-
-  
-} else {
-      return $this->response->setJSON(['success' => false, 'message' => 'Failed to update main invoice data.']);
-}
-
-
-   
-}
- return $this->response->setJSON(['success' => true, 'message' => 'Items updated successfully!']);
-
-    throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
-}
+        if ($mainUpdate && $itemsInsert) {
+            return $this->response->setJSON([
+                'success' => true,
+                'message' => 'Proforma Invoice updated successfully!',
+                'orderid' => $orderid,
+            ]);
+        } else {
+            return $this->response->setJSON([
+                'success' => false,
+                'message' => 'Failed to update invoice.',
+            ]);
+        }
+    }
     
+    throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
 }
 
 
