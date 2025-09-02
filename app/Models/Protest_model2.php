@@ -9,7 +9,7 @@ class Protest_model2 extends Model
     protected $table = 'protest2'; // Specify your table name
     //protected $primaryKey = 'invid'; // Specify your primary key column
 
-    protected $allowedFields = ['invid','cid', 'orderid', 'totalitems','subtotal','taxrate','taxamount','totalamount','created','bank_id','signature_path','validity_period','delivery_period','payment_terms','notes']; // Specify allowed fields
+    protected $allowedFields = ['invid','cid', 'orderid', 'totalitems','subtotal','taxrate','taxamount','totalamount','created']; // Specify allowed fields
 
     // Optionally, you can define validation rules
     // protected $validationRules = [
@@ -89,19 +89,31 @@ class Protest_model2 extends Model
 
 public function getprotest($startyear = null, $endyear = null, $client = null, $product = null, $limit, $offset)
 {
-    // Use a subquery to get concatenated item names
-    $itemSubquery = "(SELECT GROUP_CONCAT(item_name SEPARATOR ', ') 
-                      FROM protest 
-                      WHERE protest.orderid = protest2.orderid) as item_name";
+    $builder = $this->db->table('protest')
+                        ->select('protest.orderid, protest2.invid, protest.item_name, protest2.*, SUM(protest2.totalamount) as total_amount, client.c_name, GROUP_CONCAT(protest.item_name SEPARATOR ", ") AS item_names, SUBSTRING_INDEX(client.c_add, ",", -1) as location')
+                        ->join('protest2', 'protest.orderid = protest2.orderid', 'left')  // Use LEFT JOIN for protest2
+                        ->join('client', 'protest2.cid = client.cid', 'left');  // Always filter by u_type
 
-    $builder = $this->db->table('protest2')
-                        ->select("protest2.*, client.c_name, client.c_add, $itemSubquery")
-                        ->join('client', 'protest2.cid = client.cid', 'left');
-
-    // Check if year parameters are provided, otherwise show all invoices
+      // Check if year parameters are provided, otherwise set default year
     if ($startyear && $endyear) {
         $builder->where('protest2.created >=', "$startyear-04-01")
                 ->where('protest2.created <=', "$endyear-03-31");
+    }   elseif (!$client) { 
+        // If no client is selected, apply default year filter (last financial year)
+        $currentYear = date('Y');
+        $currentMonth = date('m');
+
+        if ($currentMonth > 3) {
+            $defaultStartYear = $currentYear; // Current year
+            $defaultEndYear = $currentYear + 1; // Next year
+        } else {
+            $defaultStartYear = $currentYear - 1; // Previous year
+            $defaultEndYear = $currentYear; // Current year
+        }
+
+
+        $builder->where('protest2.created >=', "$defaultStartYear-04-01")
+                ->where('protest2.created <=', "$defaultEndYear-03-31");
     }
 
     // Apply client filter only if a client is selected
@@ -111,59 +123,62 @@ public function getprotest($startyear = null, $endyear = null, $client = null, $
 
     // Apply product filter only if a product (item_name) is selected
     if ($product) {
-        // Use EXISTS subquery for product filtering
-        $builder->where("EXISTS (SELECT 1 FROM protest WHERE protest.orderid = protest2.orderid AND protest.item_name = '$product')");
+        $builder->where('protest.item_name', $product);
     }
+
+    // Group by orderid and client id to avoid duplicate rows
+    $builder->groupBy('protest.orderid, protest2.cid');
 
     // Apply limit and offset for pagination
-    $result = $builder->limit($limit, $offset)
-                   ->orderBy('protest2.created', 'DESC')
+    return $builder->limit($limit, $offset)
+                   ->orderBy('protest.orderid', 'DESC')  // Order by orderid
                    ->get()
                    ->getResult();
-
-    // Process each result to handle empty item names and location extraction
-    foreach ($result as $row) {
-        // Handle case where no items exist for this invoice
-        if (empty($row->item_name) || is_null($row->item_name)) {
-            $row->item_name = 'No items';
-        }
-
-        // Extract location from address
-        if (!empty($row->c_add)) {
-            $addressParts = explode(',', $row->c_add);
-            $row->location = trim(end($addressParts));
-        } else {
-            $row->location = 'No address';
-        }
-    }
-
-    return $result;
 }
 
 
 public function countAllInvoices($startyear = null, $endyear = null, $client = null, $product = null)
 {
     $builder = $this->db->table('protest2')
-                        ->join('client', 'protest2.cid = client.cid', 'left');
+                        ->join('client', 'protest2.cid = client.cid')
+                        ->join('protest', 'protest2.orderid = protest.orderid', 'left');
 
-    // Apply date range filters only if year is specified
+    // Apply date range filters
     if ($startyear && $endyear) {
         $builder->where('protest2.created >=', "$startyear-04-01")
                 ->where('protest2.created <=', "$endyear-03-31");
+    } else {
+        // Set default financial year range
+        $currentYear = date('Y');
+        $currentMonth = date('m');
+
+        if ($currentMonth > 3) {
+            $defaultStartYear = $currentYear;
+            $defaultEndYear = $currentYear + 1;
+        } else {
+            $defaultStartYear = $currentYear - 1;
+            $defaultEndYear = $currentYear;
+        }
+
+        $builder->where('protest2.created >=', "$defaultStartYear-04-01")
+                ->where('protest2.created <=', "$defaultEndYear-03-31");
     }
 
     // Apply client filter
     if ($client) {
-        $builder->where('protest2.cid', $client);
+        $builder->where('client.cid', $client);
     }
 
-    // Apply product filter using EXISTS subquery
+    // Apply product filter
     if ($product) {
-        $builder->where("EXISTS (SELECT 1 FROM protest WHERE protest.orderid = protest2.orderid AND protest.item_name = '$product')");
+        $builder->where('protest.item_name', $product);
     }
+
+    // Group by orderid and cid to count unique records
+    $builder->groupBy('protest2.orderid, protest2.cid');
 
     // Return the count of unique rows
-    return $builder->countAllResults();
+    return count($builder->get()->getResult());
 }
 
 

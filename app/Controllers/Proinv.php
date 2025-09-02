@@ -646,9 +646,9 @@ public function showprodata()
     
     // Only apply year filtering if a specific year is selected
     if ($selectedYear !== null && $selectedYear !== '') {
-        // Fix: Correct substring extraction for financial year format "XX-YY"
-        $startyear = substr($selectedYear, 0, 2);  // Get first 2 characters
-        $endyear = substr($selectedYear, 3, 2);   // Get last 2 characters (skip the dash)
+        // Fix: Correct substring extraction for financial year format "XXXX-YYYY"
+        $startyear = substr($selectedYear, 0, 4);  // Get first 4 characters
+        $endyear = substr($selectedYear, 5, 4);   // Get last 4 characters (skip the dash)
     }
     // If no year is selected, don't apply any year filtering (show all records)
 
@@ -777,25 +777,16 @@ public function insert() {
         $invid = $this->request->getPost('invid');
         $supplier = $this->request->getPost('supplier');
         $datepicker = $this->request->getPost('datepicker');
-        $notes = $this->request->getPost('notes');
         
-        // Convert date format from dd-mm-yyyy to yyyy-mm-dd
-        $dateParts = explode('-', $datepicker);
-        if (count($dateParts) === 3) {
-            $formattedDate = $dateParts[2] . '-' . $dateParts[1] . '-' . $dateParts[0];
-        } else {
-            return $this->response->setJSON([
-                'success' => false,
-                'message' => 'Invalid date format'
-            ]);
-        }
+        // Convert date format using working version approach
+        $date = new \DateTime($datepicker);
+        $formattedDate = $date->format('Y-m-d');
         
         // Get item arrays
         $itemNames = $this->request->getPost('item_name');
         $itemDescs = $this->request->getPost('item_desc');
-        $hsn = $this->request->getPost('hsn') ?: []; // HSN is optional, default to empty array
+        $hsn = $this->request->getPost('hsn');
         $quantities = $this->request->getPost('item_quantity');
-        $units = $this->request->getPost('unit');
         $prices = $this->request->getPost('price');
         $totals = $this->request->getPost('total');
         
@@ -805,33 +796,10 @@ public function insert() {
         $taxamount = $this->request->getPost('taxAmount');
         $totalaftertax = $this->request->getPost('totalAftertax');
         
-        // Get additional fields
-        $bank_id = $this->request->getPost('bank_id');
-        $validity_period = $this->request->getPost('validity_period');
-        $delivery_period = $this->request->getPost('delivery_period');
-        $payment_terms = $this->request->getPost('payment_terms');
-        
-        // Handle signature upload
-        $signature_path = null;
-        $signature = $this->request->getFile('signature');
-        if ($signature && $signature->isValid() && !$signature->hasMoved()) {
-            $newName = $signature->getRandomName();
-            $signature->move(ROOTPATH . 'public/uploads/signatures/', $newName);
-            $signature_path = 'public/uploads/signatures/' . $newName;
-        }
-        
         // Generate unique order ID
         $orderid = uniqid();
         
-        // Validate required fields
-        if (!$supplier || !$itemNames || empty(array_filter($itemNames))) {
-            return $this->response->setJSON([
-                'success' => false,
-                'message' => 'Please select a client and add at least one item'
-            ]);
-        }
-        
-        // Prepare item data
+        // Prepare item data using working version approach
         $insertData = [];
         if (!empty($itemNames) && is_array($itemNames)) {
             for ($i = 0; $i < count($itemNames); $i++) {
@@ -840,9 +808,8 @@ public function insert() {
                         'orderid' => $orderid,
                         'item_name' => $itemNames[$i],
                         'item_desc' => !empty($itemDescs[$i]) ? $itemDescs[$i] : null,
-                        'hsn' => (isset($hsn[$i]) && !empty($hsn[$i])) ? $hsn[$i] : (8443 + $i),
+                        'hsn' => !empty($hsn[$i]) ? $hsn[$i] : null,
                         'quantity' => !empty($quantities[$i]) ? $quantities[$i] : null,
-                        'unit' => !empty($units[$i]) ? $units[$i] : 'Kgs',
                         'price' => !empty($prices[$i]) ? $prices[$i] : null,
                         'total' => !empty($totals[$i]) ? $totals[$i] : null,
                     ];
@@ -850,68 +817,31 @@ public function insert() {
             }
         }
         
-        // Prepare main invoice data
-        $insertData2 = [
+        // Prepare main invoice data using working version approach
+        $insertData2 = [];
+        $insertData2[] = [
             'invid' => $invid,
             'cid' => $supplier,
             'orderid' => $orderid,
-            'totalitems' => count($insertData),
+            'totalitems' => count($itemNames),
             'subtotal' => $subtotal,
             'taxrate' => $taxrate,
             'taxamount' => $taxamount,
             'totalamount' => $totalaftertax,
-            'bank_id' => $bank_id,
-            'validity_period' => $validity_period,
-            'delivery_period' => $delivery_period,
-            'payment_terms' => $payment_terms,
-            'signature_path' => $signature_path,
-            'notes' => $notes,
-            'created' => $formattedDate
+            'created' => date('Y-m-d H:i:s'),
         ];
         
-        // Insert data
-        try {
-            // Log data being inserted for debugging
-            log_message('debug', 'Insert Data (Items): ' . json_encode($insertData));
-            log_message('debug', 'Insert Data2 (Main): ' . json_encode($insertData2));
-            
-            // First insert item details
-            $itemInsertResult = $this->crudModel->insertBatch($insertData);
-            if (!$itemInsertResult) {
-                $errors = $this->crudModel->errors();
-                log_message('error', 'Item insert failed: ' . json_encode($errors));
-                return $this->response->setJSON([
-                    'success' => false,
-                    'message' => 'Failed to save invoice items: ' . json_encode($errors),
-                ]);
-            }
-            
-            // Then insert main invoice data
-            $mainInsertResult = $this->crudModel4->insert($insertData2);
-            if (!$mainInsertResult) {
-                $errors = $this->crudModel4->errors();
-                log_message('error', 'Main invoice insert failed: ' . json_encode($errors));
-                return $this->response->setJSON([
-                    'success' => false,
-                    'message' => 'Failed to save main invoice data: ' . implode(', ', $errors),
-                ]);
-            }
-            
-            // Log success for debugging
-            log_message('debug', 'Invoice created successfully with orderid: ' . $orderid);
-            
+        // Insert data using working version approach
+        if ($this->crudModel->insertBatch($insertData) && $this->crudModel4->insertBatch($insertData2)) {
             return $this->response->setJSON([
                 'success' => true,
-                'message' => 'Proforma Invoice created successfully!',
+                'message' => 'Proforma Invoice Data Inserted!',
                 'orderid' => $orderid,
             ]);
-            
-        } catch (\Exception $e) {
-            log_message('error', 'Exception in invoice insert: ' . $e->getMessage());
-            log_message('error', 'Exception trace: ' . $e->getTraceAsString());
+        } else {
             return $this->response->setJSON([
                 'success' => false,
-                'message' => 'Database error: ' . $e->getMessage(),
+                'message' => 'Failed to insert data.',
             ]);
         }
     }
