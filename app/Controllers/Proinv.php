@@ -943,7 +943,12 @@ public function insert() {
             ]);
         }
     }
-}       
+    
+    return $this->response->setJSON([
+        'success' => false,
+        'message' => 'Invalid request method'
+    ]);
+}
     
 
 public function delete($id)

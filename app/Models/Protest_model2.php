@@ -112,11 +112,19 @@ public function getprotest($startyear = null, $endyear = null, $client = null, $
         $builder->where('protest2.orderid IN (SELECT orderid FROM protest WHERE item_name = ?)', $product);
     }
 
+    // Log the query for debugging
+    log_message('debug', 'getprotest query: ' . $builder->getCompiledSelect());
+
     // Apply limit and offset for pagination
-    return $builder->limit($limit, $offset)
+    $result = $builder->limit($limit, $offset)
                    ->orderBy('protest2.created', 'DESC')  // Order by creation date
                    ->get()
                    ->getResult();
+    
+    // Log the result for debugging
+    log_message('debug', 'getprotest result: ' . json_encode($result));
+    
+    return $result;
 }
 
 
