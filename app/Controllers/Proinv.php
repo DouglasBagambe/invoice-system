@@ -759,11 +759,6 @@ public function insert() {
         $prices = $this->request->getPost('price');
         $totals = $this->request->getPost('total');
         
-        // Debug: Log the received data
-        log_message('debug', 'Received item names: ' . json_encode($itemNames));
-        log_message('debug', 'Received quantities: ' . json_encode($quantities));
-        log_message('debug', 'Received prices: ' . json_encode($prices));
-        
         // Get totals
         $subtotal = $this->request->getPost('subTotal');
         $taxrate = $this->request->getPost('taxRate');
@@ -805,35 +800,8 @@ public function insert() {
             'created' => date('Y-m-d H:i:s'),
         ];
         
-        // Debug: Log the data being inserted
-        log_message('debug', 'Inserting into protest table: ' . json_encode($insertData));
-        log_message('debug', 'Inserting into protest2 table: ' . json_encode($insertData2));
-        
         // Insert data using working version approach
-        try {
-            $protestResult = $this->crudModel->insertBatch($insertData);
-            $protest2Result = $this->crudModel4->insertBatch($insertData2);
-            
-            // Debug: Log the results
-            log_message('debug', 'Protest insert result: ' . ($protestResult ? 'SUCCESS' : 'FAILED'));
-            log_message('debug', 'Protest2 insert result: ' . ($protest2Result ? 'SUCCESS' : 'FAILED'));
-            
-            // Log any database errors
-            if (!$protestResult) {
-                log_message('error', 'Protest insert error: ' . json_encode($this->crudModel->errors()));
-            }
-            if (!$protest2Result) {
-                log_message('error', 'Protest2 insert error: ' . json_encode($this->crudModel4->errors()));
-            }
-        } catch (\Exception $e) {
-            log_message('error', 'Database insert exception: ' . $e->getMessage());
-            return $this->response->setJSON([
-                'success' => false,
-                'message' => 'Database error: ' . $e->getMessage(),
-            ]);
-        }
-        
-        if ($protestResult && $protest2Result) {
+        if ($this->crudModel->insertBatch($insertData) && $this->crudModel4->insertBatch($insertData2)) {
             return $this->response->setJSON([
                 'success' => true,
                 'message' => 'Proforma Invoice Data Inserted!',
@@ -842,7 +810,7 @@ public function insert() {
         } else {
             return $this->response->setJSON([
                 'success' => false,
-                'message' => 'Failed to insert data. Protest: ' . ($protestResult ? 'OK' : 'FAILED') . ', Protest2: ' . ($protest2Result ? 'OK' : 'FAILED'),
+                'message' => 'Failed to insert data.',
             ]);
         }
     }

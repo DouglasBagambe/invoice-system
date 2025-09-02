@@ -797,43 +797,7 @@ $(document).ready(function() {
         $('#submitbtn').prop('disabled', true).val('Saving...');
         var formData = new FormData(this);
         
-        // DEBUG CODE - Check what's being submitted
-        console.log('=== DEBUGGING FORM DATA ===');
-        
-        // Debug: Log all form data
-        for (let pair of formData.entries()) {
-            console.log(pair[0], ':', pair[1]);
-        }
-        
-        // Debug: Specifically check item data
-        console.log('=== ITEM DATA ANALYSIS ===');
-        $('.datarow').each(function(index) {
-            var row = $(this);
-            var itemName = row.find('.item_name').val();
-            var itemDesc = row.find('.item_desc').val();
-            var quantity = row.find('.quantity').val();
-            var price = row.find('.price').val();
-            
-            console.log(`Row ${index + 1}:`, {
-                itemName: itemName,
-                itemDesc: itemDesc,
-                quantity: quantity,
-                price: price,
-                hasValue: !!itemName
-            });
-        });
-        
-        // Debug: Check what the select2 elements actually contain
-        console.log('=== SELECT2 DEBUG ===');
-        $('.item_name').each(function(index) {
-            var $select = $(this);
-            console.log(`Select2 ${index + 1}:`, {
-                id: $select.attr('id'),
-                value: $select.val(),
-                selectedOption: $select.find('option:selected').text(),
-                allOptions: $select.find('option').length
-            });
-        });
+
         
         $.ajax({
             url: $(this).attr('action'), 
@@ -843,7 +807,6 @@ $(document).ready(function() {
             processData: false,
             dataType: 'json',
             success: function(response) {
-                console.log('Response received:', response); // Debug log
                 if (response && response.success) {
                     alert('Proforma Invoice created successfully!');
                     if (response.orderid) { 
@@ -856,13 +819,6 @@ $(document).ready(function() {
                 }
             },
             error: function(xhr, status, error) { 
-                console.error('AJAX Error Details:');
-                console.error('Status:', status);
-                console.error('Error:', error);
-                console.error('Response Text:', xhr.responseText);
-                console.error('Response JSON:', xhr.responseJSON);
-                
-                // Try to parse the response as JSON
                 let errorMessage = 'An error occurred while saving';
                 try {
                     const response = JSON.parse(xhr.responseText);
@@ -870,12 +826,10 @@ $(document).ready(function() {
                         errorMessage = response.message;
                     }
                 } catch (e) {
-                    // If not JSON, use the response text or default message
                     if (xhr.responseText) {
                         errorMessage = xhr.responseText;
                     }
                 }
-                
                 alert('Error: ' + errorMessage); 
             },
             complete: function() { 
