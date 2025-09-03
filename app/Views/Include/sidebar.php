@@ -2,7 +2,7 @@
     <!-- sidebar: style can be found in sidebar.less -->
     <section class="sidebar">
       <!-- Sidebar user panel -->
-      <div class="user-panel" style="padding: 2px; padding-top: 10px;">
+      <!-- <div class="user-panel" style="padding: 2px; padding-top: 10px;">
         <div class="pull-left image">
           <img src="<?= safe_esc(safe_session_get('user_image', 'public/dist/img/uploads/default.png')); ?>" id="imagePreview5" style="height: 45px; width: 45px; " class="img-circle" alt="User Image">
         </div>
@@ -11,9 +11,9 @@
           
           <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
         </div>
-      </div>
+      </div> -->
       <!-- search form -->
-      <form action="#" method="get" class="sidebar-form">
+      <!-- <form action="#" method="get" class="sidebar-form">
         <div class="input-group">
           <input type="text" name="q" class="form-control" placeholder="Search...">
           <span class="input-group-btn">
@@ -21,7 +21,7 @@
                 </button>
               </span>
         </div>
-      </form>
+      </form> -->
       <!-- /.search form -->
       <!-- sidebar menu: : style can be found in sidebar.less -->
       <!-- <ul class="sidebar-menu" data-widget="tree">
@@ -74,7 +74,7 @@
 
 
 
-       <li class="treeview <?= set_active('/account/manageaccounts') || strpos(current_url(), base_url() . '/account/getledger/') !== false ? 'active' : '' ?>">
+       <!-- <li class="treeview <?= set_active('/account/manageaccounts') || strpos(current_url(), base_url() . '/account/getledger/') !== false ? 'active' : '' ?>">
     <a href="#">
         <i class="fa fa-fw fa-calculator"></i>
         <span>Accounts</span>
@@ -86,44 +86,44 @@
           <ul class="treeview-menu">
             <li class="<?= set_active('/account/manageaccounts');?>"><a href="<?=base_url()?>/account/manageaccounts"><i class="fa fa-fw fa-users"></i> Accounts</a></li>
             <li class="<?= set_active('/account/demo');?>" ><a href="<?=base_url()?>/account/demo"><i class="fa fa-fw fa-user-plus"></i> Add/View Account Type</a></li>
-            <!-- <li class="<?php //if ($current_page1=="Fixed Assets") {echo "active"; }?>"><a href="fd.php"><i class="glyphicon glyphicon-fire"></i>Fixed Assets</a></li> -->
+            <li class="<?php //if ($current_page1=="Fixed Assets") {echo "active"; }?>"><a href="fd.php"><i class="glyphicon glyphicon-fire"></i>Fixed Assets</a></li>
           </ul>
-        </li> 
+        </li>  -->
  
      
-        <li class="<?= set_active('/client/manageclients'); ?>">
+        <!-- <li class="<?= set_active('/client/manageclients'); ?>">
           <a href="<?=base_url('/client/manageclients'); ?>">
             <i class="fa fa-fw fa-shield"></i> <span>Manage Clients</span>
             <span class="pull-right-container">
               <small class="label pull-right bg-green">new</small>
             </span>
           </a>
-        </li>
+        </li> -->
 
 
-        <li class="<?= set_active('/product/manageproducts'); ?>">
+        <!-- <li class="<?= set_active('/product/manageproducts'); ?>">
           <a href="<?= base_url('/product/manageproducts'); ?>">
             <i class="fa fa-fw fa-gears"></i> <span>Products</span>
             <span class="pull-right-container">
               <small class="label pull-right bg-green">new</small>
             </span>
           </a>
-        </li>
+        </li> -->
 
 
-        <li class="<?= set_active('/supplier/managesupplier'); ?>">
+        <!-- <li class="<?= set_active('/supplier/managesupplier'); ?>">
           <a href="<?= base_url('/supplier/managesupplier'); ?>">
             <i class="fa fa-fw fa-qrcode"></i> <span>Suppliers</span>
             <span class="pull-right-container">
               <small class="label pull-right bg-green">new</small>
             </span>
           </a>
-        </li>
+        </li> -->
 
 
 
 
-         <li class="<?= set_active('purchaseinv/genpurchaseinv') ?>">
+         <!-- <li class="<?= set_active('purchaseinv/genpurchaseinv') ?>">
           <a href="<?=base_url('/purchaseinv/genpurchaseinv')?>">
             <i class="fa fa-fw fa-opencart"></i> <span> Add Purchase</span>
            
@@ -135,7 +135,7 @@
             <i class="fa fa-fw fa-list"></i> <span> Purchase List</span>
            
           </a>
-        </li>
+        </li> -->
 
 
        <!--  <li>
@@ -168,7 +168,7 @@
         </li>
 
  -->
-           <li class="<?= set_active('/quickquote/') ?>">
+           <!-- <li class="<?= set_active('/quickquote/') ?>">
           <a href="<?=base_url('/quickquote/')?>">
             <i class="fa fa-fw fa-opencart"></i><span> Quick Quotation</span>
            
@@ -196,7 +196,7 @@
             &nbsp;<i class="fa fa-whatsapp"></i><span>Whatsapp</span>
            
           </a>
-        </li>
+        </li> -->
 
         <!--  <li>
           <a href="email.php">
@@ -216,7 +216,7 @@
     </a>
     <ul class="treeview-menu" style="display: block;">
         <li class="<?= set_active('proinv/genproinv') ?>"><a href="<?= base_url('/proinv/genproinv') ?>"><i class="glyphicon glyphicon-floppy-saved"></i> Create Proforma Invoice </a></li>
-        <li class="<?= set_active('taxinv/gentaxinv') ?>"><a href="<?= base_url('/taxinv/gentaxinv') ?>"><i class="glyphicon glyphicon-barcode"></i> Gen. Tax Invoice</a></li>
+        <!-- <li class="<?= set_active('taxinv/gentaxinv') ?>"><a href="<?= base_url('/taxinv/gentaxinv') ?>"><i class="glyphicon glyphicon-barcode"></i> Gen. Tax Invoice</a></li> -->
     </ul>
 </li>
 
@@ -230,19 +230,19 @@
     </a>
     <ul class="treeview-menu">
         <li class="<?= set_active('proinv/showprodata') ?>"><a href="<?= base_url('/proinv/showprodata') ?>"><i class="glyphicon glyphicon-floppy-saved"></i> Proforma Invoice List</a></li>
-        <li class="<?= set_active('taxinv/showtaxdata') ?>"><a href="<?= base_url('/taxinv/showtaxdata') ?>"><i class="glyphicon glyphicon-barcode"></i> Tax Invoice List</a></li>
+        <!-- <li class="<?= set_active('taxinv/showtaxdata') ?>"><a href="<?= base_url('/taxinv/showtaxdata') ?>"><i class="glyphicon glyphicon-barcode"></i> Tax Invoice List</a></li> -->
     </ul>
 </li>
 
- <li class="<?= set_active('transaction/managetransaction'); ?>">
+ <!-- <li class="<?= set_active('transaction/managetransaction'); ?>">
           <a href="<?=base_url()?>/transaction/managetransaction">
             <i class="fa fa-fw fa-rupee"></i> <span>Transaction </span>
             
           </a>
-        </li>
+        </li> -->
 
        <!-- Sales Report Section -->
-      <li class="treeview <?= set_active('quickquote/quickquotereport')|| set_active('quote/quoteitemreport') || set_active('quote/quotereport') ? 'active' : '' ?>">
+      <!-- <li class="treeview <?= set_active('quickquote/quickquotereport')|| set_active('quote/quoteitemreport') || set_active('quote/quotereport') ? 'active' : '' ?>">
           <a href="#">
               <i class="fa fa-fw fa-download"></i>
               <span> Quotation Report</span>
@@ -273,12 +273,12 @@
               <li class="<?= set_active('proinv/proitemreport') ?>"><a href="<?= base_url('/proinv/proitemreport') ?>"><i class="fa fa-fw fa-gears"></i> Proforma Item Report</a></li>
               <li class="<?= set_active('proinv/proreport') ?>"><a href="<?= base_url('/proinv/proreport') ?>"><i class="fa fa-fw fa-line-chart"></i> Proforma Report</a></li>
           </ul>
-      </li>
+      </li> -->
    
 
 
       <!-- Purchase Report Section -->
-      <li class="treeview <?= set_active('purchaseinv/purchaseitemreport') || set_active('purchaseinv/purchasereport') ? 'active' : '' ?>">
+      <!-- <li class="treeview <?= set_active('purchaseinv/purchaseitemreport') || set_active('purchaseinv/purchasereport') ? 'active' : '' ?>">
           <a href="#">
               <i class="fa fa-fw fa-download"></i>
               <span> Purchase Report</span>
@@ -290,10 +290,10 @@
               <li class="<?= set_active('purchaseinv/purchaseitemreport') ?>"><a href="<?= base_url('/purchaseinv/purchaseitemreport') ?>"><i class="fa fa-fw fa-gears"></i> Purchase Item Report</a></li>
               <li class="<?= set_active('purchaseinv/purchasereport') ?>"><a href="<?= base_url('/purchaseinv/purchasereport') ?>"><i class="fa fa-fw fa-opencart"></i> Purchase Report</a></li>
           </ul>
-      </li>
+      </li> -->
 
       <!-- Sales Report Section -->
-      <li class="treeview <?= set_active('taxinv/saleitemreport') || set_active('taxinv/salereport') ? 'active' : '' ?>">
+      <!-- <li class="treeview <?= set_active('taxinv/saleitemreport') || set_active('taxinv/salereport') ? 'active' : '' ?>">
           <a href="#">
               <i class="fa fa-fw fa-download"></i>
               <span> Sales Report</span>
@@ -305,7 +305,7 @@
               <li class="<?= set_active('taxinv/saleitemreport') ?>"><a href="<?= base_url('/taxinv/saleitemreport') ?>"><i class="fa fa-fw fa-gears"></i> Sale Item Report</a></li>
               <li class="<?= set_active('taxinv/salereport') ?>"><a href="<?= base_url('/taxinv/salereport') ?>"><i class="fa fa-fw fa-line-chart"></i> Sales Report</a></li>
           </ul>
-      </li>
+      </li> -->
 
 
   

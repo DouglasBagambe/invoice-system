@@ -278,13 +278,13 @@ page {
 }
 
 .summary-table .note-cell {
-  width: 60%;
+  width: 51%;
   vertical-align: top;
   border-right: 1px solid #000 !important;
 }
 
 .summary-table .totals-cell {
-  width: 40%;
+  width: 49%;
   padding: 0;
   border-left: none;
 }
@@ -312,13 +312,13 @@ page {
 
 .total-label {
   text-align: right;
-  width: 50%;
+  width: 83%;
   border-right: 1px solid #000 !important;
 }
 
 .total-amount {
   text-align: right;
-  width: 50%;
+  width: 17%;
 }
 
 .total-row:last-child .total-label,
