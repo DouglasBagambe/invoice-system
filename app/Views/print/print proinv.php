@@ -312,13 +312,13 @@ page {
 
 .total-label {
   text-align: right;
-  width: 65.3%;
+  width: 65.4%;
   border-right: 1px solid #000 !important;
 }
 
 .total-amount {
   text-align: right;
-  width: 34.7%;
+  width: 34.6%;
 }
 
 .total-row:last-child .total-label,
