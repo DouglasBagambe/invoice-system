@@ -84,9 +84,14 @@ class Proinv extends Controller
     $bankModel = new \App\Models\Bank_model();
     $banks = $bankModel->findAll();
     
+    // Load user signatures for dropdown
+    $userSignatureModel = new \App\Models\User_signature_model();
+    $userSignatures = $userSignatureModel->getUserSignatures($session->get('user_id'));
+    
     return view('layout/genproinv',[
         'invoice_id' => $value,
-        'banks' => $banks
+        'banks' => $banks,
+        'userSignatures' => $userSignatures
     ]);      
     //return view('layout/genpurchaseinvoice.php');
 }
@@ -323,6 +328,77 @@ public function savebank()
                 return $this->response->setJSON([
                     'success' => false,
                     'message' => 'Failed to save bank details: ' . implode(', ', $errors)
+                ]);
+            }
+        } catch (\Exception $e) {
+            return $this->response->setJSON([
+                'success' => false,
+                'message' => 'Database error: ' . $e->getMessage()
+            ]);
+        }
+    }
+    
+    return $this->response->setJSON([
+        'success' => false,
+        'message' => 'Invalid request method'
+    ]);
+}
+
+public function savesignature()
+{
+    if ($this->request->getMethod() === 'post' || $this->request->isAJAX()) {
+        $userSignatureModel = new \App\Models\User_signature_model();
+        $session = session();
+        
+        // Get form data
+        $signatureName = $this->request->getPost('signature_name');
+        $signatureFile = $this->request->getFile('signature_file');
+        $setAsDefault = $this->request->getPost('set_as_default');
+        
+        // Validate required fields
+        if (!$signatureName || !$signatureFile || !$signatureFile->isValid()) {
+            return $this->response->setJSON([
+                'success' => false,
+                'message' => 'Signature name and file are required'
+            ]);
+        }
+        
+        try {
+            // Create uploads directory if it doesn't exist
+            $uploadPath = ROOTPATH . 'public/uploads/signatures/';
+            if (!is_dir($uploadPath)) {
+                mkdir($uploadPath, 0755, true);
+            }
+            
+            $newName = time() . '_' . uniqid() . '.' . $signatureFile->getExtension();
+            $signatureFile->move($uploadPath, $newName);
+            $signaturePath = 'public/uploads/signatures/' . $newName;
+            
+            // If setting as default, unset other defaults first
+            if ($setAsDefault) {
+                $userSignatureModel->where('user_id', $session->get('user_id'))
+                                 ->set('is_default', 0)
+                                 ->update();
+            }
+            
+            $data = [
+                'user_id' => $session->get('user_id'),
+                'signature_name' => $signatureName,
+                'signature_path' => $signaturePath,
+                'is_default' => $setAsDefault ? 1 : 0
+            ];
+            
+            if ($userSignatureModel->addSignature($data)) {
+                $insertId = $userSignatureModel->getInsertID();
+                return $this->response->setJSON([
+                    'success' => true,
+                    'message' => 'Signature saved successfully',
+                    'signature_id' => $insertId
+                ]);
+            } else {
+                return $this->response->setJSON([
+                    'success' => false,
+                    'message' => 'Failed to save signature'
                 ]);
             }
         } catch (\Exception $e) {
@@ -757,11 +833,13 @@ public function insert() {
         $hsn = $this->request->getPost('hsn');
         $quantities = $this->request->getPost('item_quantity');
         $prices = $this->request->getPost('price');
+        $vatRates = $this->request->getPost('vat_rate');
+        $vatTypes = $this->request->getPost('vat_type');
+        $vatStatuses = $this->request->getPost('vat_status');
         $totals = $this->request->getPost('total');
         
         // Get totals
         $subtotal = $this->request->getPost('subTotal');
-        $taxrate = $this->request->getPost('taxRate');
         $taxamount = $this->request->getPost('taxAmount');
         $totalaftertax = $this->request->getPost('totalAftertax');
         
@@ -770,20 +848,16 @@ public function insert() {
         $validity_period = $this->request->getPost('validity_period');
         $delivery_period = $this->request->getPost('delivery_period');
         $payment_terms = $this->request->getPost('payment_terms');
+        $signature_id = $this->request->getPost('signature_id');
         
-        // Handle signature file upload
+        // Handle signature - get from database if signature_id is provided
         $signature_path = null;
-        $signatureFile = $this->request->getFile('signature');
-        if ($signatureFile && $signatureFile->isValid() && !$signatureFile->hasMoved()) {
-            // Create uploads directory if it doesn't exist
-            $uploadPath = ROOTPATH . 'public/uploads/signatures/';
-            if (!is_dir($uploadPath)) {
-                mkdir($uploadPath, 0755, true);
+        if ($signature_id) {
+            $userSignatureModel = new \App\Models\User_signature_model();
+            $signature = $userSignatureModel->find($signature_id);
+            if ($signature) {
+                $signature_path = $signature['signature_path'];
             }
-            
-            $newName = time() . '_' . uniqid() . '.' . $signatureFile->getExtension();
-            $signatureFile->move($uploadPath, $newName);
-            $signature_path = 'public/uploads/signatures/' . $newName;
         }
         
         // Generate unique order ID
@@ -794,13 +868,37 @@ public function insert() {
         if (!empty($itemNames) && is_array($itemNames)) {
             for ($i = 0; $i < count($itemNames); $i++) {
                 if (!empty($itemNames[$i])) {
+                    // Calculate VAT amount for this item
+                    $quantity = !empty($quantities[$i]) ? $quantities[$i] : 0;
+                    $price = !empty($prices[$i]) ? $prices[$i] : 0;
+                    $vatRate = !empty($vatRates[$i]) ? $vatRates[$i] : 0;
+                    $vatType = !empty($vatTypes[$i]) ? $vatTypes[$i] : 'exclusive';
+                    $vatStatus = !empty($vatStatuses[$i]) ? $vatStatuses[$i] : 'taxable';
+                    
+                    $subtotal = $quantity * $price;
+                    $vatAmount = 0;
+                    
+                    if ($vatStatus === 'taxable' && $vatRate > 0) {
+                        if ($vatType === 'exclusive') {
+                            $vatAmount = ($subtotal * $vatRate) / 100;
+                        } else {
+                            // VAT inclusive - extract VAT from total
+                            $total = $subtotal;
+                            $vatAmount = $total - ($total / (1 + ($vatRate / 100)));
+                        }
+                    }
+                    
                     $insertData[] = [
                         'orderid' => $orderid,
                         'item_name' => $itemNames[$i],
                         'item_desc' => !empty($itemDescs[$i]) ? $itemDescs[$i] : null,
                         'hsn' => !empty($hsn[$i]) ? $hsn[$i] : 8443, // Default HSN if not provided
-                        'quantity' => !empty($quantities[$i]) ? $quantities[$i] : null,
-                        'price' => !empty($prices[$i]) ? $prices[$i] : null,
+                        'quantity' => $quantity,
+                        'price' => $price,
+                        'vat_rate' => $vatRate,
+                        'vat_type' => $vatType,
+                        'vat_status' => $vatStatus,
+                        'vat_amount' => $vatAmount,
                         'total' => !empty($totals[$i]) ? $totals[$i] : null,
                     ];
                 }
@@ -815,7 +913,7 @@ public function insert() {
             'orderid' => $orderid,
             'totalitems' => count($itemNames),
             'subtotal' => $subtotal,
-            'taxrate' => $taxrate,
+            'taxrate' => 0, // Not used anymore with per-item VAT
             'taxamount' => $taxamount,
             'totalamount' => $totalaftertax,
             'created' => date('Y-m-d H:i:s'),

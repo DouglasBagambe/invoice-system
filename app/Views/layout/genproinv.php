@@ -50,13 +50,16 @@
     /* Column widths */
     .col-check { width: 40px; }
     .col-item-no { width: 60px; }
-    .col-item-name { width: 200px; }
-    .col-desc { width: 150px; }
-    .col-qty { width: 60px; }
-    .col-unit { width: 80px; }
-    .col-price { width: 100px; }
-    .col-total { width: 100px; }
-    .col-action { width: 60px; }
+    .col-item-name { width: 180px; }
+    .col-desc { width: 120px; }
+    .col-qty { width: 50px; }
+    .col-unit { width: 60px; }
+    .col-price { width: 80px; }
+    .col-vat { width: 60px; }
+    .col-vat-type { width: 80px; }
+    .col-vat-status { width: 80px; }
+    .col-total { width: 80px; }
+    .col-action { width: 50px; }
     
     .bank-form, .item-form { 
       background: #ffffff; 
@@ -247,6 +250,9 @@
                         <th class="col-qty">Qty <span style="color: red;">*</span></th>
                         <th class="col-unit">Unit</th>
                         <th class="col-price">Price <span style="color: red;">*</span></th>
+                        <th class="col-vat">VAT %</th>
+                        <th class="col-vat-type">VAT Type</th>
+                        <th class="col-vat-status">VAT Status</th>
                         <th class="col-total">Total <span style="color: red;">*</span></th>
                         <th class="col-action">
                           <button type="button" name="add" class="btn btn-success btn-sm add">
@@ -275,6 +281,19 @@
                         <td><input type="number" name="item_quantity[]" id="quantity_1" min="1" value="1" class="form-control quantity"></td>
                         <td><input type="text" name="unit[]" id="unit_1" value="Kgs" class="form-control unit" placeholder="Kgs"></td>
                         <td><input type="number" name="price[]" id="price_1" class="form-control price"></td>
+                        <td><input type="number" name="vat_rate[]" id="vat_rate_1" value="18" class="form-control vat_rate" min="0" max="100"></td>
+                        <td>
+                          <select name="vat_type[]" id="vat_type_1" class="form-control vat_type">
+                            <option value="exclusive">Exclusive</option>
+                            <option value="inclusive">Inclusive</option>
+                          </select>
+                        </td>
+                        <td>
+                          <select name="vat_status[]" id="vat_status_1" class="form-control vat_status">
+                            <option value="taxable">Taxable</option>
+                            <option value="exempt">Exempt</option>
+                          </select>
+                        </td>
                         <td><input type="number" name="total[]" id="total_1" class="form-control total" readonly></td>
                         <td>
                           <button type="button" name="remove" class="btn btn-danger btn-sm remove">
@@ -357,6 +376,34 @@
                 </div>
               </div>
 
+              <!-- New Signature Form -->
+              <div id="signatureDetailsForm" class="bank-form">
+                <h4>Add New Signature</h4>
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label>Signature Name <span style="color: red;">*</span></label>
+                      <input type="text" name="new_signature_name" id="new_signature_name" class="form-control" placeholder="e.g., Main Signature">
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label>Upload Signature <span style="color: red;">*</span></label>
+                      <input type="file" name="new_signature_file" id="new_signature_file" class="form-control" accept="image/*">
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label>
+                    <input type="checkbox" name="set_as_default" id="set_as_default"> Set as Default Signature
+                  </label>
+                </div>
+                <div class="form-group">
+                  <button type="button" id="saveSignatureDetails" class="btn btn-primary">Save Signature</button>
+                  <button type="button" id="cancelSignatureForm" class="btn btn-default">Cancel</button>
+                </div>
+              </div>
+
               <!-- Invoice Summary -->
               <div class="invoice-summary">
                 <h4 style="margin-top: 0; margin-bottom: 20px;">Invoice Summary</h4>
@@ -370,30 +417,14 @@
                     </div>
                   </div>
                   <div class="col-md-3 summary-col">
-                    <label>Tax Rate <span style="color: red;">*</span></label>
-                    <div class="input-group">
-                      <input value="18" type="number" class="form-control" name="taxRate" id="taxRate">
-                      <div class="input-group-addon">%</div>
-                    </div>
-                    <div style="margin-top: 8px;">
-                      <label class="radio-inline" style="margin-right: 15px;">
-                        <input type="radio" name="vatType" id="vatExclusive" value="exclusive" checked> 
-                        <small>VAT Exclusive</small>
-                      </label>
-                      <label class="radio-inline">
-                        <input type="radio" name="vatType" id="vatInclusive" value="inclusive"> 
-                        <small>VAT Inclusive</small>
-                      </label>
-                    </div>
-                    <div id="taxrate_error" style="color: red;"></div>
-                  </div>
-                  <div class="col-md-3 summary-col">
-                    <label>Tax Amount <span style="color: red;">*</span></label>
+                    <label>Total VAT Amount</label>
                     <div class="input-group">
                       <div class="input-group-addon">USH</div>
                       <input value="" type="number" class="form-control" name="taxAmount" id="taxAmount" readonly>
                     </div>
+                    <small class="help-block">Calculated automatically from individual items</small>
                   </div>
+
                   <div class="col-md-3 summary-col">
                     <label>Total <span style="color: red;">*</span></label>
                     <div class="input-group">
@@ -420,9 +451,21 @@
                     <div id="bank_error" style="color: red;"></div>
                   </div>
                   <div class="col-md-6 summary-col">
-                    <label>Upload Signature</label>
-                    <input type="file" name="signature" id="signature" class="form-control" accept="image/*">
-                    <small class="help-block">Upload signature (JPG, PNG)</small>
+                    <label>Select Signature</label>
+                    <select name="signature_id" id="signature_id" class="form-control select2">
+                      <option value="">Select Signature</option>
+                      <?php if(isset($userSignatures) && !empty($userSignatures)): ?>
+                        <?php foreach ($userSignatures as $signature): ?>
+                          <option value="<?= $signature['id'] ?>" <?= $signature['is_default'] ? 'selected' : '' ?>>
+                            <?= $signature['signature_name'] ?>
+                          </option>
+                        <?php endforeach; ?>
+                      <?php endif; ?>
+                    </select>
+                    <button type="button" id="addNewSignature" class="btn btn-info btn-sm" style="margin-top: 5px;">
+                      <i class="fa fa-plus"></i> Add New Signature
+                    </button>
+                    <div id="signature_error" style="color: red;"></div>
                   </div>
                 </div>
 
@@ -547,6 +590,17 @@ $(document).ready(function() {
         $('#bankDetailsForm').slideUp(300); 
         $('#bank_id').prop('disabled', false); 
         clearBankForm(); 
+    });
+    
+    // Signature form toggles
+    $('#addNewSignature').click(function() { 
+        $('#signatureDetailsForm').slideDown(300); 
+        $('#signature_id').prop('disabled', true); 
+    });
+    $('#cancelSignatureForm').click(function() { 
+        $('#signatureDetailsForm').slideUp(300); 
+        $('#signature_id').prop('disabled', false); 
+        clearSignatureForm(); 
     });
     
     // Add New Item form handlers
@@ -688,8 +742,75 @@ $(document).ready(function() {
         });
     });
     
+    $('#saveSignatureDetails').click(function() {
+        var signatureName = $('#new_signature_name').val().trim();
+        var signatureFile = $('#new_signature_file')[0].files[0];
+        var setAsDefault = $('#set_as_default').is(':checked');
+        
+        // Clear previous errors
+        $('.bank-form .error').removeClass('error');
+        $('.bank-form [id$="_error"]').text('');
+        
+        // Validation
+        if (!signatureName) { 
+            $('#new_signature_name').addClass('error'); 
+            alert('Signature name is required');
+            return; 
+        }
+        if (!signatureFile) { 
+            $('#new_signature_file').addClass('error'); 
+            alert('Please select a signature file');
+            return; 
+        }
+        
+        // Disable button to prevent double clicks
+        $(this).prop('disabled', true).html('<i class="fa fa-spinner fa-spin"></i> Saving...');
+        
+        var formData = new FormData();
+        formData.append('signature_name', signatureName);
+        formData.append('signature_file', signatureFile);
+        formData.append('set_as_default', setAsDefault ? 1 : 0);
+        
+        $.ajax({
+            url: base_url + '/proinv/savesignature',
+            method: 'POST',
+            dataType: 'json',
+            data: formData,
+            contentType: false,
+            processData: false,
+            success: function(response) {
+                if (response && response.success) {
+                    // Add new option to signature dropdown
+                    var newOption = new Option(signatureName, response.signature_id, true, true);
+                    $('#signature_id').append(newOption).trigger('change');
+                    
+                    // Close form and reset
+                    $('#signatureDetailsForm').slideUp(300);
+                    $('#signature_id').prop('disabled', false);
+                    clearSignatureForm();
+                    
+                    alert('Signature saved successfully!');
+                } else {
+                    alert('Failed to save signature: ' + (response.message || 'Unknown error'));
+                }
+            },
+            error: function(xhr, status, error) {
+                alert('Error saving signature: ' + error);
+            },
+            complete: function() {
+                // Re-enable button
+                $('#saveSignatureDetails').prop('disabled', false).html('Save Signature');
+            }
+        });
+    });
+    
     function clearBankForm() { 
         $('#new_bank_name, #new_account_number, #new_bank_code, #new_account_name').val(''); 
+    }
+    
+    function clearSignatureForm() { 
+        $('#new_signature_name, #new_signature_file').val(''); 
+        $('#set_as_default').prop('checked', false);
     }
     
     function clearItemForm() { 
@@ -713,6 +834,9 @@ $(document).ready(function() {
         html += '<td><input type="number" name="item_quantity[]" id="quantity_' + rowCount + '" min="1" value="1" class="form-control quantity"></td>';
         html += '<td><input type="text" name="unit[]" id="unit_' + rowCount + '" value="Kgs" class="form-control unit"></td>';
         html += '<td><input type="number" name="price[]" id="price_' + rowCount + '" class="form-control price"></td>';
+        html += '<td><input type="number" name="vat_rate[]" id="vat_rate_' + rowCount + '" value="18" class="form-control vat_rate" min="0" max="100"></td>';
+        html += '<td><select name="vat_type[]" id="vat_type_' + rowCount + '" class="form-control vat_type"><option value="exclusive">Exclusive</option><option value="inclusive">Inclusive</option></select></td>';
+        html += '<td><select name="vat_status[]" id="vat_status_' + rowCount + '" class="form-control vat_status"><option value="taxable">Taxable</option><option value="exempt">Exempt</option></select></td>';
         html += '<td><input type="number" name="total[]" id="total_' + rowCount + '" class="form-control total" readonly></td>';
         html += '<td><button type="button" name="remove" class="btn btn-danger btn-sm remove"><span class="glyphicon glyphicon-minus"></span></button></td>';
         html += '</tr>';
@@ -721,42 +845,77 @@ $(document).ready(function() {
     });
     
     $(document).on('click', '.remove', function() { $(this).closest('tr').remove(); calculateTotals(); });
-    $(document).on('input', '.quantity, .price', function() {
-        var row = $(this).closest('tr');
-        var quantity = parseInt(row.find('.quantity').val()) || 0;
-        var price = parseInt(row.find('.price').val()) || 0;
-        var total = quantity * price;
-        row.find('.total').val(total);
+    $(document).on('input', '.quantity, .price, .vat_rate', function() {
+        calculateRowTotal($(this).closest('tr'));
         calculateTotals();
     });
     
-    $(document).on('input', '#taxRate', function() { calculateTotals(); });
-    $(document).on('change', 'input[name="vatType"]', function() { calculateTotals(); });
+    $(document).on('change', '.vat_type, .vat_status', function() {
+        calculateRowTotal($(this).closest('tr'));
+        calculateTotals();
+    });
     
-    function calculateTotals() {
-        var itemsTotal = 0;
-        $('.total').each(function() { var value = parseInt($(this).val()) || 0; itemsTotal += value; });
+    function calculateRowTotal(row) {
+        var quantity = parseFloat(row.find('.quantity').val()) || 0;
+        var price = parseFloat(row.find('.price').val()) || 0;
+        var vatRate = parseFloat(row.find('.vat_rate').val()) || 0;
+        var vatType = row.find('.vat_type').val();
+        var vatStatus = row.find('.vat_status').val();
         
-        var taxRate = parseFloat($('#taxRate').val()) || 0;
-        var vatType = $('input[name="vatType"]:checked').val();
+        var subtotal = quantity * price;
+        var vatAmount = 0;
+        var total = subtotal;
         
-        var subtotal, taxAmount, totalAfterTax;
-        
-        if (vatType === 'inclusive') {
-            // VAT Inclusive: Items total includes VAT, need to extract subtotal
-            totalAfterTax = itemsTotal;
-            subtotal = Math.round(itemsTotal / (1 + (taxRate / 100)));
-            taxAmount = totalAfterTax - subtotal;
-        } else {
-            // VAT Exclusive: Items total is subtotal, add VAT on top
-            subtotal = itemsTotal;
-            taxAmount = Math.round((subtotal * taxRate) / 100);
-            totalAfterTax = subtotal + taxAmount;
+        if (vatStatus === 'taxable' && vatRate > 0) {
+            if (vatType === 'exclusive') {
+                vatAmount = (subtotal * vatRate) / 100;
+                total = subtotal + vatAmount;
+            } else {
+                // VAT inclusive - extract VAT from total
+                total = subtotal;
+                vatAmount = total - (total / (1 + (vatRate / 100)));
+            }
         }
         
-        $('#subTotal').val(subtotal);
-        $('#taxAmount').val(taxAmount);
-        $('#totalAftertax').val(totalAfterTax);
+        row.find('.total').val(total.toFixed(2));
+    }
+    
+    function calculateTotals() {
+        var totalSubtotal = 0;
+        var totalVatAmount = 0;
+        var totalAmount = 0;
+        
+        $('.datarow').each(function() {
+            var row = $(this);
+            var quantity = parseFloat(row.find('.quantity').val()) || 0;
+            var price = parseFloat(row.find('.price').val()) || 0;
+            var vatRate = parseFloat(row.find('.vat_rate').val()) || 0;
+            var vatType = row.find('.vat_type').val();
+            var vatStatus = row.find('.vat_status').val();
+            
+            var rowSubtotal = quantity * price;
+            var rowVatAmount = 0;
+            var rowTotal = rowSubtotal;
+            
+            if (vatStatus === 'taxable' && vatRate > 0) {
+                if (vatType === 'exclusive') {
+                    rowVatAmount = (rowSubtotal * vatRate) / 100;
+                    rowTotal = rowSubtotal + rowVatAmount;
+                } else {
+                    // VAT inclusive - extract VAT from total
+                    rowTotal = rowSubtotal;
+                    rowVatAmount = rowTotal - (rowTotal / (1 + (vatRate / 100)));
+                }
+            }
+            
+            totalSubtotal += rowSubtotal;
+            totalVatAmount += rowVatAmount;
+            totalAmount += rowTotal;
+        });
+        
+        $('#subTotal').val(totalSubtotal.toFixed(2));
+        $('#taxAmount').val(totalVatAmount.toFixed(2));
+        $('#totalAftertax').val(totalAmount.toFixed(2));
     }
     
     // Form submission
@@ -785,6 +944,7 @@ $(document).ready(function() {
         });
         
         if (!$('#bank_id').val() && !$('#new_bank_name').val()) { $('#bank_error').text('Please select a bank'); isValid = false; }
+        if (!$('#signature_id').val() && !$('#new_signature_name').val()) { $('#signature_error').text('Please select a signature'); isValid = false; }
         
         if (!isValid) { $('#main-error-message').text('Please correct the errors and try again.'); return; }
         

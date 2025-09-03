@@ -11,7 +11,7 @@ class Admin_model extends Model
 
     
 
-    protected $allowedFields = ['username', 'password','name','email','qualification','location','skills','c_name','c_add','profession','mob','gst','pan','picture','picturelogo']; // Specify allowed fields
+    protected $allowedFields = ['username', 'password','name','email','qualification','location','skills','c_name','c_add','profession','mob','gst','pan','picture','picturelogo','default_signature']; // Specify allowed fields
 
     // Optionally, you can define validation rules
     // protected $validationRules = [
