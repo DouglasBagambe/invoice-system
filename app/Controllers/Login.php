@@ -152,9 +152,43 @@ public function userregister()
         // Insert new user
         $result = $adminModel->insert($userData);
         
+        // Debug: Log the result
+        // log_message('debug', 'Registration insert result: ' . ($result ? 'SUCCESS' : 'FAILED'));
+        
         if ($result) {
             // Get the newly created user
             $newUser = $adminModel->where('email', $email)->first();
+            
+            // Handle signature upload if provided
+            $signatureFile = $this->request->getFile('signature');
+            if ($signatureFile && $signatureFile->isValid() && !$signatureFile->hasMoved()) {
+                try {
+                    // Create uploads directory if it doesn't exist
+                    $uploadPath = ROOTPATH . 'public/uploads/signatures/';
+                    if (!is_dir($uploadPath)) {
+                        mkdir($uploadPath, 0755, true);
+                    }
+                    
+                    $newName = time() . '_' . uniqid() . '.' . $signatureFile->getExtension();
+                    $signatureFile->move($uploadPath, $newName);
+                    $signaturePath = 'public/uploads/signatures/' . $newName;
+                    
+                    // Save signature to user_signatures table
+                    $userSignatureModel = new \App\Models\User_signature_model();
+                    $signatureData = [
+                        'user_id' => $newUser['id'],
+                        'signature_name' => 'Default Signature',
+                        'signature_path' => $signaturePath,
+                        'is_default' => 1
+                    ];
+                    $userSignatureModel->addSignature($signatureData);
+                    
+                    log_message('debug', 'Signature uploaded successfully for user: ' . $newUser['id']);
+                } catch (\Exception $e) {
+                    log_message('error', 'Signature upload failed: ' . $e->getMessage());
+                    // Don't fail registration if signature upload fails
+                }
+            }
             
             // Set session (auto-login after registration)
             $session = session();

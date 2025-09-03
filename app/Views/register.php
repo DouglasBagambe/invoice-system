@@ -46,6 +46,11 @@
 		margin-top: 10px;
 		text-align: center;
 	}
+	.help-block {
+		font-size: 12px;
+		color: #666;
+		margin-top: 5px;
+	}
 </style>
 </head>
 <body class="hold-transition register-page" align="center">
@@ -112,16 +117,15 @@
         <div id="confirmPasswordError" class="error-message"></div>
       </div>
 
-      <!-- Terms and Conditions -->
-      <div class="row">
-        <div class="col-xs-8">
-          <div class="checkbox icheck pull-left" style="margin-left: 50px;">
-            <label>
-              <input type="checkbox" id="terms" required> I agree to the <a href="#">terms</a>
-            </label>
-          </div>
+      <!-- Signature Field (Optional) -->
+      <div class="form-group">
+        <div class="input-group col-sm-10">
+                <span class="input-group-addon"><i class="fa fa-pencil"></i></span>
+                <input type="file" name="signature" id="signature" class="form-control col-sm-8" accept="image/*" placeholder="Upload Signature (Optional)">
         </div>
-    </div>
+        <div id="signatureError" class="error-message"></div>
+        <small class="help-block" style="margin-left: 32px; color: #666;">You can add your signature now or later from your profile</small>
+      </div>
         <!-- /.col -->
         <div class="box-footer" style="margin-right: 10px; ">
               <label class="col-sm-1"></label>
@@ -238,12 +242,6 @@
         isValid = validatePassword() && isValid;
         isValid = validateConfirmPassword() && isValid;
         
-        // Check terms agreement
-        if (!$('#terms').is(':checked')) {
-            alert('Please agree to the terms and conditions');
-            return false;
-        }
-        
         if (!isValid) {
             return false;
         }
@@ -253,6 +251,7 @@
         var lastName = $('#last_name').val();
         var password = $('#password').val();
         var confirmPassword = $('#confirm_password').val();
+        var signatureFile = $('#signature')[0].files[0];
 
         var formData = new FormData();
         formData.append('email', email);
@@ -260,6 +259,11 @@
         formData.append('last_name', lastName);
         formData.append('password', password);
         formData.append('confirm_password', confirmPassword);
+        
+        // Add signature file if provided
+        if (signatureFile) {
+            formData.append('signature', signatureFile);
+        }
 
         // Disable submit button to prevent double submission
         $('#submit').prop('disabled', true).val('Registering...');
