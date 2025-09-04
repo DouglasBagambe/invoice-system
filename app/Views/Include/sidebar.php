@@ -310,12 +310,12 @@
 
   
       
-          <li class="<?= set_active('profile/settings'); ?>">
+          <!-- <li class="<?= set_active('profile/settings'); ?>">
           <a href="<?= base_url()?>/profile/settings">
             <i class="fa fa-fw fa-gear" ></i> <span> Settings</span>
            
           </a>
-        </li>
+        </li> -->
 
         <li>
           <a href="<?= base_url()?>/login/logout">
