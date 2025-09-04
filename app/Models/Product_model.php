@@ -22,10 +22,11 @@ class Product_model extends Model
     
     public function saverecords(array $data)
     {
-
-        //echo "model".$this->insert($data);
-        $this->insert($data); // Insert data into the table
-        return $this->db->insertID();  
+        // Insert data into the table
+        if ($this->insert($data)) {
+            return $this->db->insertID();
+        }
+        return false;
     }
 
 public function set_auto_increment() {

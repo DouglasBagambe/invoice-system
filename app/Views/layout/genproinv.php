@@ -429,17 +429,18 @@
 
               <!-- New Client Form -->
               <div id="clientDetailsForm" class="bank-form">
-                <div class="clearfix">
-                  <h4 style="float: left;">
-                    <i class="fa fa-user-plus text-primary"></i> Add New Client
-                  </h4>
-                  <button type="button" id="cancelClientForm" class="btn btn-sm btn-default" style="float: right;">
-                    <i class="fa fa-times"></i>
-                  </button>
-                </div>
-                <div style="clear: both; margin-bottom: 15px;"></div>
-                
-                <div id="clientFormMessage" class="alert alert-success" style="display: none;"></div>
+                <form id="clientForm">
+                  <div class="clearfix">
+                    <h4 style="float: left;">
+                      <i class="fa fa-user-plus text-primary"></i> Add New Client
+                    </h4>
+                    <button type="button" id="cancelClientForm" class="btn btn-sm btn-default" style="float: right;">
+                      <i class="fa fa-times"></i>
+                    </button>
+                  </div>
+                  <div style="clear: both; margin-bottom: 15px;"></div>
+                  
+                  <div id="clientFormMessage" class="alert alert-success" style="display: none;"></div>
                 
                 <div class="row">
                   <div class="col-md-6">
@@ -499,14 +500,15 @@
                     </div>
                   </div>
                 </div>
-                <div class="form-group text-right">
-                  <button type="button" id="cancelClientForm2" class="btn btn-default">
-                    <i class="fa fa-times"></i> Cancel
-                  </button>
-                  <button type="button" id="saveClientDetails" class="btn btn-primary">
-                    <i class="fa fa-save"></i> Save Client
-                  </button>
-                </div>
+                  <div class="form-group text-right">
+                    <button type="button" id="cancelClientForm2" class="btn btn-default">
+                      <i class="fa fa-times"></i> Cancel
+                    </button>
+                    <button type="button" id="saveClientDetails" class="btn btn-primary">
+                      <i class="fa fa-save"></i> Save Client
+                    </button>
+                  </div>
+                </form>
               </div>
 
               <!-- New Signature Form -->
@@ -940,11 +942,22 @@ $(document).ready(function() {
         // Disable button to prevent double clicks
         $(this).prop('disabled', true).html('<i class="fa fa-spinner fa-spin"></i> Saving...');
         
+        // Debug: Log what we're sending
+        var formData = $('#clientForm').serialize();
+        console.log('Sending form data:', formData);
+        console.log('Individual values:', {
+            clientName: clientName,
+            clientAddress: clientAddress,
+            clientMobile: clientMobile,
+            clientType: clientType,
+            clientUserType: clientUserType
+        });
+        
         $.ajax({
             url: base_url + '/proinv/saveclient',
             method: 'POST',
             dataType: 'json',
-            data: $('#clientDetailsForm').serialize(),
+            data: formData,
             success: function(response) {
                 if (response && response.success) {
                     // Show success message
@@ -965,7 +978,11 @@ $(document).ready(function() {
                     }, 2000);
                     
                 } else { 
-                    alert('Failed to save client: ' + (response.message || 'Unknown error')); 
+                    let errorMsg = 'Failed to save client: ' + (response.message || 'Unknown error');
+                    if (response.debug_data) {
+                        errorMsg += '\n\nDebug info:\n' + JSON.stringify(response.debug_data, null, 2);
+                    }
+                    alert(errorMsg); 
                 }
             },
             error: function(xhr, status, error) { 

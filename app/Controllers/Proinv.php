@@ -349,6 +349,10 @@ public function saveclient()
     if ($this->request->getMethod() === 'post' || $this->request->isAJAX()) {
         $clientModel = new Client_model();
         
+        // Get all POST data for debugging
+        $allPostData = $this->request->getPost();
+        log_message('debug', 'All POST data received: ' . print_r($allPostData, true));
+        
         // Get form data
         $c_name = $this->request->getPost('c_name');
         $c_add = $this->request->getPost('c_add');
@@ -359,11 +363,22 @@ public function saveclient()
         $c_type = $this->request->getPost('c_type');
         $u_type = $this->request->getPost('u_type');
         
+        // Debug individual fields
+        log_message('debug', 'Individual fields - c_name: ' . $c_name . ', c_add: ' . $c_add . ', mob: ' . $mob . ', c_type: ' . $c_type . ', u_type: ' . $u_type);
+        
         // Validate required fields
         if (!$c_name || !$c_add || !$mob || !$c_type || !$u_type) {
             return $this->response->setJSON([
                 'success' => false,
-                'message' => 'Client name, address, mobile, client type, and user type are required'
+                'message' => 'Client name, address, mobile, client type, and user type are required',
+                'debug_data' => [
+                    'c_name' => $c_name,
+                    'c_add' => $c_add,
+                    'mob' => $mob,
+                    'c_type' => $c_type,
+                    'u_type' => $u_type,
+                    'all_post' => $allPostData
+                ]
             ]);
         }
         
@@ -718,16 +733,23 @@ public function saveitem()
     if ($this->request->getMethod() === 'post' || $this->request->isAJAX()) {
         $productModel = new Product_model();
         
+        // Get all POST data for debugging
+        $allPostData = $this->request->getPost();
+        log_message('debug', 'Item POST data received: ' . print_r($allPostData, true));
+        
         // Get form data
         $itemName = $this->request->getPost('item_name');
         $hsn = $this->request->getPost('hsn');
         $description = $this->request->getPost('description');
         
+        log_message('debug', 'Item data - name: ' . $itemName . ', hsn: ' . $hsn . ', description: ' . $description);
+        
         // Validate required fields
         if (!$itemName) {
             return $this->response->setJSON([
                 'success' => false,
-                'message' => 'Item name is required'
+                'message' => 'Item name is required',
+                'debug_data' => $allPostData
             ]);
         }
         
@@ -750,9 +772,12 @@ public function saveitem()
         ];
         
         try {
+            log_message('debug', 'Attempting to insert item data: ' . print_r($data, true));
+            
             // Insert the item
             if ($productModel->insert($data)) {
                 $insertId = $productModel->getInsertID();
+                log_message('debug', 'Item inserted successfully with ID: ' . $insertId);
                 
                 return $this->response->setJSON([
                     'success' => true,
@@ -760,12 +785,16 @@ public function saveitem()
                     'item_id' => $insertId
                 ]);
             } else {
+                $errors = $productModel->errors();
+                log_message('debug', 'Item insert failed. Errors: ' . print_r($errors, true));
+                
                 return $this->response->setJSON([
                     'success' => false,
-                    'message' => 'Failed to save item'
+                    'message' => 'Failed to save item: ' . implode(', ', $errors)
                 ]);
             }
         } catch (Exception $e) {
+            log_message('debug', 'Item insert exception: ' . $e->getMessage());
             return $this->response->setJSON([
                 'success' => false,
                 'message' => 'Database error: ' . $e->getMessage()
