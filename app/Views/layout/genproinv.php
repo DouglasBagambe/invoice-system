@@ -1095,9 +1095,7 @@ $(document).ready(function() {
         html += '<td><input type="number" name="item_quantity[]" id="quantity_' + rowCount + '" min="1" value="1" class="form-control quantity"></td>';
         html += '<td><input type="text" name="unit[]" id="unit_' + rowCount + '" value="Kgs" class="form-control unit"></td>';
         html += '<td><input type="number" name="price[]" id="price_' + rowCount + '" class="form-control price"></td>';
-        html += '<td><input type="number" name="vat_rate[]" id="vat_rate_' + rowCount + '" value="18" class="form-control vat_rate" min="0" max="100"></td>';
-        html += '<td><select name="vat_type[]" id="vat_type_' + rowCount + '" class="form-control vat_type"><option value="exclusive">Exclusive</option><option value="inclusive">Inclusive</option></select></td>';
-        html += '<td><select name="vat_status[]" id="vat_status_' + rowCount + '" class="form-control vat_status"><option value="taxable">Taxable</option><option value="exempt">Exempt</option></select></td>';
+        html += '<td><select name="vat_status[]" id="vat_status_' + rowCount + '" class="form-control vat_status"><option value="taxable">Vat (18%)</option><option value="exempt">Exempt</option></select></td>';
         html += '<td><input type="number" name="total[]" id="total_' + rowCount + '" class="form-control total" readonly></td>';
         html += '<td><button type="button" name="remove" class="btn btn-danger btn-sm remove"><span class="glyphicon glyphicon-minus"></span></button></td>';
         html += '</tr>';
@@ -1106,12 +1104,12 @@ $(document).ready(function() {
     });
     
     $(document).on('click', '.remove', function() { $(this).closest('tr').remove(); calculateTotals(); });
-    $(document).on('input', '.quantity, .price, .vat_rate', function() {
+    $(document).on('input', '.quantity, .price', function() {
         calculateRowTotal($(this).closest('tr'));
         calculateTotals();
     });
     
-    $(document).on('change', '.vat_type, .vat_status', function() {
+    $(document).on('change', '.vat_status', function() {
         calculateRowTotal($(this).closest('tr'));
         calculateTotals();
     });
@@ -1119,23 +1117,17 @@ $(document).ready(function() {
     function calculateRowTotal(row) {
         var quantity = parseFloat(row.find('.quantity').val()) || 0;
         var price = parseFloat(row.find('.price').val()) || 0;
-        var vatRate = parseFloat(row.find('.vat_rate').val()) || 0;
-        var vatType = row.find('.vat_type').val();
         var vatStatus = row.find('.vat_status').val();
         
         var subtotal = quantity * price;
         var vatAmount = 0;
         var total = subtotal;
         
-        if (vatStatus === 'taxable' && vatRate > 0) {
-            if (vatType === 'exclusive') {
-                vatAmount = (subtotal * vatRate) / 100;
-                total = subtotal + vatAmount;
-            } else {
-                // VAT inclusive - extract VAT from total
-                total = subtotal;
-                vatAmount = total - (total / (1 + (vatRate / 100)));
-            }
+        if (vatStatus === 'taxable') {
+            // Fixed 18% VAT rate
+            var vatRate = 18;
+            vatAmount = (subtotal * vatRate) / 100;
+            total = subtotal + vatAmount;
         }
         
         row.find('.total').val(total.toFixed(2));
@@ -1150,23 +1142,17 @@ $(document).ready(function() {
             var row = $(this);
             var quantity = parseFloat(row.find('.quantity').val()) || 0;
             var price = parseFloat(row.find('.price').val()) || 0;
-            var vatRate = parseFloat(row.find('.vat_rate').val()) || 0;
-            var vatType = row.find('.vat_type').val();
             var vatStatus = row.find('.vat_status').val();
             
             var rowSubtotal = quantity * price;
             var rowVatAmount = 0;
             var rowTotal = rowSubtotal;
             
-            if (vatStatus === 'taxable' && vatRate > 0) {
-                if (vatType === 'exclusive') {
-                    rowVatAmount = (rowSubtotal * vatRate) / 100;
-                    rowTotal = rowSubtotal + rowVatAmount;
-                } else {
-                    // VAT inclusive - extract VAT from total
-                    rowTotal = rowSubtotal;
-                    rowVatAmount = rowTotal - (rowTotal / (1 + (vatRate / 100)));
-                }
+            if (vatStatus === 'taxable') {
+                // Fixed 18% VAT rate
+                var vatRate = 18;
+                rowVatAmount = (rowSubtotal * vatRate) / 100;
+                rowTotal = rowSubtotal + rowVatAmount;
             }
             
             totalSubtotal += rowSubtotal;
