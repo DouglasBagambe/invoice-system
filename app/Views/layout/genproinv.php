@@ -953,11 +953,24 @@ $(document).ready(function() {
             clientUserType: clientUserType
         });
         
+        // Test: Try sending individual values instead of serialized form
+        var testData = {
+            c_name: clientName,
+            c_add: clientAddress,
+            mob: clientMobile,
+            country: clientCountry || 'India',
+            gst: clientGst,
+            email: clientEmail,
+            c_type: clientType,
+            u_type: clientUserType
+        };
+        console.log('Test data object:', testData);
+        
         $.ajax({
             url: base_url + '/proinv/saveclient',
             method: 'POST',
             dataType: 'json',
-            data: formData,
+            data: testData,
             success: function(response) {
                 if (response && response.success) {
                     // Show success message

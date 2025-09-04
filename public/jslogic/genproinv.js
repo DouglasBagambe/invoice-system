@@ -71,9 +71,17 @@ $(document).ready(function () {
       count +
       '" min="1" value="1" class="form-control quantity" /></td>';
     html +=
+      '<td><input type="text" name="unit[]" id="unit_' +
+      count +
+      '" value="Kgs" class="form-control unit" placeholder="Kgs"></td>';
+    html +=
       '<td><input type="number" name="price[]" id="price_' +
       count +
       '" class="form-control price" autocomplete="off"></td>';
+    html +=
+      '<td><select name="vat_status[]" id="vat_status_' +
+      count +
+      '" class="form-control vat_status"><option value="taxable">Vat (18%)</option><option value="exempt">Exempt</option></select></td>';
     html +=
       '<td><input type="number" name="total[]" id="total_' +
       count +
@@ -118,6 +126,9 @@ $(document).on("blur", "[id^=quantity_]", function () {
 $(document).on("blur", "[id^=price_]", function () {
   calculateTotal();
 });
+$(document).on("change", "[id^=vat_status_]", function () {
+  calculateTotal();
+});
 $(document).on("blur", "#taxRate", function () {
   calculateTotal();
 });
@@ -134,37 +145,45 @@ $(document).on("blur", "#amountPaid", function () {
 
 function calculateTotal() {
   var totalAmount = 0;
+  var totalVatAmount = 0;
+
   $("[id^='price_']").each(function () {
     var id = $(this).attr("id");
     id = id.replace("price_", "");
     var price = $("#price_" + id).val();
     var quantity = $("#quantity_" + id).val();
+    var vatStatus = $("#vat_status_" + id).val();
+
     if (!quantity) {
       quantity = 1;
     }
-    var total = price * quantity;
+
+    var subtotal = price * quantity;
+    var vatAmount = 0;
+    var total = subtotal;
+
+    if (vatStatus === "taxable") {
+      // Fixed 18% VAT rate
+      vatAmount = (subtotal * 18) / 100;
+      total = subtotal + vatAmount;
+    }
+
     $("#total_" + id).val(parseFloat(total));
     totalAmount += total;
+    totalVatAmount += vatAmount;
   });
 
-  $("#subTotal").val(parseFloat(totalAmount));
-  var taxRate = $("#taxRate").val();
-  var subTotal = $("#subTotal").val();
+  $("#subTotal").val(parseFloat(totalAmount - totalVatAmount));
+  $("#taxAmount").val(parseFloat(totalVatAmount));
+  $("#totalAftertax").val(parseFloat(totalAmount));
 
-  if (subTotal) {
-    var taxAmount = Math.ceil((subTotal * taxRate) / 100);
-    $("#taxAmount").val(taxAmount);
-    subTotal = Math.ceil(parseFloat(subTotal) + parseFloat(taxAmount));
-    $("#totalAftertax").val(subTotal);
-
-    var amountPaid = $("#amountPaid").val();
-    var totalAftertax = $("#totalAftertax").val();
-    if (amountPaid && totalAftertax) {
-      totalAftertax = totalAftertax - amountPaid;
-      $("#amountDue").val(totalAftertax);
-    } else {
-      $("#amountDue").val(subTotal);
-    }
+  var amountPaid = $("#amountPaid").val();
+  var totalAftertax = $("#totalAftertax").val();
+  if (amountPaid && totalAftertax) {
+    totalAftertax = totalAftertax - amountPaid;
+    $("#amountDue").val(totalAftertax);
+  } else {
+    $("#amountDue").val(totalAmount);
   }
 }
 
