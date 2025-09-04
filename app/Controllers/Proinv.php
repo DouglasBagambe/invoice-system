@@ -344,6 +344,76 @@ public function savebank()
     ]);
 }
 
+public function saveclient()
+{
+    if ($this->request->getMethod() === 'post' || $this->request->isAJAX()) {
+        $clientModel = new Client_model();
+        
+        // Get form data
+        $c_name = $this->request->getPost('c_name');
+        $c_add = $this->request->getPost('c_add');
+        $mob = $this->request->getPost('mob');
+        $country = $this->request->getPost('country');
+        $gst = $this->request->getPost('gst');
+        $email = $this->request->getPost('email');
+        $c_type = $this->request->getPost('c_type');
+        $u_type = $this->request->getPost('u_type');
+        
+        // Validate required fields
+        if (!$c_name || !$c_add || !$mob || !$c_type || !$u_type) {
+            return $this->response->setJSON([
+                'success' => false,
+                'message' => 'Client name, address, mobile, client type, and user type are required'
+            ]);
+        }
+        
+        // Get next client ID
+        $last_cid = $clientModel->get_last_cid();
+        $next_cid = ($last_cid !== null) ? $last_cid + 1 : 1;
+        
+        // Prepare data for insertion
+        $data = [
+            'cid' => $next_cid,
+            'c_name' => $c_name,
+            'c_add' => $c_add,
+            'mob' => $mob,
+            'country' => $country ? $country : 'India',
+            'gst' => $gst ? strtoupper($gst) : '',
+            'email' => $email ? $email : '',
+            'c_type' => $c_type,
+            'u_type' => $u_type,
+            'created' => date('Y-m-d')
+        ];
+        
+        try {
+            if ($clientModel->insert($data)) {
+                $insertId = $clientModel->getInsertID();
+                return $this->response->setJSON([
+                    'success' => true,
+                    'message' => 'Client saved successfully',
+                    'client_id' => $insertId
+                ]);
+            } else {
+                $errors = $clientModel->errors();
+                return $this->response->setJSON([
+                    'success' => false,
+                    'message' => 'Failed to save client: ' . implode(', ', $errors)
+                ]);
+            }
+        } catch (\Exception $e) {
+            return $this->response->setJSON([
+                'success' => false,
+                'message' => 'Database error: ' . $e->getMessage()
+            ]);
+        }
+    }
+    
+    return $this->response->setJSON([
+        'success' => false,
+        'message' => 'Invalid request method'
+    ]);
+}
+
 public function savesignature()
 {
     if ($this->request->getMethod() === 'post' || $this->request->isAJAX()) {

@@ -592,7 +592,7 @@ page {
                 <th>QTY</th>
                 <th>Units</th>
                 <th>Item</th>
-                <th>VAT</th>
+                <th>Tax</th>
                 <th>Unit Price (UGX)</th>
                 <th>Total (UGX)</th>
             </tr>
@@ -607,17 +607,19 @@ page {
                 <td><?= isset($item['unit']) ? $item['unit'] : 'Kgs' ?></td>
                 <td><?= $item['item_name']; ?></td>
                 <td>
-                    <?php 
-                    $vatRate = isset($item['vat_rate']) ? $item['vat_rate'] : 0;
-                    $vatType = isset($item['vat_type']) ? $item['vat_type'] : 'exclusive';
-                    $vatStatus = isset($item['vat_status']) ? $item['vat_status'] : 'taxable';
-                    
-                    if ($vatStatus === 'exempt') {
-                        echo 'Exempt';
-                    } else {
-                        echo number_format($vatRate, 0) . '% (' . ucfirst($vatType) . ')';
-                    }
-                    ?>
+                  <?php 
+                  $vatRate = isset($item['vat_rate']) ? $item['vat_rate'] : 0;
+                  $vatType = isset($item['vat_type']) ? $item['vat_type'] : 'exclusive';
+                  $vatStatus = isset($item['vat_status']) ? $item['vat_status'] : 'taxable';
+
+                  if ($vatStatus === 'exempt') {
+                    echo 'Exempt';
+                  } elseif ($vatType === 'exclusive' && $vatRate == 18) {
+                    echo 'Vat (18%)';
+                  } else {
+                    echo number_format($vatRate, 0) . '% (' . ucfirst($vatType) . ')';
+                  }
+                  ?>
                 </td>
                 <td><?= number_format($item['price'], 0); ?></td>
                 <td><?= number_format($item['total'], 0); ?></td>
@@ -653,7 +655,7 @@ page {
                         <div class="total-amount"><strong><?= number_format($invDetails[0]['subtotal'], 0); ?></strong></div>
                     </div>
                     <div class="total-row">
-                        <div class="total-label">Total VAT Amount</div>
+                        <div class="total-label">Total Tax Amount</div>
                         <div class="total-amount"><?= number_format($invDetails[0]['taxamount'], 0); ?></div>
                     </div>
                     <div class="total-row">
@@ -696,56 +698,58 @@ page {
 
     <!-- VAT Table -->
     <table class="vat-table">
-        <thead>
-            <tr>
-                <th>Item</th>
-                <th>VAT Status</th>
-                <th>Taxable Amount</th>
-                <th>Rate</th>
-                <th>Tax Amount</th>
-            </tr>
-        </thead>
-        <tbody>
+      <thead>
+        <tr>
+          <th>Item</th>
+          <th>Tax</th>
+          <th>Taxable Amount</th>
+          <th>Rate</th>
+          <th>Tax Amount</th>
+        </tr>
+      </thead>
+      <tbody>
+        <?php 
+        $totalTaxableAmount = 0;
+        $totalTaxAmount = 0;
+        foreach ($itemDetails as $item): 
+          $vatRate = isset($item['vat_rate']) ? $item['vat_rate'] : 0;
+          $vatType = isset($item['vat_type']) ? $item['vat_type'] : 'exclusive';
+          $vatStatus = isset($item['vat_status']) ? $item['vat_status'] : 'taxable';
+          $vatAmount = isset($item['vat_amount']) ? $item['vat_amount'] : 0;
+          $quantity = $item['quantity'];
+          $price = $item['price'];
+          $taxableAmount = $quantity * $price;
+          
+          if ($vatStatus === 'taxable' && $vatRate > 0) {
+            $totalTaxableAmount += $taxableAmount;
+            $totalTaxAmount += $vatAmount;
+          }
+        ?>
+        <tr>
+          <td><?= $item['item_name']; ?></td>
+          <td>
             <?php 
-            $totalTaxableAmount = 0;
-            $totalTaxAmount = 0;
-            foreach ($itemDetails as $item): 
-                $vatRate = isset($item['vat_rate']) ? $item['vat_rate'] : 0;
-                $vatType = isset($item['vat_type']) ? $item['vat_type'] : 'exclusive';
-                $vatStatus = isset($item['vat_status']) ? $item['vat_status'] : 'taxable';
-                $vatAmount = isset($item['vat_amount']) ? $item['vat_amount'] : 0;
-                $quantity = $item['quantity'];
-                $price = $item['price'];
-                $taxableAmount = $quantity * $price;
-                
-                if ($vatStatus === 'taxable' && $vatRate > 0) {
-                    $totalTaxableAmount += $taxableAmount;
-                    $totalTaxAmount += $vatAmount;
-                }
+            if ($vatStatus === 'exempt') {
+              echo 'Exempt';
+            } elseif ($vatType === 'exclusive' && $vatRate == 18) {
+              echo 'Vat (18%)';
+            } else {
+              echo 'Taxable (' . ucfirst($vatType) . ')';
+            }
             ?>
-            <tr>
-                <td><?= $item['item_name']; ?></td>
-                <td>
-                    <?php 
-                    if ($vatStatus === 'exempt') {
-                        echo 'Exempt';
-                    } else {
-                        echo 'Taxable (' . ucfirst($vatType) . ')';
-                    }
-                    ?>
-                </td>
-                <td><?= number_format($taxableAmount, 0); ?></td>
-                <td><?= number_format($vatRate, 2); ?>%</td>
-                <td><?= number_format($vatAmount, 0); ?></td>
-            </tr>
-            <?php endforeach; ?>
-            <tr style="font-weight: bold; border-top: 2px solid #000;">
-                <td colspan="2">Total</td>
-                <td><?= number_format($totalTaxableAmount, 0); ?></td>
-                <td>-</td>
-                <td><?= number_format($totalTaxAmount, 0); ?></td>
-            </tr>
-        </tbody>
+          </td>
+          <td><?= number_format($taxableAmount, 0); ?></td>
+          <td><?= number_format($vatRate, 0); ?>%</td>
+          <td><?= number_format($vatAmount, 0); ?></td>
+        </tr>
+        <?php endforeach; ?>
+        <tr style="font-weight: bold; border-top: 2px solid #000;">
+          <td colspan="2">Total</td>
+          <td><?= number_format($totalTaxableAmount, 0); ?></td>
+          <td>-</td>
+          <td><?= number_format($totalTaxAmount, 0); ?></td>
+        </tr>
+      </tbody>
     </table>
 
     <!-- Terms & Conditions Table -->
@@ -759,7 +763,7 @@ page {
             <tr>
                 <td>
                     <strong>Validity Period:</strong> <?= isset($invDetails[0]['validity_period']) ? $invDetails[0]['validity_period'] : '90' ?> Days<br>
-                    <strong>Delivery Period: Delivery is within</strong> <?= isset($invDetails[0]['delivery_period']) ? $invDetails[0]['delivery_period'] : '4' ?> days after LPO
+                    <strong>Delivery Period: </strong>Delivery is within <?= isset($invDetails[0]['delivery_period']) ? $invDetails[0]['delivery_period'] : '4' ?> days after LPO
                 </td>
             </tr>
         </tbody>
@@ -774,7 +778,7 @@ page {
                     <div>Bank Name: <strong><?= isset($bankDetails[0]) ? $bankDetails[0]['bname'] : 'EQUITY BANK UGANDA LIMITED' ?></strong></div>
                     <div>Account Number: <strong><?= isset($bankDetails[0]) ? $bankDetails[0]['ac'] : '1004201798242' ?></strong></div>
                     <div>Bank Code: <strong><?= isset($bankDetails[0]) ? $bankDetails[0]['ifsc'] : 'EQBLUGKAXXX' ?></strong></div>
-                    <div>Account Name: <strong><?= isset($bankDetails[0]['account_name']) ? $bankDetails[0]['account_name'] : 'Emax Supplies & Logistics Limited' ?></strong></div>
+                    <div>Bank Branch: <strong><?= isset($bankDetails[0]) ? $bankDetails[0]['branch'] : 'Main Branch' ?></strong></div>
                 </div>
                 
                                   <div class="payment-terms">
@@ -792,14 +796,15 @@ page {
                             if (file_exists($signaturePath)): ?>
                                 <img src="data:image/jpeg;base64,<?= base64_encode(file_get_contents($signaturePath)); ?>" alt="Signature" style="max-width: 120px; max-height: 50px; border: 1px solid #000;">
                             <?php else: ?>
-                                <div class="signature-box" style="width: 120px; height: 50px; border: 1px solid #000; margin: 10px auto;"></div>
+                                <div class="signature-box" style="width: 120px; height: 50px; margin: 10px auto;"></div>
                             <?php endif; ?>
                         <?php else: ?>
-                            <div class="signature-box" style="width: 120px; height: 50px; border: 1px solid #000; margin: 10px auto;"></div>
+                            <div class="signature-box" style="width: 120px; height: 50px; margin: 10px auto;"></div>
                         <?php endif; ?>
                     </div>
                     <div>
-                        <strong>On Behalf of <?= isset($companyDetails['c_name']) ? $companyDetails['c_name'] : 'EMAX SUPPLIES & LOGISTICS LIMITED' ?></strong>
+                      <strong>On Behalf of EMAX SUPPLIES & LOGISTICS LIMITED</strong>
+                        <!-- <strong>On Behalf of <?= isset($companyDetails['c_name']) ? $companyDetails['c_name'] : 'EMAX SUPPLIES & LOGISTICS LIMITED' ?></strong> -->
                     </div>
                 </div>
             </td>

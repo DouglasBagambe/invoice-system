@@ -166,6 +166,50 @@
       font-size: 12px;
       color: #666;
     }
+    
+    /* Client form specific styling */
+    #clientDetailsForm {
+      background: #ffffff;
+      padding: 25px;
+      margin: 20px 0;
+      border: 2px solid #28a745;
+      border-radius: 8px;
+      display: none;
+      box-shadow: 0 8px 16px rgba(40,167,69,0.15);
+      position: relative;
+      z-index: 1050;
+      animation: slideDown 0.3s ease-out;
+    }
+    
+    #clientDetailsForm h4 {
+      margin-top: 0;
+      margin-bottom: 15px;
+      color: #28a745;
+      font-weight: bold;
+      border-bottom: 2px solid #28a745;
+      padding-bottom: 8px;
+    }
+    
+    /* Input group styling for client dropdown */
+    #supplier + .input-group-btn .btn {
+      border-left: 0;
+      border-radius: 0 3px 3px 0;
+    }
+    
+    #supplier {
+      border-radius: 3px 0 0 3px;
+    }
+    
+    /* Form validation styles for client form */
+    .form-control.is-invalid {
+      border-color: #dc3545;
+      box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.25);
+    }
+    
+    .help-block {
+      font-size: 12px;
+      margin-top: 5px;
+    }
   </style>
 </head>
 <body class="hold-transition skin-blue sidebar-mini">
@@ -203,9 +247,16 @@
                   <div class="form-group">
                     <label class="col-sm-4 control-label">Client Name <span style="color: red;">*</span></label>
                     <div class="col-sm-8">
-                      <select name="supplier" id="supplier" class="form-control select2" onchange="showCustomer(this.value)">
-                        <option value="">Select Client</option>
-                      </select>
+                      <div class="input-group">
+                        <select name="supplier" id="supplier" class="form-control select2" onchange="showCustomer(this.value)">
+                          <option value="">Select Client</option>
+                        </select>
+                        <div class="input-group-btn">
+                          <button type="button" id="addNewClient" class="btn btn-info btn-sm" title="Add New Client">
+                            <i class="fa fa-plus"></i>
+                          </button>
+                        </div>
+                      </div>
                       <div id="supplier_error" style="color: red;"></div>
                     </div>
                   </div>
@@ -250,9 +301,9 @@
                         <th class="col-qty">Qty <span style="color: red;">*</span></th>
                         <th class="col-unit">Unit</th>
                         <th class="col-price">Price <span style="color: red;">*</span></th>
-                        <th class="col-vat">VAT %</th>
-                        <th class="col-vat-type">VAT Type</th>
-                        <th class="col-vat-status">VAT Status</th>
+                        <!-- <th class="col-vat">VAT %</th>
+                        <th class="col-vat-type">VAT Type</th> -->
+                        <th class="col-vat-status">Tax</th>
                         <th class="col-total">Total <span style="color: red;">*</span></th>
                         <th class="col-action">
                           <button type="button" name="add" class="btn btn-success btn-sm add">
@@ -281,16 +332,16 @@
                         <td><input type="number" name="item_quantity[]" id="quantity_1" min="1" value="1" class="form-control quantity"></td>
                         <td><input type="text" name="unit[]" id="unit_1" value="Kgs" class="form-control unit" placeholder="Kgs"></td>
                         <td><input type="number" name="price[]" id="price_1" class="form-control price"></td>
-                        <td><input type="number" name="vat_rate[]" id="vat_rate_1" value="18" class="form-control vat_rate" min="0" max="100"></td>
-                        <td>
+                        <!-- <td><input type="number" name="vat_rate[]" id="vat_rate_1" value="18" class="form-control vat_rate" min="0" max="100"></td> -->
+                        <!-- <td>
                           <select name="vat_type[]" id="vat_type_1" class="form-control vat_type">
                             <option value="exclusive">Exclusive</option>
                             <option value="inclusive">Inclusive</option>
                           </select>
-                        </td>
+                        </td> -->
                         <td>
                           <select name="vat_status[]" id="vat_status_1" class="form-control vat_status">
-                            <option value="taxable">Taxable</option>
+                            <option value="taxable">Vat (18%)</option>
                             <option value="exempt">Exempt</option>
                           </select>
                         </td>
@@ -373,6 +424,88 @@
                 <div class="form-group">
                   <button type="button" id="saveBankDetails" class="btn btn-primary">Save Bank</button>
                   <button type="button" id="cancelBankForm" class="btn btn-default">Cancel</button>
+                </div>
+              </div>
+
+              <!-- New Client Form -->
+              <div id="clientDetailsForm" class="bank-form">
+                <div class="clearfix">
+                  <h4 style="float: left;">
+                    <i class="fa fa-user-plus text-primary"></i> Add New Client
+                  </h4>
+                  <button type="button" id="cancelClientForm" class="btn btn-sm btn-default" style="float: right;">
+                    <i class="fa fa-times"></i>
+                  </button>
+                </div>
+                <div style="clear: both; margin-bottom: 15px;"></div>
+                
+                <div id="clientFormMessage" class="alert alert-success" style="display: none;"></div>
+                
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label>Client Name <span style="color: red;">*</span></label>
+                      <input type="text" name="new_client_name" id="new_client_name" class="form-control" placeholder="Enter client name">
+                      <div class="help-block" id="client_name_error" style="color: red;"></div>
+                    </div>
+                    <div class="form-group">
+                      <label>Address <span style="color: red;">*</span></label>
+                      <textarea name="new_client_address" id="new_client_address" class="form-control" rows="2" placeholder="Enter client address"></textarea>
+                      <div class="help-block" id="client_address_error" style="color: red;"></div>
+                    </div>
+                    <div class="form-group">
+                      <label>Mobile Number <span style="color: red;">*</span></label>
+                      <input type="text" name="new_client_mobile" id="new_client_mobile" class="form-control" placeholder="Enter mobile number">
+                      <div class="help-block" id="client_mobile_error" style="color: red;"></div>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label>Country</label>
+                      <input type="text" name="new_client_country" id="new_client_country" class="form-control" value="India" placeholder="Enter country">
+                    </div>
+                    <div class="form-group">
+                      <label>GST Number</label>
+                      <input type="text" name="new_client_gst" id="new_client_gst" class="form-control" placeholder="Enter GST number">
+                    </div>
+                    <div class="form-group">
+                      <label>Email</label>
+                      <input type="email" name="new_client_email" id="new_client_email" class="form-control" placeholder="Enter email address">
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label>Client Type <span style="color: red;">*</span></label>
+                      <select name="new_client_type" id="new_client_type" class="form-control">
+                        <option value="">Select Type</option>
+                        <option value="Loc">Local</option>
+                        <option value="IGST">IGST</option>
+                      </select>
+                      <div class="help-block" id="client_type_error" style="color: red;"></div>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label>User Type <span style="color: red;">*</span></label>
+                      <select name="new_client_user_type" id="new_client_user_type" class="form-control">
+                        <option value="">Select User Type</option>
+                        <option value="0">Regular</option>
+                        <option value="1">Premium</option>
+                        <option value="2">VIP</option>
+                      </select>
+                      <div class="help-block" id="client_user_type_error" style="color: red;"></div>
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group text-right">
+                  <button type="button" id="cancelClientForm2" class="btn btn-default">
+                    <i class="fa fa-times"></i> Cancel
+                  </button>
+                  <button type="button" id="saveClientDetails" class="btn btn-primary">
+                    <i class="fa fa-save"></i> Save Client
+                  </button>
                 </div>
               </div>
 
@@ -524,6 +657,10 @@ $(document).ready(function() {
                 $('#itemDetailsForm').slideUp(300);
                 currentItemRow = null;
                 clearItemForm();
+            } else if ($('#clientDetailsForm').is(':visible')) {
+                $('#clientDetailsForm').slideUp(300);
+                $('#supplier').prop('disabled', false);
+                clearClientForm();
             }
         }
     });
@@ -590,6 +727,17 @@ $(document).ready(function() {
         $('#bankDetailsForm').slideUp(300); 
         $('#bank_id').prop('disabled', false); 
         clearBankForm(); 
+    });
+    
+    // Client form toggles
+    $('#addNewClient').click(function() { 
+        $('#clientDetailsForm').slideDown(300); 
+        $('#supplier').prop('disabled', true); 
+    });
+    $('#cancelClientForm, #cancelClientForm2').click(function() { 
+        $('#clientDetailsForm').slideUp(300); 
+        $('#supplier').prop('disabled', false); 
+        clearClientForm(); 
     });
     
     // Signature form toggles
@@ -742,6 +890,103 @@ $(document).ready(function() {
         });
     });
     
+    $('#saveClientDetails').click(function() {
+        var clientName = $('#new_client_name').val().trim();
+        var clientAddress = $('#new_client_address').val().trim();
+        var clientMobile = $('#new_client_mobile').val().trim();
+        var clientCountry = $('#new_client_country').val().trim();
+        var clientGst = $('#new_client_gst').val().trim();
+        var clientEmail = $('#new_client_email').val().trim();
+        var clientType = $('#new_client_type').val();
+        var clientUserType = $('#new_client_user_type').val();
+        
+        // Clear previous errors
+        $('#clientFormMessage').hide();
+        $('.help-block').text('');
+        $('.form-control').removeClass('is-invalid');
+        
+        // Validation
+        var isValid = true;
+        if (!clientName) { 
+            $('#client_name_error').text('Client name is required');
+            $('#new_client_name').addClass('is-invalid');
+            isValid = false;
+        }
+        if (!clientAddress) { 
+            $('#client_address_error').text('Address is required');
+            $('#new_client_address').addClass('is-invalid');
+            isValid = false;
+        }
+        if (!clientMobile) { 
+            $('#client_mobile_error').text('Mobile number is required');
+            $('#new_client_mobile').addClass('is-invalid');
+            isValid = false;
+        }
+        if (!clientType) { 
+            $('#client_type_error').text('Client type is required');
+            $('#new_client_type').addClass('is-invalid');
+            isValid = false;
+        }
+        if (!clientUserType) { 
+            $('#client_user_type_error').text('User type is required');
+            $('#new_client_user_type').addClass('is-invalid');
+            isValid = false;
+        }
+        
+        if (!isValid) {
+            return;
+        }
+        
+        // Disable button to prevent double clicks
+        $(this).prop('disabled', true).html('<i class="fa fa-spinner fa-spin"></i> Saving...');
+        
+        $.ajax({
+            url: base_url + '/proinv/saveclient',
+            method: 'POST',
+            dataType: 'json',
+            data: { 
+                c_name: clientName,
+                c_add: clientAddress,
+                mob: clientMobile,
+                country: clientCountry || 'India',
+                gst: clientGst,
+                email: clientEmail,
+                c_type: clientType,
+                u_type: clientUserType
+            },
+            success: function(response) {
+                if (response && response.success) {
+                    // Show success message
+                    $('#clientFormMessage').text('Client "' + clientName + '" saved successfully!').show();
+                    
+                    // Add new option to client dropdown
+                    var newOption = new Option(clientName, response.client_id, true, true);
+                    $('#supplier').append(newOption).trigger('change');
+                    
+                    // Set address automatically
+                    $('#c_add').val(clientAddress);
+                    
+                    // Close form after 2 seconds
+                    setTimeout(function() {
+                        $('#clientDetailsForm').slideUp(300); 
+                        $('#supplier').prop('disabled', false);
+                        clearClientForm();
+                    }, 2000);
+                    
+                } else { 
+                    alert('Failed to save client: ' + (response.message || 'Unknown error')); 
+                }
+            },
+            error: function(xhr, status, error) { 
+                alert('Error saving client: ' + error); 
+            },
+            complete: function() {
+                // Re-enable button
+                $('#saveClientDetails').prop('disabled', false).html('<i class="fa fa-save"></i> Save Client');
+            }
+        });
+    });
+    
     $('#saveSignatureDetails').click(function() {
         var signatureName = $('#new_signature_name').val().trim();
         var signatureFile = $('#new_signature_file')[0].files[0];
@@ -806,6 +1051,14 @@ $(document).ready(function() {
     
     function clearBankForm() { 
         $('#new_bank_name, #new_account_number, #new_bank_code, #new_account_name').val(''); 
+    }
+    
+    function clearClientForm() { 
+        $('#new_client_name, #new_client_address, #new_client_mobile, #new_client_country, #new_client_gst, #new_client_email').val(''); 
+        $('#new_client_type, #new_client_user_type').val('');
+        $('.help-block').text('');
+        $('.form-control').removeClass('is-invalid');
+        $('#clientFormMessage').hide();
     }
     
     function clearSignatureForm() { 
