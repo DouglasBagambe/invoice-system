@@ -942,19 +942,8 @@ $(document).ready(function() {
         // Disable button to prevent double clicks
         $(this).prop('disabled', true).html('<i class="fa fa-spinner fa-spin"></i> Saving...');
         
-        // Debug: Log what we're sending
-        var formData = $('#clientForm').serialize();
-        console.log('Sending form data:', formData);
-        console.log('Individual values:', {
-            clientName: clientName,
-            clientAddress: clientAddress,
-            clientMobile: clientMobile,
-            clientType: clientType,
-            clientUserType: clientUserType
-        });
-        
-        // Test: Try sending individual values instead of serialized form
-        var testData = {
+        // Prepare data for submission
+        var clientData = {
             c_name: clientName,
             c_add: clientAddress,
             mob: clientMobile,
@@ -962,15 +951,14 @@ $(document).ready(function() {
             gst: clientGst,
             email: clientEmail,
             c_type: clientType,
-            u_type: parseInt(clientUserType) // Convert to integer to match database
+            u_type: parseInt(clientUserType)
         };
-        console.log('Test data object:', testData);
         
         $.ajax({
             url: base_url + '/proinv/saveclient',
             method: 'POST',
             dataType: 'json',
-            data: testData,
+            data: clientData,
             success: function(response) {
                 if (response && response.success) {
                     // Show success message
@@ -991,11 +979,7 @@ $(document).ready(function() {
                     }, 2000);
                     
                 } else { 
-                    let errorMsg = 'Failed to save client: ' + (response.message || 'Unknown error');
-                    if (response.debug_data) {
-                        errorMsg += '\n\nDebug info:\n' + JSON.stringify(response.debug_data, null, 2);
-                    }
-                    alert(errorMsg); 
+                    alert('Failed to save client: ' + (response.message || 'Unknown error')); 
                 }
             },
             error: function(xhr, status, error) { 

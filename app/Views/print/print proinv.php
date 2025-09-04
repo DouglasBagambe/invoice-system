@@ -608,16 +608,12 @@ page {
                 <td><?= $item['item_name']; ?></td>
                 <td>
                   <?php 
-                  $vatRate = isset($item['vat_rate']) ? $item['vat_rate'] : 0;
-                  $vatType = isset($item['vat_type']) ? $item['vat_type'] : 'exclusive';
                   $vatStatus = isset($item['vat_status']) ? $item['vat_status'] : 'taxable';
 
                   if ($vatStatus === 'exempt') {
                     echo 'Exempt';
-                  } elseif ($vatType === 'exclusive' && $vatRate == 18) {
-                    echo 'Vat (18%)';
                   } else {
-                    echo number_format($vatRate, 0) . '% (' . ucfirst($vatType) . ')';
+                    echo 'Vat (18%)';
                   }
                   ?>
                 </td>
@@ -696,7 +692,7 @@ page {
         </tr>
     </table> -->
 
-    <!-- VAT Table -->
+    <!-- VAT Table - Only show taxable items -->
     <table class="vat-table">
       <thead>
         <tr>
@@ -711,44 +707,41 @@ page {
         <?php 
         $totalTaxableAmount = 0;
         $totalTaxAmount = 0;
+        $hasTaxableItems = false;
+        
         foreach ($itemDetails as $item): 
-          $vatRate = isset($item['vat_rate']) ? $item['vat_rate'] : 0;
-          $vatType = isset($item['vat_type']) ? $item['vat_type'] : 'exclusive';
           $vatStatus = isset($item['vat_status']) ? $item['vat_status'] : 'taxable';
-          $vatAmount = isset($item['vat_amount']) ? $item['vat_amount'] : 0;
           $quantity = $item['quantity'];
           $price = $item['price'];
           $taxableAmount = $quantity * $price;
           
-          if ($vatStatus === 'taxable' && $vatRate > 0) {
+          // Only show taxable items
+          if ($vatStatus === 'taxable') {
+            $hasTaxableItems = true;
+            $vatAmount = ($taxableAmount * 18) / 100; // Fixed 18% VAT
             $totalTaxableAmount += $taxableAmount;
             $totalTaxAmount += $vatAmount;
-          }
         ?>
         <tr>
           <td><?= $item['item_name']; ?></td>
-          <td>
-            <?php 
-            if ($vatStatus === 'exempt') {
-              echo 'Exempt';
-            } elseif ($vatType === 'exclusive' && $vatRate == 18) {
-              echo 'Vat (18%)';
-            } else {
-              echo 'Taxable (' . ucfirst($vatType) . ')';
-            }
-            ?>
-          </td>
+          <td>Vat (18%)</td>
           <td><?= number_format($taxableAmount, 0); ?></td>
-          <td><?= number_format($vatRate, 0); ?>%</td>
+          <td>18%</td>
           <td><?= number_format($vatAmount, 0); ?></td>
         </tr>
-        <?php endforeach; ?>
+        <?php 
+          }
+        endforeach; 
+        
+        // Only show totals if there are taxable items
+        if ($hasTaxableItems): ?>
         <tr style="font-weight: bold; border-top: 2px solid #000;">
           <td colspan="2">Total</td>
           <td><?= number_format($totalTaxableAmount, 0); ?></td>
           <td>-</td>
           <td><?= number_format($totalTaxAmount, 0); ?></td>
         </tr>
+        <?php endif; ?>
       </tbody>
     </table>
 
