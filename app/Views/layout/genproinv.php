@@ -445,32 +445,32 @@
                   <div class="col-md-6">
                     <div class="form-group">
                       <label>Client Name <span style="color: red;">*</span></label>
-                      <input type="text" name="new_client_name" id="new_client_name" class="form-control" placeholder="Enter client name">
+                      <input type="text" name="c_name" id="new_client_name" class="form-control" placeholder="Enter client name">
                       <div class="help-block" id="client_name_error" style="color: red;"></div>
                     </div>
                     <div class="form-group">
                       <label>Address <span style="color: red;">*</span></label>
-                      <textarea name="new_client_address" id="new_client_address" class="form-control" rows="2" placeholder="Enter client address"></textarea>
+                      <textarea name="c_add" id="new_client_address" class="form-control" rows="2" placeholder="Enter client address"></textarea>
                       <div class="help-block" id="client_address_error" style="color: red;"></div>
                     </div>
                     <div class="form-group">
                       <label>Mobile Number <span style="color: red;">*</span></label>
-                      <input type="text" name="new_client_mobile" id="new_client_mobile" class="form-control" placeholder="Enter mobile number">
+                      <input type="text" name="mob" id="new_client_mobile" class="form-control" placeholder="Enter mobile number">
                       <div class="help-block" id="client_mobile_error" style="color: red;"></div>
                     </div>
                   </div>
                   <div class="col-md-6">
                     <div class="form-group">
                       <label>Country</label>
-                      <input type="text" name="new_client_country" id="new_client_country" class="form-control" value="India" placeholder="Enter country">
+                      <input type="text" name="country" id="new_client_country" class="form-control" value="India" placeholder="Enter country">
                     </div>
                     <div class="form-group">
                       <label>GST Number</label>
-                      <input type="text" name="new_client_gst" id="new_client_gst" class="form-control" placeholder="Enter GST number">
+                      <input type="text" name="gst" id="new_client_gst" class="form-control" placeholder="Enter GST number">
                     </div>
                     <div class="form-group">
                       <label>Email</label>
-                      <input type="email" name="new_client_email" id="new_client_email" class="form-control" placeholder="Enter email address">
+                      <input type="email" name="email" id="new_client_email" class="form-control" placeholder="Enter email address">
                     </div>
                   </div>
                 </div>
@@ -478,7 +478,7 @@
                   <div class="col-md-6">
                     <div class="form-group">
                       <label>Client Type <span style="color: red;">*</span></label>
-                      <select name="new_client_type" id="new_client_type" class="form-control">
+                      <select name="c_type" id="new_client_type" class="form-control">
                         <option value="">Select Type</option>
                         <option value="Loc">Local</option>
                         <option value="IGST">IGST</option>
@@ -489,7 +489,7 @@
                   <div class="col-md-6">
                     <div class="form-group">
                       <label>User Type <span style="color: red;">*</span></label>
-                      <select name="new_client_user_type" id="new_client_user_type" class="form-control">
+                      <select name="u_type" id="new_client_user_type" class="form-control">
                         <option value="">Select User Type</option>
                         <option value="0">Regular</option>
                         <option value="1">Premium</option>
@@ -944,16 +944,7 @@ $(document).ready(function() {
             url: base_url + '/proinv/saveclient',
             method: 'POST',
             dataType: 'json',
-            data: { 
-                c_name: clientName,
-                c_add: clientAddress,
-                mob: clientMobile,
-                country: clientCountry || 'India',
-                gst: clientGst,
-                email: clientEmail,
-                c_type: clientType,
-                u_type: clientUserType
-            },
+            data: $('#clientDetailsForm').serialize(),
             success: function(response) {
                 if (response && response.success) {
                     // Show success message

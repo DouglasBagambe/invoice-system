@@ -803,7 +803,7 @@ page {
                         <?php endif; ?>
                     </div>
                     <div>
-                      <strong>On Behalf of EMAX SUPPLIES & LOGISTICS LIMITED</strong>
+                      <strong>On Behalf of </br> EMAX SUPPLIES & LOGISTICS LIMITED</strong>
                         <!-- <strong>On Behalf of <?= isset($companyDetails['c_name']) ? $companyDetails['c_name'] : 'EMAX SUPPLIES & LOGISTICS LIMITED' ?></strong> -->
                     </div>
                 </div>
