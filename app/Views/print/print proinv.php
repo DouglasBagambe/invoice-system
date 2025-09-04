@@ -591,7 +591,7 @@ page {
                 <th>#</th>
                 <th>QTY</th>
                 <th>Units</th>
-                <th>Item</th>
+                <th>Item Description</th>
                 <th>Tax</th>
                 <th>Unit Price (UGX)</th>
                 <th>Total (UGX)</th>
@@ -696,7 +696,7 @@ page {
     <table class="vat-table">
       <thead>
         <tr>
-          <th>Item</th>
+          <th>Item Description</th>
           <th>Tax</th>
           <th>Taxable Amount</th>
           <th>Rate</th>
@@ -787,7 +787,7 @@ page {
                             <?php 
                             $signaturePath = ROOTPATH . $invDetails[0]['signature_path'];
                             if (file_exists($signaturePath)): ?>
-                                <img src="data:image/jpeg;base64,<?= base64_encode(file_get_contents($signaturePath)); ?>" alt="Signature" style="max-width: 120px; max-height: 50px; border: 1px solid #000;">
+                                <img src="data:image/jpeg;base64,<?= base64_encode(file_get_contents($signaturePath)); ?>" alt="Signature" style="max-width: 120px; max-height: 50px;">
                             <?php else: ?>
                                 <div class="signature-box" style="width: 120px; height: 50px; margin: 10px auto;"></div>
                             <?php endif; ?>
