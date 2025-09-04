@@ -367,8 +367,8 @@ public function saveclient()
         log_message('debug', 'Individual fields - c_name: "' . $c_name . '", c_add: "' . $c_add . '", mob: "' . $mob . '", c_type: "' . $c_type . '", u_type: "' . $u_type . '"');
         log_message('debug', 'Field types - c_name: ' . gettype($c_name) . ', c_add: ' . gettype($c_add) . ', mob: ' . gettype($mob) . ', c_type: ' . gettype($c_type) . ', u_type: ' . gettype($u_type));
         
-        // Validate required fields
-        if (!$c_name || !$c_add || !$mob || !$c_type || !$u_type) {
+        // Validate required fields - check for empty strings and null values
+        if (empty($c_name) || empty($c_add) || empty($mob) || empty($c_type) || $u_type === null || $u_type === '') {
             return $this->response->setJSON([
                 'success' => false,
                 'message' => 'Client name, address, mobile, client type, and user type are required',

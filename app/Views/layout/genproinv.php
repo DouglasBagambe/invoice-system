@@ -962,7 +962,7 @@ $(document).ready(function() {
             gst: clientGst,
             email: clientEmail,
             c_type: clientType,
-            u_type: clientUserType
+            u_type: parseInt(clientUserType) // Convert to integer to match database
         };
         console.log('Test data object:', testData);
         
