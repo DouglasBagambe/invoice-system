@@ -107,9 +107,10 @@ public function getprotest($startyear = null, $endyear = null, $client = null, $
     // Group by orderid to avoid duplicate rows
     $builder->groupBy('protest2.orderid');
 
-    // Apply limit and offset for pagination - Order by created date (latest first)
+    // Apply limit and offset for pagination - Order by created date (latest first), then by invoice ID
     return $builder->limit($limit, $offset)
                    ->orderBy('protest2.created', 'DESC')  // Order by created date (latest first)
+                   ->orderBy('protest2.invid', 'DESC')    // Secondary ordering by invoice ID
                    ->get()
                    ->getResult();
 }

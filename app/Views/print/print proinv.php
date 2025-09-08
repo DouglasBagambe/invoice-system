@@ -13,7 +13,7 @@ body {
   font-family: Arial, sans-serif;
   margin: 0;
   padding: 10px;
-  font-size: 12px;
+  font-size: 13px;
 }
 
 page {
@@ -57,8 +57,8 @@ page {
     size: A4;
   }
   
-  /* Hide print button */
-  #printButton {
+  /* Hide actions button */
+  #actionsButton {
     display: none !important;
   }
   
@@ -70,7 +70,7 @@ page {
 }
 
 .main-container {
-  padding: 25px;
+  padding: 40px 25px 25px 25px;
   position: relative;
   height: calc(100vh - 50px);
 }
@@ -126,7 +126,7 @@ page {
 }
 
 .company-name {
-  font-size: 2em;
+  font-size: 1.9em;
   font-weight: bold;
   color: #000 !important;
   margin-bottom: 3px;
@@ -135,7 +135,7 @@ page {
 }
 
 .company-description {
-  font-size: 11px;
+  font-size: 13px;
   color: #000 !important;
   margin-bottom: 3px;
   line-height: 1.3;
@@ -143,7 +143,7 @@ page {
 }
 
 .company-contact {
-  font-size: 10px;
+  font-size: 12px;
   color: #000 !important;
   line-height: 1.3;
   font-weight: normal;
@@ -151,7 +151,7 @@ page {
 
 .proforma-info {
   text-align: right;
-  font-size: 12px;
+  font-size: 13px;
   white-space: nowrap;
   color: #000 !important;
   font-weight: normal;
@@ -167,7 +167,7 @@ page {
   width: 100%;
   border-collapse: collapse;
   margin-bottom: 20px;
-  font-size: 12px;
+  font-size: 13px;
 }
 
 .quotation-table th {
@@ -204,7 +204,7 @@ page {
 }
 
 .quotation-table .company-name-cell {
-  font-size: 16px;
+  font-size: 17px;
   font-weight: bold;
   border-right: 2px solid #fff !important;
 }
@@ -214,7 +214,7 @@ page {
   width: 100%;
   border-collapse: collapse;
   /* margin-bottom: 15px; */
-  font-size: 12px;
+  font-size: 13px;
 }
 
 .items-table th {
@@ -257,7 +257,7 @@ page {
 .summary-table {
   width: 100%;
   border-collapse: collapse;
-  font-size: 12px;
+  font-size: 13px;
   /* margin-bottom: 15px; */
   margin-bottom: 20px;
   border-bottom: 1px solid #000 !important
@@ -336,7 +336,7 @@ page {
   width: 100%;
   border-collapse: collapse;
   margin-bottom: 20px;
-  font-size: 12px;
+  font-size: 13px;
 }
 
 .amount-words-table td {
@@ -356,7 +356,7 @@ page {
 }
 
 .amount-words-title {
-  font-size: 14px;
+  font-size: 15px;
   font-weight: bold;
   color: #000 !important;
   margin-bottom: 8px;
@@ -364,7 +364,7 @@ page {
 }
 
 .amount-words-content {
-  font-size: 13px;
+  font-size: 14px;
   color: #000 !important;
   line-height: 1.4;
   margin-top: 8px;
@@ -406,43 +406,12 @@ page {
   color: #000 !important;
 }
 
-/* VAT Table - FIXED COLORS */
-.vat-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-bottom: 20px;
-  font-size: 12px;
-}
-
-.vat-table th {
-  background-color: #E6E6FA !important;
-  border: 1px solid #000 !important;
-  padding: 6px;
-  text-align: center;
-  font-weight: bold;
-  color: #000 !important;
-  -webkit-print-color-adjust: exact !important;
-  color-adjust: exact !important;
-  print-color-adjust: exact !important;
-}
-
-.vat-table td {
-  border: 1px solid #000 !important;
-  padding: 6px;
-  text-align: center;
-  background-color: white !important;
-  color: #000 !important;
-  -webkit-print-color-adjust: exact !important;
-  color-adjust: exact !important;
-  print-color-adjust: exact !important;
-}
-
 /* Terms Table - FIXED COLORS */
 .terms-table {
   width: 100%;
   border-collapse: collapse;
   margin-bottom: 20px;
-  font-size: 12px;
+  font-size: 13px;
 }
 
 .terms-table th {
@@ -455,23 +424,27 @@ page {
   -webkit-print-color-adjust: exact !important;
   color-adjust: exact !important;
   print-color-adjust: exact !important;
+  font-size: 14px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
 }
 
 .terms-table td {
   background-color: #E6E6FA !important;
   border: 1px solid #E6E6FA !important;
-  padding: 10px;
+  padding: 12px;
   color: #000 !important;
   -webkit-print-color-adjust: exact !important;
   color-adjust: exact !important;
   print-color-adjust: exact !important;
+  line-height: 1.6;
 }
 
 /* Bottom Section Table - FIXED COLORS */
 .bottom-table {
   width: 100%;
   border-collapse: collapse;
-  font-size: 12px;
+  font-size: 13px;
 }
 
 .bottom-table td {
@@ -491,12 +464,12 @@ page {
 
 .signature-cell {
   width: 30%;
-  text-align: right;
+  text-align: left;
 }
 
 .bank-details h4 {
   margin: 0 0 10px 0;
-  font-size: 12px;
+  font-size: 13px;
   font-weight: bold;
   color: #000 !important;
 }
@@ -513,7 +486,7 @@ page {
 
 .payment-terms h4 {
   margin: 0 0 8px 0;
-  font-size: 12px;
+  font-size: 13px;
   font-weight: bold;
   color: #000 !important;
 }
@@ -523,19 +496,97 @@ page {
 }
 
 .signature-content {
-  text-align: right;
+  text-align: left;
   color: #000 !important;
 }
 
 .signature-line {
   margin: 40px 0 15px 0;
-  text-align: center;
+  text-align: left;
 }
 
 .signature-box {
   width: 120px;
   height: 50px;
-  margin: 10px auto;
+  margin: 10px 0;
+}
+
+/* Actions Button Styles */
+.actions-dropdown {
+  position: fixed;
+  bottom: 20px;
+  left: 20px;
+  z-index: 1000;
+}
+
+.actions-btn {
+  background: #2c5aa0;
+  color: white;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  box-shadow: 0 4px 12px rgba(44, 90, 160, 0.3);
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.actions-btn:hover {
+  background: #1e3d6f;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(44, 90, 160, 0.4);
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  bottom: 100%;
+  left: 0;
+  background-color: white;
+  min-width: 160px;
+  box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+  border-radius: 8px;
+  overflow: hidden;
+  margin-bottom: 8px;
+  border: 1px solid #e0e0e0;
+}
+
+.dropdown-content a {
+  color: #333;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+  font-size: 14px;
+  transition: background-color 0.3s ease;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.dropdown-content a:last-child {
+  border-bottom: none;
+}
+
+.dropdown-content a:hover {
+  background-color: #f8f9fa;
+}
+
+.dropdown-content a.print-action:hover {
+  background-color: #e8f4fd;
+}
+
+.dropdown-content a.edit-action:hover {
+  background-color: #fff3e0;
+}
+
+.dropdown-content a.delete-action:hover {
+  background-color: #ffeaea;
+}
+
+.actions-dropdown.show .dropdown-content {
+  display: block;
 }
 </style>
 
@@ -628,7 +679,7 @@ page {
     <table class="summary-table">
         <tr>
             <td class="words-cell">
-                <div class="amount-words-title">Bill Amount in Words:</div>
+                <div class="amount-words-title">Amount in Words:</div>
                 <div class="amount-words-content">
                     <?php 
                     helper('number_to_words_helper');
@@ -646,110 +697,45 @@ page {
             </td>
             <td class="totals-cell">
                 <div class="totals-inner">
+                    <?php
+                    // Calculate proper subtotal (sum of all item totals before tax)
+                    $calculatedSubtotal = 0;
+                    $calculatedTaxAmount = 0;
+                    
+                    foreach ($itemDetails as $item) {
+                        $itemTotal = $item['quantity'] * $item['price'];
+                        $calculatedSubtotal += $itemTotal;
+                        
+                        $vatStatus = isset($item['vat_status']) ? $item['vat_status'] : 'taxable';
+                        if ($vatStatus === 'taxable') {
+                            $calculatedTaxAmount += ($itemTotal * 18) / 100;
+                        }
+                    }
+                    
+                    $calculatedGrandTotal = $calculatedSubtotal + $calculatedTaxAmount;
+                    ?>
                     <div class="total-row" style="border-bottom: 1px solid #000 !important;">
                         <div class="total-label"><strong>Sub Total</strong></div>
-                        <div class="total-amount"><strong><?= number_format($invDetails[0]['subtotal'], 0); ?></strong></div>
+                        <div class="total-amount"><strong><?= number_format($calculatedSubtotal, 0); ?></strong></div>
                     </div>
                     <div class="total-row">
                         <div class="total-label">Total Tax Amount</div>
-                        <div class="total-amount"><?= number_format($invDetails[0]['taxamount'], 0); ?></div>
+                        <div class="total-amount"><?= number_format($calculatedTaxAmount, 0); ?></div>
                     </div>
                     <div class="total-row">
                         <div class="total-label"><strong>Grand Total</strong></div>
-                        <div class="total-amount"><strong><?= number_format($invDetails[0]['totalamount'], 0); ?></strong></div>
+                        <div class="total-amount"><strong><?= number_format($calculatedGrandTotal, 0); ?></strong></div>
                     </div>
                 </div>
             </td>
         </tr>
-    </table>
-
-    <!-- Amount in Words and Grand Total Table -->
-    <!-- <table class="amount-words-table">
-        <tr>
-            <td class="words-cell">
-                <div class="amount-words-title">Bill Amount in Words:</div>
-                <div class="amount-words-content">
-                    <?php 
-                    helper('number_to_words_helper');
-                    // Use the English (International) system for number to words
-                    if (function_exists('digtoval_en')) {
-                        echo ucfirst(digtoval_en($invDetails[0]['totalamount']));
-                    } else {
-                        // fallback: fix for lakh/crore to million
-                        $amount = $invDetails[0]['totalamount'];
-                        $fmt = new \NumberFormatter('en', \NumberFormatter::SPELLOUT);
-                        echo ucfirst($fmt->format($amount)) . " Ugandan shillings";
-                    }
-                    ?>
-                </div>
-            </td>
-            <td class="grand-total-cell">
-                <div class="grand-total-content">
-                    <div class="grand-total-content2">Grand Total</div>
-                    <div class="grand-total-amount"><?= number_format($invDetails[0]['totalamount'], 0); ?></div>
-                </div>
-            </td>
-        </tr>
-    </table> -->
-
-    <!-- VAT Table - Only show taxable items -->
-    <table class="vat-table">
-      <thead>
-        <tr>
-          <th>Item Description</th>
-          <th>Tax</th>
-          <th>Taxable Amount</th>
-          <th>Rate</th>
-          <th>Tax Amount</th>
-        </tr>
-      </thead>
-      <tbody>
-        <?php 
-        $totalTaxableAmount = 0;
-        $totalTaxAmount = 0;
-        $hasTaxableItems = false;
-        
-        foreach ($itemDetails as $item): 
-          $vatStatus = isset($item['vat_status']) ? $item['vat_status'] : 'taxable';
-          $quantity = $item['quantity'];
-          $price = $item['price'];
-          $taxableAmount = $quantity * $price;
-          
-          // Only show taxable items
-          if ($vatStatus === 'taxable') {
-            $hasTaxableItems = true;
-            $vatAmount = ($taxableAmount * 18) / 100; // Fixed 18% VAT
-            $totalTaxableAmount += $taxableAmount;
-            $totalTaxAmount += $vatAmount;
-        ?>
-        <tr>
-          <td><?= $item['item_name']; ?></td>
-          <td>Vat (18%)</td>
-          <td><?= number_format($taxableAmount, 0); ?></td>
-          <td>18%</td>
-          <td><?= number_format($vatAmount, 0); ?></td>
-        </tr>
-        <?php 
-          }
-        endforeach; 
-        
-        // Only show totals if there are taxable items
-        if ($hasTaxableItems): ?>
-        <tr style="font-weight: bold; border-top: 2px solid #000;">
-          <td colspan="2">Total</td>
-          <td><?= number_format($totalTaxableAmount, 0); ?></td>
-          <td>-</td>
-          <td><?= number_format($totalTaxAmount, 0); ?></td>
-        </tr>
-        <?php endif; ?>
-      </tbody>
     </table>
 
     <!-- Terms & Conditions Table -->
     <table class="terms-table">
         <thead>
             <tr>
-                <th>Terms & Conditions</th>
+                <th>TERMS & CONDITIONS</th>
             </tr>
         </thead>
         <tbody>
@@ -771,13 +757,13 @@ page {
                     <div>Bank Name: <strong><?= isset($bankDetails[0]) ? $bankDetails[0]['bname'] : 'EQUITY BANK UGANDA LIMITED' ?></strong></div>
                     <div>Account Number: <strong><?= isset($bankDetails[0]) ? $bankDetails[0]['ac'] : '1004201798242' ?></strong></div>
                     <div>Bank Code: <strong><?= isset($bankDetails[0]) ? $bankDetails[0]['ifsc'] : 'EQBLUGKAXXX' ?></strong></div>
-                    <div>Bank Branch: <strong><?= isset($bankDetails[0]) ? $bankDetails[0]['branch'] : 'Main Branch' ?></strong></div>
+                    <div>Account Name: <strong><?= isset($bankDetails[0]) ? $bankDetails[0]['branch'] : 'EMAX' ?></strong></div>
                 </div>
                 
-                                  <div class="payment-terms">
-                      <h4>Payment Terms</h4>
-                      <div><?= isset($invDetails[0]['payment_terms']) ? $invDetails[0]['payment_terms'] : 'Payment must be within 30 working days after delivery' ?></div>
-                  </div>
+                <div class="payment-terms">
+                    <h4>Payment Terms</h4>
+                    <div><?= isset($invDetails[0]['payment_terms']) ? $invDetails[0]['payment_terms'] : 'Payment must be within 30 working days after delivery' ?></div>
+                </div>
             </td>
             <td class="signature-cell">
                 <div class="signature-content">
@@ -789,15 +775,14 @@ page {
                             if (file_exists($signaturePath)): ?>
                                 <img src="data:image/jpeg;base64,<?= base64_encode(file_get_contents($signaturePath)); ?>" alt="Signature" style="max-width: 120px; max-height: 50px;">
                             <?php else: ?>
-                                <div class="signature-box" style="width: 120px; height: 50px; margin: 10px auto;"></div>
+                                <div class="signature-box" style="width: 120px; height: 50px; margin: 10px 0;"></div>
                             <?php endif; ?>
                         <?php else: ?>
-                            <div class="signature-box" style="width: 120px; height: 50px; margin: 10px auto;"></div>
+                            <div class="signature-box" style="width: 120px; height: 50px; margin: 10px 0;"></div>
                         <?php endif; ?>
                     </div>
                     <div>
-                      <strong>On Behalf of </br> EMAX SUPPLIES & LOGISTICS LIMITED</strong>
-                        <!-- <strong>On Behalf of <?= isset($companyDetails['c_name']) ? $companyDetails['c_name'] : 'EMAX SUPPLIES & LOGISTICS LIMITED' ?></strong> -->
+                        <strong>On Behalf of<br>EMAX SUPPLIES & LOGISTICS LIMITED</strong>
                     </div>
                 </div>
             </td>
@@ -810,36 +795,58 @@ page {
 <?php endif; ?>
 </page>
 
-<!-- Print Button (only visible on screen) -->
-<div id="printButton" style="position: fixed; top: 10px; right: 10px; z-index: 1000;">
-    <button onclick="printInvoice()" style="background: #2c5aa0; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer; font-size: 16px;">
-        🖨️ Print Invoice
+<!-- Actions Button (only visible on screen) -->
+<div class="actions-dropdown" id="actionsButton">
+    <button class="actions-btn" onclick="toggleDropdown()">
+        Actions <span style="font-size: 10px;">▼</span>
     </button>
+    <div class="dropdown-content" id="dropdownContent">
+        <a href="#" class="print-action" onclick="printInvoice()">🖨️ Print</a>
+        <a href="<?= base_url(); ?>Proinvoice/edit/<?= $invDetails[0]['invid']; ?>" class="edit-action">✏️ Edit</a>
+        <a href="<?= base_url(); ?>Proinvoice/delete/<?= $invDetails[0]['invid']; ?>" class="delete-action" onclick="return confirm('Are you sure you want to delete this invoice?')">🗑️ Delete</a>
+    </div>
 </div>
 
 <script>
   var base_url = "<?= base_url(); ?>";
   
+  function toggleDropdown() {
+    document.getElementById("actionsButton").classList.toggle("show");
+  }
+  
+  // Close dropdown when clicking outside
+  window.onclick = function(event) {
+    if (!event.target.matches('.actions-btn') && !event.target.closest('.actions-btn')) {
+      var dropdown = document.getElementById("actionsButton");
+      if (dropdown.classList.contains('show')) {
+        dropdown.classList.remove('show');
+      }
+    }
+  }
+  
   function printInvoice() {
-    // Hide the print button before printing
-    document.getElementById('printButton').style.display = 'none';
+    // Hide the actions button before printing
+    document.getElementById('actionsButton').style.display = 'none';
     
     // Print the page
     window.print();
     
-    // Show the print button again after print dialog closes
+    // Show the actions button again after print dialog closes
     setTimeout(function() {
-      document.getElementById('printButton').style.display = 'block';
+      document.getElementById('actionsButton').style.display = 'block';
     }, 1000);
+    
+    // Close dropdown
+    document.getElementById("actionsButton").classList.remove("show");
   }
   
-  // Auto-hide print button when printing
+  // Auto-hide actions button when printing
   window.addEventListener('beforeprint', function() {
-    document.getElementById('printButton').style.display = 'none';
+    document.getElementById('actionsButton').style.display = 'none';
   });
   
   window.addEventListener('afterprint', function() {
-    document.getElementById('printButton').style.display = 'block';
+    document.getElementById('actionsButton').style.display = 'block';
   });
 </script>
 

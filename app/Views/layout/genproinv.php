@@ -280,7 +280,13 @@
                     <div class="col-sm-8">
                       <div class="input-group date">
                         <div class="input-group-addon"><i class="fa fa-calendar"></i></div>
-                        <input type="text" name="datepicker" class="form-control" id="datepicker" value="<?php echo date('d-m-Y'); ?>">
+                        <input 
+                          type="date" 
+                          name="datepicker" 
+                          class="form-control" 
+                          id="datepicker" 
+                          value="<?= date('Y-m-d'); ?>"
+                        >
                       </div>
                       <div id="date_error" style="color: red;"></div>
                     </div>
