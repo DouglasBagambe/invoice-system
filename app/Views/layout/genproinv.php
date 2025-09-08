@@ -50,8 +50,8 @@
     /* Column widths */
     .col-check { width: 40px; }
     .col-item-no { width: 60px; }
-    .col-item-name { width: 180px; }
-    .col-desc { width: 120px; }
+    .col-item-name { width: 300px; } /* Increased width since description column is removed */
+    /* .col-desc { width: 120px; } */ /* Commented out - description column removed */
     .col-qty { width: 50px; }
     .col-unit { width: 60px; }
     .col-price { width: 80px; }
@@ -61,28 +61,251 @@
     .col-total { width: 80px; }
     .col-action { width: 50px; }
     
-    .bank-form, .item-form { 
-      background: #ffffff; 
-      padding: 25px; 
-      margin: 20px 0; 
-      border: 2px solid #007bff; 
-      border-radius: 8px; 
+    /* Modern Modal Overlay */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.6);
+      backdrop-filter: blur(5px);
+      z-index: 9999;
       display: none;
-      box-shadow: 0 8px 16px rgba(0,123,255,0.15);
+    }
+
+    /* Sleek Modal Forms */
+    .sleek-modal {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
+      max-width: 500px;
+      width: 90%;
+      max-height: 80vh;
+      overflow-y: auto;
+      z-index: 10000;
+      display: none;
+      animation: modalSlideIn 0.3s ease-out;
+    }
+
+    @keyframes modalSlideIn {
+      from {
+        opacity: 0;
+        transform: translate(-50%, -60%);
+      }
+      to {
+        opacity: 1;
+        transform: translate(-50%, -50%);
+      }
+    }
+
+    .modal-header {
+      padding: 20px 25px 0;
+      border-bottom: none;
+    }
+
+    .modal-title {
+      font-size: 20px;
+      font-weight: 600;
+      color: #2c3e50;
+      margin: 0;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 15px;
+      right: 20px;
+      background: none;
+      border: none;
+      font-size: 24px;
+      color: #95a5a6;
+      cursor: pointer;
+      width: 30px;
+      height: 30px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      transition: all 0.2s;
+    }
+
+    .modal-close:hover {
+      background: #ecf0f1;
+      color: #e74c3c;
+    }
+
+    .modal-body {
+      padding: 20px 25px;
+    }
+
+    .modal-footer {
+      padding: 0 25px 25px;
+      display: flex;
+      gap: 12px;
+      justify-content: flex-end;
+    }
+
+    /* Modern Form Styling */
+    .form-group-modern {
+      margin-bottom: 20px;
+    }
+
+    .form-group-modern label {
+      display: block;
+      margin-bottom: 6px;
+      font-weight: 500;
+      color: #34495e;
+      font-size: 14px;
+    }
+
+    .form-control-modern {
+      width: 100%;
+      padding: 12px 16px;
+      border: 2px solid #e1e8ed;
+      border-radius: 8px;
+      font-size: 14px;
+      transition: all 0.3s;
+      background: #fff;
+    }
+
+    .form-control-modern:focus {
+      outline: none;
+      border-color: #3498db;
+      box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+    }
+
+    .form-control-modern.error {
+      border-color: #e74c3c;
+      box-shadow: 0 0 0 3px rgba(231, 76, 60, 0.1);
+    }
+
+    .error-text {
+      color: #e74c3c;
+      font-size: 12px;
+      margin-top: 4px;
+      display: block;
+    }
+
+    /* Modern Buttons */
+    .btn-modern {
+      padding: 12px 24px;
+      border: none;
+      border-radius: 8px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.3s;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 14px;
+    }
+
+    .btn-primary-modern {
+      background: linear-gradient(135deg, #3498db, #2980b9);
+      color: white;
+    }
+
+    .btn-primary-modern:hover {
+      background: linear-gradient(135deg, #2980b9, #21618c);
+      transform: translateY(-1px);
+      box-shadow: 0 5px 15px rgba(52, 152, 219, 0.4);
+    }
+
+    .btn-secondary-modern {
+      background: #ecf0f1;
+      color: #7f8c8d;
+      border: 2px solid #e1e8ed;
+    }
+
+    .btn-secondary-modern:hover {
+      background: #d5dbdb;
+      border-color: #bdc3c7;
+    }
+
+    .btn-success-modern {
+      background: linear-gradient(135deg, #27ae60, #229954);
+      color: white;
+    }
+
+    .btn-success-modern:hover {
+      background: linear-gradient(135deg, #229954, #1e8449);
+      transform: translateY(-1px);
+      box-shadow: 0 5px 15px rgba(39, 174, 96, 0.4);
+    }
+
+    /* Sleek Add Buttons */
+    .add-btn-sleek {
+      background: linear-gradient(135deg, #3498db, #2980b9);
+      border: none;
+      border-radius: 6px;
+      color: white;
+      width: 32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.3s;
+      font-size: 14px;
+    }
+
+    .add-btn-sleek:hover {
+      background: linear-gradient(135deg, #2980b9, #21618c);
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(52, 152, 219, 0.4);
+    }
+
+    .add-btn-success {
+      background: linear-gradient(135deg, #27ae60, #229954);
+    }
+
+    .add-btn-success:hover {
+      background: linear-gradient(135deg, #229954, #1e8449);
+      box-shadow: 0 4px 12px rgba(39, 174, 96, 0.4);
+    }
+
+    /* Item name field autocomplete styling */
+    .item-suggestions {
+      position: fixed;
+      background: white;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      max-height: 200px;
+      overflow-y: auto;
+      z-index: 9999;
+      display: none;
+      min-width: 200px;
+    }
+
+    .suggestion-item {
+      padding: 8px 12px;
+      cursor: pointer;
+      border-bottom: 1px solid #f0f0f0;
+      font-size: 12px;
+    }
+
+    .suggestion-item:hover, .suggestion-item.active {
+      background: #f8f9fa;
+    }
+
+    .suggestion-item:last-child {
+      border-bottom: none;
+    }
+
+    /* Input group for item name with position relative */
+    .item-input-wrapper {
       position: relative;
-      z-index: 1050;
-      animation: slideDown 0.3s ease-out;
+      width: 100%;
     }
-    .bank-form h4, .item-form h4 { 
-      margin-top: 0; 
-      margin-bottom: 15px;
-      color: #007bff; 
-      font-weight: bold;
-      border-bottom: 2px solid #007bff;
-      padding-bottom: 8px;
-    }
-    .item-form .btn { margin-right: 10px; }
-    .add-new-item:hover { background-color: #0056b3; border-color: #0056b3; }
+
     .invoice-summary { 
       background: #f8f9fa; 
       padding: 20px; 
@@ -102,54 +325,15 @@
       margin-top: 20px; 
     }
     
-    /* Animation for form slide */
-    @keyframes slideDown {
-      from { opacity: 0; transform: translateY(-20px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-    
-    /* Improved add new item button */
-    .add-new-item {
-      transition: all 0.3s ease;
-      border: 1px solid #17a2b8;
-      height: 28px;
-      padding: 2px 8px;
-      border-radius: 0 3px 3px 0;
-    }
-    .add-new-item:hover {
-      background-color: #138496 !important;
-      border-color: #117a8b !important;
-      transform: translateY(-1px);
-    }
-    
-    /* Input group styling for item table */
-    #item_table .input-group {
-      width: 100%;
-    }
-    #item_table .input-group .form-control {
-      border-radius: 3px 0 0 3px;
-    }
-    #item_table .input-group-btn {
-      width: auto;
-    }
-    #item_table .input-group-btn .btn {
-      border-left: 0;
-    }
-    
-    /* Form validation styles */
-    .form-control.is-invalid {
-      border-color: #dc3545;
-      box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.25);
-    }
-    
     /* Success message styling */
-    .alert-success {
+    .success-message {
+      background: linear-gradient(135deg, #d4edda, #c3e6cb);
       color: #155724;
-      background-color: #d4edda;
-      border-color: #c3e6cb;
-      padding: 10px 15px;
-      border-radius: 4px;
-      margin: 10px 0;
+      padding: 12px 16px;
+      border-radius: 8px;
+      margin: 15px 0;
+      display: none;
+      animation: slideDown 0.3s ease-out;
     }
     
     /* VAT toggle styling */
@@ -167,40 +351,7 @@
       color: #666;
     }
     
-    /* Client form specific styling */
-    #clientDetailsForm {
-      background: #ffffff;
-      padding: 25px;
-      margin: 20px 0;
-      border: 2px solid #28a745;
-      border-radius: 8px;
-      display: none;
-      box-shadow: 0 8px 16px rgba(40,167,69,0.15);
-      position: relative;
-      z-index: 1050;
-      animation: slideDown 0.3s ease-out;
-    }
-    
-    #clientDetailsForm h4 {
-      margin-top: 0;
-      margin-bottom: 15px;
-      color: #28a745;
-      font-weight: bold;
-      border-bottom: 2px solid #28a745;
-      padding-bottom: 8px;
-    }
-    
-    /* Input group styling for client dropdown */
-    #supplier + .input-group-btn .btn {
-      border-left: 0;
-      border-radius: 0 3px 3px 0;
-    }
-    
-    #supplier {
-      border-radius: 3px 0 0 3px;
-    }
-    
-    /* Form validation styles for client form */
+    /* Form validation styles for main form */
     .form-control.is-invalid {
       border-color: #dc3545;
       box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.25);
@@ -210,6 +361,46 @@
       font-size: 12px;
       margin-top: 5px;
     }
+
+    /* Loading state for buttons */
+    .btn-loading {
+      pointer-events: none;
+      opacity: 0.7;
+    }
+
+    .spinner {
+      width: 16px;
+      height: 16px;
+      border: 2px solid transparent;
+      border-top: 2px solid currentColor;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    /* Responsive design */
+    @media (max-width: 768px) {
+      .sleek-modal {
+        width: 95%;
+        max-height: 90vh;
+      }
+      
+      .modal-body {
+        padding: 15px 20px;
+      }
+      
+      .modal-footer {
+        padding: 0 20px 20px;
+        flex-direction: column;
+      }
+      
+      .btn-modern {
+        justify-content: center;
+      }
+    }
   </style>
 </head>
 <body class="hold-transition skin-blue sidebar-mini">
@@ -218,6 +409,189 @@
 
 <?= $this->include('Include/header.php');?>
 <?= $this->include('Include/sidebar.php');?>
+
+<!-- Modal Overlays -->
+<div id="modalOverlay" class="modal-overlay"></div>
+
+<!-- Client Modal -->
+<div id="clientModal" class="sleek-modal">
+  <div class="modal-header">
+    <h4 class="modal-title">
+      <i class="fa fa-user-plus" style="color: #27ae60;"></i>
+      Add New Client
+    </h4>
+    <button type="button" class="modal-close">&times;</button>
+  </div>
+  <div class="modal-body">
+    <div id="clientSuccessMessage" class="success-message"></div>
+    
+    <div class="row">
+      <div class="col-md-6">
+        <div class="form-group-modern">
+          <label>Client Name <span style="color: #e74c3c;">*</span></label>
+          <input type="text" id="new_client_name" class="form-control-modern" placeholder="Enter client name">
+          <span class="error-text" id="client_name_error"></span>
+        </div>
+        
+        <div class="form-group-modern">
+          <label>Address <span style="color: #e74c3c;">*</span></label>
+          <textarea id="new_client_address" class="form-control-modern" rows="2" placeholder="Enter client address" style="resize: vertical; height: auto; min-height: 80px;"></textarea>
+          <span class="error-text" id="client_address_error"></span>
+        </div>
+        
+        <div class="form-group-modern">
+          <label>Mobile Number <span style="color: #e74c3c;">*</span></label>
+          <input type="text" id="new_client_mobile" class="form-control-modern" placeholder="Enter mobile number">
+          <span class="error-text" id="client_mobile_error"></span>
+        </div>
+      </div>
+      
+      <div class="col-md-6">
+        <div class="form-group-modern">
+          <label>Country</label>
+          <input type="text" id="new_client_country" class="form-control-modern" value="Uganda" placeholder="Enter country">
+        </div>
+        
+        <div class="form-group-modern">
+          <label>GST Number</label>
+          <input type="text" id="new_client_gst" class="form-control-modern" placeholder="Enter GST number">
+        </div>
+        
+        <div class="form-group-modern">
+          <label>Email</label>
+          <input type="email" id="new_client_email" class="form-control-modern" placeholder="Enter email address">
+        </div>
+      </div>
+    </div>
+    
+    <div class="row">
+      <div class="col-md-6">
+        <div class="form-group-modern">
+          <label>Client Type <span style="color: #e74c3c;">*</span></label>
+          <select id="new_client_type" class="form-control-modern">
+            <option value="">Select Type</option>
+            <option value="Loc">Local</option>
+            <option value="IGST">IGST</option>
+          </select>
+          <span class="error-text" id="client_type_error"></span>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="form-group-modern">
+          <label>User Type <span style="color: #e74c3c;">*</span></label>
+          <select id="new_client_user_type" class="form-control-modern">
+            <option value="">Select User Type</option>
+            <option value="0">Regular</option>
+            <option value="1">Premium</option>
+            <option value="2">VIP</option>
+          </select>
+          <span class="error-text" id="client_user_type_error"></span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn-modern btn-secondary-modern" id="cancelClientModal">
+      <i class="fa fa-times"></i> Cancel
+    </button>
+    <button type="button" class="btn-modern btn-success-modern" id="saveClient">
+      <i class="fa fa-save"></i> Save Client
+    </button>
+  </div>
+</div>
+
+<!-- Bank Modal -->
+<div id="bankModal" class="sleek-modal">
+  <div class="modal-header">
+    <h4 class="modal-title">
+      <i class="fa fa-bank" style="color: #3498db;"></i>
+      Add New Bank
+    </h4>
+    <button type="button" class="modal-close">&times;</button>
+  </div>
+  <div class="modal-body">
+    <div id="bankSuccessMessage" class="success-message"></div>
+    
+    <div class="row">
+      <div class="col-md-6">
+        <div class="form-group-modern">
+          <label>Bank Name <span style="color: #e74c3c;">*</span></label>
+          <input type="text" id="new_bank_name" class="form-control-modern" placeholder="Enter bank name">
+          <span class="error-text" id="bank_name_error"></span>
+        </div>
+        
+        <div class="form-group-modern">
+          <label>Account Number <span style="color: #e74c3c;">*</span></label>
+          <input type="text" id="new_account_number" class="form-control-modern" placeholder="Enter account number">
+          <span class="error-text" id="account_number_error"></span>
+        </div>
+      </div>
+      
+      <div class="col-md-6">
+        <div class="form-group-modern">
+          <label>Bank Code/Swift Code <span style="color: #e74c3c;">*</span></label>
+          <input type="text" id="new_bank_code" class="form-control-modern" placeholder="Enter bank code">
+          <span class="error-text" id="bank_code_error"></span>
+        </div>
+        
+        <div class="form-group-modern">
+          <label>Account Name <span style="color: #e74c3c;">*</span></label>
+          <input type="text" id="new_account_name" class="form-control-modern" placeholder="Enter account name">
+          <span class="error-text" id="account_name_error"></span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn-modern btn-secondary-modern" id="cancelBankModal">
+      <i class="fa fa-times"></i> Cancel
+    </button>
+    <button type="button" class="btn-modern btn-primary-modern" id="saveBank">
+      <i class="fa fa-save"></i> Save Bank
+    </button>
+  </div>
+</div>
+
+<!-- Signature Modal -->
+<div id="signatureModal" class="sleek-modal">
+  <div class="modal-header">
+    <h4 class="modal-title">
+      <i class="fa fa-pencil" style="color: #9b59b6;"></i>
+      Add New Signature
+    </h4>
+    <button type="button" class="modal-close">&times;</button>
+  </div>
+  <div class="modal-body">
+    <div id="signatureSuccessMessage" class="success-message"></div>
+    
+    <div class="form-group-modern">
+      <label>Signature Name <span style="color: #e74c3c;">*</span></label>
+      <input type="text" id="new_signature_name" class="form-control-modern" placeholder="e.g., Main Signature">
+      <span class="error-text" id="signature_name_error"></span>
+    </div>
+    
+    <div class="form-group-modern">
+      <label>Upload Signature <span style="color: #e74c3c;">*</span></label>
+      <input type="file" id="new_signature_file" class="form-control-modern" accept="image/*">
+      <span class="error-text" id="signature_file_error"></span>
+    </div>
+    
+    <div class="form-group-modern">
+      <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+        <input type="checkbox" id="set_as_default" style="margin: 0;">
+        Set as Default Signature
+      </label>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn-modern btn-secondary-modern" id="cancelSignatureModal">
+      <i class="fa fa-times"></i> Cancel
+    </button>
+    <button type="button" class="btn-modern btn-primary-modern" id="saveSignature">
+      <i class="fa fa-save"></i> Save Signature
+    </button>
+  </div>
+</div>
 
 <div class="content-wrapper">
   <section class="content-header">
@@ -252,7 +626,7 @@
                           <option value="">Select Client</option>
                         </select>
                         <div class="input-group-btn">
-                          <button type="button" id="addNewClient" class="btn btn-info btn-sm" title="Add New Client">
+                          <button type="button" id="addNewClient" class="add-btn-sleek add-btn-success" title="Add New Client">
                             <i class="fa fa-plus"></i>
                           </button>
                         </div>
@@ -302,13 +676,11 @@
                       <tr>
                         <th class="col-check"><input id="checkAll" type="checkbox"></th>
                         <th class="col-item-no">Item No</th>
-                        <th class="col-item-name">Item Name <span style="color: red;">*</span></th>
-                        <th class="col-desc">Description</th>
+                        <th class="col-item-name">Item Description <span style="color: red;">*</span></th>
+                        <!-- <th class="col-desc">Description</th> -->
                         <th class="col-qty">Qty <span style="color: red;">*</span></th>
                         <th class="col-unit">Unit</th>
                         <th class="col-price">Price <span style="color: red;">*</span></th>
-                        <!-- <th class="col-vat">VAT %</th>
-                        <th class="col-vat-type">VAT Type</th> -->
                         <th class="col-vat-status">Tax</th>
                         <th class="col-total">Total <span style="color: red;">*</span></th>
                         <th class="col-action">
@@ -323,28 +695,15 @@
                         <td><input class="itemRow" type="checkbox"></td>
                         <td><input type="text" name="item_code[]" id="productCode_1" value="1" class="form-control"></td>
                         <td>
-                          <div class="input-group">
-                          <select name="item_name[]" id="productName_1" class="form-control item_name" onchange="showHsn(1,this.value)">
-                            <option value="">Select Item</option>
-                          </select>
-                            <div class="input-group-btn">
-                              <button type="button" class="btn btn-info btn-sm add-new-item" title="Add New Item">
-                                <i class="fa fa-plus"></i>
-                          </button>
-                            </div>
+                          <div class="item-input-wrapper">
+                            <input type="text" name="item_name[]" id="productName_1" class="form-control item_name" placeholder="Type item description..." onchange="saveItemIfNew(this.value, 1)">
+                            <div class="item-suggestions" id="suggestions_1"></div>
                           </div>
                         </td>
-                        <td><input type="text" name="item_desc[]" id="productDesc_1" class="form-control item_desc"></td>
+                        <!-- <td><input type="text" name="item_desc[]" id="productDesc_1" class="form-control item_desc"></td> -->
                         <td><input type="number" name="item_quantity[]" id="quantity_1" min="1" value="1" class="form-control quantity"></td>
                         <td><input type="text" name="unit[]" id="unit_1" value="Kgs" class="form-control unit" placeholder="Kgs"></td>
                         <td><input type="number" name="price[]" id="price_1" class="form-control price"></td>
-                        <!-- <td><input type="number" name="vat_rate[]" id="vat_rate_1" value="18" class="form-control vat_rate" min="0" max="100"></td> -->
-                        <!-- <td>
-                          <select name="vat_type[]" id="vat_type_1" class="form-control vat_type">
-                            <option value="exclusive">Exclusive</option>
-                            <option value="inclusive">Inclusive</option>
-                          </select>
-                        </td> -->
                         <td>
                           <select name="vat_status[]" id="vat_status_1" class="form-control vat_status">
                             <option value="taxable">Vat (18%)</option>
@@ -363,188 +722,6 @@
                 </div>
               </div>
 
-              <!-- New Item Form -->
-              <div id="itemDetailsForm" class="item-form">
-                <div class="clearfix">
-                  <h4 style="float: left;">
-                    <i class="fa fa-plus-circle text-primary"></i> Add New Item
-                  </h4>
-                  <button type="button" id="cancelItemForm" class="btn btn-sm btn-default" style="float: right;">
-                    <i class="fa fa-times"></i>
-                  </button>
-                </div>
-                <div style="clear: both; margin-bottom: 15px;"></div>
-                
-                <div id="itemFormMessage" class="alert alert-success" style="display: none;"></div>
-                
-                <div class="row">
-                  <div class="col-md-6">
-                    <div class="form-group">
-                      <label>Item Name <span style="color: red;">*</span></label>
-                      <input type="text" name="new_item_name" id="new_item_name" class="form-control" placeholder="Enter item name">
-                      <div class="help-block" id="item_name_error" style="color: red;"></div>
-                    </div>
-                  </div>
-                  <div class="col-md-6">
-                    <div class="form-group">
-                      <label>Description</label>
-                      <input type="text" name="new_item_desc" id="new_item_desc" class="form-control" placeholder="Enter item description (optional)">
-                    </div>
-                  </div>
-                </div>
-                <div class="form-group text-right">
-                  <button type="button" id="cancelItemForm2" class="btn btn-default">
-                    <i class="fa fa-times"></i> Cancel
-                  </button>
-                  <button type="button" id="saveItemDetails" class="btn btn-primary">
-                    <i class="fa fa-save"></i> Save Item
-                  </button>
-                </div>
-              </div>
-
-              <!-- New Bank Form -->
-              <div id="bankDetailsForm" class="bank-form">
-                <h4>Add New Bank Details</h4>
-                <div class="row">
-                  <div class="col-md-6">
-                    <div class="form-group">
-                      <label>Bank Name <span style="color: red;">*</span></label>
-                      <input type="text" name="new_bank_name" id="new_bank_name" class="form-control">
-                    </div>
-                    <div class="form-group">
-                      <label>Account Number <span style="color: red;">*</span></label>
-                      <input type="text" name="new_account_number" id="new_account_number" class="form-control">
-                    </div>
-                  </div>
-                  <div class="col-md-6">
-                    <div class="form-group">
-                      <label>Bank Code/Swift Code <span style="color: red;">*</span></label>
-                      <input type="text" name="new_bank_code" id="new_bank_code" class="form-control">
-                    </div>
-                    <div class="form-group">
-                      <label>Account Name <span style="color: red;">*</span></label>
-                      <input type="text" name="new_account_name" id="new_account_name" class="form-control">
-                    </div>
-                  </div>
-                </div>
-                <div class="form-group">
-                  <button type="button" id="saveBankDetails" class="btn btn-primary">Save Bank</button>
-                  <button type="button" id="cancelBankForm" class="btn btn-default">Cancel</button>
-                </div>
-              </div>
-
-              <!-- New Client Form -->
-              <div id="clientDetailsForm" class="bank-form">
-                <form id="clientForm">
-                  <div class="clearfix">
-                    <h4 style="float: left;">
-                      <i class="fa fa-user-plus text-primary"></i> Add New Client
-                    </h4>
-                    <button type="button" id="cancelClientForm" class="btn btn-sm btn-default" style="float: right;">
-                      <i class="fa fa-times"></i>
-                    </button>
-                  </div>
-                  <div style="clear: both; margin-bottom: 15px;"></div>
-                  
-                  <div id="clientFormMessage" class="alert alert-success" style="display: none;"></div>
-                
-                <div class="row">
-                  <div class="col-md-6">
-                    <div class="form-group">
-                      <label>Client Name <span style="color: red;">*</span></label>
-                      <input type="text" name="c_name" id="new_client_name" class="form-control" placeholder="Enter client name">
-                      <div class="help-block" id="client_name_error" style="color: red;"></div>
-                    </div>
-                    <div class="form-group">
-                      <label>Address <span style="color: red;">*</span></label>
-                      <textarea name="c_add" id="new_client_address" class="form-control" rows="2" placeholder="Enter client address"></textarea>
-                      <div class="help-block" id="client_address_error" style="color: red;"></div>
-                    </div>
-                    <div class="form-group">
-                      <label>Mobile Number <span style="color: red;">*</span></label>
-                      <input type="text" name="mob" id="new_client_mobile" class="form-control" placeholder="Enter mobile number">
-                      <div class="help-block" id="client_mobile_error" style="color: red;"></div>
-                    </div>
-                  </div>
-                  <div class="col-md-6">
-                    <div class="form-group">
-                      <label>Country</label>
-                      <input type="text" name="country" id="new_client_country" class="form-control" value="India" placeholder="Enter country">
-                    </div>
-                    <div class="form-group">
-                      <label>GST Number</label>
-                      <input type="text" name="gst" id="new_client_gst" class="form-control" placeholder="Enter GST number">
-                    </div>
-                    <div class="form-group">
-                      <label>Email</label>
-                      <input type="email" name="email" id="new_client_email" class="form-control" placeholder="Enter email address">
-                    </div>
-                  </div>
-                </div>
-                <div class="row">
-                  <div class="col-md-6">
-                    <div class="form-group">
-                      <label>Client Type <span style="color: red;">*</span></label>
-                      <select name="c_type" id="new_client_type" class="form-control">
-                        <option value="">Select Type</option>
-                        <option value="Loc">Local</option>
-                        <option value="IGST">IGST</option>
-                      </select>
-                      <div class="help-block" id="client_type_error" style="color: red;"></div>
-                    </div>
-                  </div>
-                  <div class="col-md-6">
-                    <div class="form-group">
-                      <label>User Type <span style="color: red;">*</span></label>
-                      <select name="u_type" id="new_client_user_type" class="form-control">
-                        <option value="">Select User Type</option>
-                        <option value="0">Regular</option>
-                        <option value="1">Premium</option>
-                        <option value="2">VIP</option>
-                      </select>
-                      <div class="help-block" id="client_user_type_error" style="color: red;"></div>
-                    </div>
-                  </div>
-                </div>
-                  <div class="form-group text-right">
-                    <button type="button" id="cancelClientForm2" class="btn btn-default">
-                      <i class="fa fa-times"></i> Cancel
-                    </button>
-                    <button type="button" id="saveClientDetails" class="btn btn-primary">
-                      <i class="fa fa-save"></i> Save Client
-                    </button>
-                  </div>
-                </form>
-              </div>
-
-              <!-- New Signature Form -->
-              <div id="signatureDetailsForm" class="bank-form">
-                <h4>Add New Signature</h4>
-                <div class="row">
-                  <div class="col-md-6">
-                    <div class="form-group">
-                      <label>Signature Name <span style="color: red;">*</span></label>
-                      <input type="text" name="new_signature_name" id="new_signature_name" class="form-control" placeholder="e.g., Main Signature">
-                    </div>
-                  </div>
-                  <div class="col-md-6">
-                    <div class="form-group">
-                      <label>Upload Signature <span style="color: red;">*</span></label>
-                      <input type="file" name="new_signature_file" id="new_signature_file" class="form-control" accept="image/*">
-                    </div>
-                  </div>
-                </div>
-                <div class="form-group">
-                  <label>
-                    <input type="checkbox" name="set_as_default" id="set_as_default"> Set as Default Signature
-                  </label>
-                </div>
-                <div class="form-group">
-                  <button type="button" id="saveSignatureDetails" class="btn btn-primary">Save Signature</button>
-                  <button type="button" id="cancelSignatureForm" class="btn btn-default">Cancel</button>
-                </div>
-              </div>
-
               <!-- Invoice Summary -->
               <div class="invoice-summary">
                 <h4 style="margin-top: 0; margin-bottom: 20px;">Invoice Summary</h4>
@@ -552,7 +729,7 @@
                 <div class="row summary-row">
                   <div class="col-md-3 summary-col">
                     <label>Subtotal <span style="color: red;">*</span></label>
-                    <div class="input-group">
+                                          <div class="input-group">
                       <div class="input-group-addon">USH</div>
                       <input value="" type="number" class="form-control" name="subTotal" id="subTotal" readonly>
                     </div>
@@ -578,34 +755,42 @@
                 <div class="row summary-row">
                   <div class="col-md-6 summary-col">
                     <label>Select Bank <span style="color: red;">*</span></label>
-                    <select name="bank_id" id="bank_id" class="form-control select2">
-                      <option value="">Select Bank</option>
-                      <?php if(isset($banks) && !empty($banks)): ?>
-                        <?php foreach ($banks as $bank): ?>
-                          <option value="<?= $bank['bid'] ?>"><?= $bank['bname'] ?> - <?= $bank['ac'] ?></option>
-                        <?php endforeach; ?>
-                      <?php endif; ?>
-                    </select>
-                    <button type="button" id="addNewBank" class="btn btn-info btn-sm" style="margin-top: 5px;">
-                      <i class="fa fa-plus"></i> Add New Bank
-                    </button>
+                    <div class="input-group">
+                      <select name="bank_id" id="bank_id" class="form-control select2">
+                        <option value="">Select Bank</option>
+                        <?php if(isset($banks) && !empty($banks)): ?>
+                          <?php foreach ($banks as $bank): ?>
+                            <option value="<?= $bank['bid'] ?>"><?= $bank['bname'] ?> - <?= $bank['ac'] ?></option>
+                          <?php endforeach; ?>
+                        <?php endif; ?>
+                      </select>
+                      <div class="input-group-btn">
+                        <button type="button" id="addNewBank" class="add-btn-sleek" title="Add New Bank">
+                          <i class="fa fa-plus"></i>
+                        </button>
+                      </div>
+                    </div>
                     <div id="bank_error" style="color: red;"></div>
                   </div>
                   <div class="col-md-6 summary-col">
                     <label>Select Signature</label>
-                    <select name="signature_id" id="signature_id" class="form-control select2">
-                      <option value="">Select Signature</option>
-                      <?php if(isset($userSignatures) && !empty($userSignatures)): ?>
-                        <?php foreach ($userSignatures as $signature): ?>
-                          <option value="<?= $signature['id'] ?>" <?= $signature['is_default'] ? 'selected' : '' ?>>
-                            <?= $signature['signature_name'] ?>
-                          </option>
-                        <?php endforeach; ?>
-                      <?php endif; ?>
-                    </select>
-                    <button type="button" id="addNewSignature" class="btn btn-info btn-sm" style="margin-top: 5px;">
-                      <i class="fa fa-plus"></i> Add New Signature
-                    </button>
+                    <div class="input-group">
+                      <select name="signature_id" id="signature_id" class="form-control select2">
+                        <option value="">Select Signature</option>
+                        <?php if(isset($userSignatures) && !empty($userSignatures)): ?>
+                          <?php foreach ($userSignatures as $signature): ?>
+                            <option value="<?= $signature['id'] ?>" <?= $signature['is_default'] ? 'selected' : '' ?>>
+                              <?= $signature['signature_name'] ?>
+                            </option>
+                          <?php endforeach; ?>
+                        <?php endif; ?>
+                      </select>
+                      <div class="input-group-btn">
+                        <button type="button" id="addNewSignature" class="add-btn-sleek" title="Add New Signature">
+                          <i class="fa fa-plus"></i>
+                        </button>
+                      </div>
+                    </div>
                     <div id="signature_error" style="color: red;"></div>
                   </div>
                 </div>
@@ -632,8 +817,6 @@
                 </div>
               </div>
 
-
-
               <!-- Submit -->
               <div class="final-submit">
                 <input type="submit" name="submit" id="submitbtn" value="Save Invoice" 
@@ -656,21 +839,45 @@ var base_url = "<?= base_url(); ?>";
 
 $(document).ready(function() {
     var rowCount = 1;
-    var currentItemRow = null;
+    var debounceTimer = null;
     
-    // ESC key to close form
+    // ESC key to close modals
     $(document).keyup(function(e) {
         if (e.keyCode === 27) { // ESC key
-            if ($('#itemDetailsForm').is(':visible')) {
-                $('#itemDetailsForm').slideUp(300);
-                currentItemRow = null;
-                clearItemForm();
-            } else if ($('#clientDetailsForm').is(':visible')) {
-                $('#clientDetailsForm').slideUp(300);
-                $('#supplier').prop('disabled', false);
-                clearClientForm();
-            }
+            closeAllModals();
         }
+    });
+    
+    // Modal functions
+    function showModal(modalId) {
+        $('#modalOverlay').fadeIn(300);
+        $('#' + modalId).fadeIn(300);
+    }
+    
+    function closeModal(modalId) {
+        $('#' + modalId).fadeOut(300);
+        $('#modalOverlay').fadeOut(300);
+    }
+    
+    function closeAllModals() {
+        $('.sleek-modal').fadeOut(300);
+        $('#modalOverlay').fadeOut(300);
+        clearAllForms();
+    }
+    
+    // Modal event handlers
+    $('#addNewClient').click(() => showModal('clientModal'));
+    $('#addNewBank').click(() => showModal('bankModal'));
+    $('#addNewSignature').click(() => showModal('signatureModal'));
+    
+    // Close modal buttons
+    $('.modal-close, #cancelClientModal, #cancelBankModal, #cancelSignatureModal').click(function() {
+        closeAllModals();
+    });
+    
+    // Click outside modal to close
+    $('#modalOverlay').click(function() {
+        closeAllModals();
     });
     
     $('#supplier').select2({
@@ -685,280 +892,192 @@ $(document).ready(function() {
         }
     });
     
-    function initializeProductSelect(selector) {
-        $(selector).select2({
-            placeholder: "Select Item",
-            allowClear: true,
-            ajax: {
+    $('#datepicker').datepicker({ autoclose: true, format: 'dd-mm-yyyy' });
+    
+    // Item name autocomplete functionality
+    $(document).on('input', '.item_name', function() {
+        var $input = $(this);
+        var value = $input.val().trim();
+        var rowId = $input.attr('id').split('_')[1];
+        var $suggestions = $('#suggestions_' + rowId);
+        
+        if (debounceTimer) {
+            clearTimeout(debounceTimer);
+        }
+        
+        if (value.length < 2) {
+            $suggestions.hide();
+            return;
+        }
+        
+        debounceTimer = setTimeout(function() {
+            $.ajax({
                 url: base_url + '/proinv/getproducts',
+                method: 'GET',
                 dataType: 'json',
-                delay: 250,
-                data: function (params) { 
-                    return { category_name: params.term }; 
-                },
-                processResults: function (data) { 
-                    // Check if data is an array and has items
-                    if (!Array.isArray(data) || data.length === 0) {
-                        return { results: [] };
-                    }
+                data: { category_name: value },
+                success: function(data) {
+                    $suggestions.empty();
                     
-                    // Map the data correctly - handle different response formats
-                    var results = data.map(function(item) {
-                        // Handle different possible data structures
-                        if (typeof item === 'string') {
-                            return { id: item, text: item };
-                        } else if (item.id && item.text) {
-                            return { id: item.id, text: item.text };
-                        } else if (item.name) {
-                            return { id: item.id || item.name, text: item.name };
-                        } else {
-                            return { id: item.id || item, text: item.text || item.name || item };
+                    if (data && data.length > 0) {
+                        data.forEach(function(item) {
+                            var itemText = typeof item === 'string' ? item : (item.text || item.name || item);
+                            var itemId = typeof item === 'string' ? item : (item.id || item.name || item);
+                            
+                            $suggestions.append(
+                                '<div class="suggestion-item" data-value="' + itemId + '">' + itemText + '</div>'
+                            );
+                        });
+                        
+                        // Position the suggestions relative to the input field
+                        var inputOffset = $input.offset();
+                        var inputWidth = $input.outerWidth();
+                        
+                        $suggestions.css({
+                            'top': inputOffset.top + $input.outerHeight() + 2,
+                            'left': inputOffset.left,
+                            'width': inputWidth
+                        });
+                        
+                        $suggestions.show();
+                    } else {
+                        $suggestions.hide();
+                    }
+                },
+                error: function() {
+                    $suggestions.hide();
+                }
+            });
+        }, 300);
+    });
+    
+    // Handle suggestion clicks
+    $(document).on('click', '.suggestion-item', function() {
+        var $suggestion = $(this);
+        var value = $suggestion.data('value');
+        var text = $suggestion.text();
+        var $suggestions = $suggestion.parent();
+        var rowId = $suggestions.attr('id').split('_')[1];
+        
+        $('#productName_' + rowId).val(text);
+        $suggestions.hide();
+    });
+    
+    // Hide suggestions when clicking outside
+    $(document).on('click', function(e) {
+        if (!$(e.target).closest('.item-input-wrapper').length && !$(e.target).closest('.item-suggestions').length) {
+            $('.item-suggestions').hide();
+        }
+    });
+    
+    // Reposition suggestions on scroll
+    $(window).on('scroll resize', function() {
+        $('.item-suggestions:visible').each(function() {
+            var $suggestions = $(this);
+            var rowId = $suggestions.attr('id').split('_')[1];
+            var $input = $('#productName_' + rowId);
+            
+            if ($input.length) {
+                var inputOffset = $input.offset();
+                $suggestions.css({
+                    'top': inputOffset.top + $input.outerHeight() + 2,
+                    'left': inputOffset.left,
+                    'width': $input.outerWidth()
+                });
+            }
+        });
+    });
+    
+    // Auto-save new items function
+    function saveItemIfNew(itemName, rowId) {
+        if (!itemName || itemName.trim() === '') return;
+        
+        // Check if item already exists in database by making a quick search
+        $.ajax({
+            url: base_url + '/proinv/checkitem',
+            method: 'GET',
+            dataType: 'json',
+            data: { item_name: itemName.trim() },
+            success: function(response) {
+                if (!response.exists) {
+                    // Item doesn't exist, save it automatically
+                    $.ajax({
+                        url: base_url + '/proinv/saveitem',
+                        method: 'POST',
+                        dataType: 'json',
+                        data: { 
+                            item_name: itemName.trim(),
+                            description: '' 
+                        },
+                        success: function(saveResponse) {
+                            console.log('New item saved automatically: ' + itemName);
+                        },
+                        error: function() {
+                            console.log('Could not auto-save item: ' + itemName);
                         }
                     });
-                    
-                    return { results: results };
-                },
-                cache: true
+                }
+            },
+            error: function() {
+                // If check fails, just continue - item will be used as-is
+                console.log('Could not check if item exists: ' + itemName);
             }
         });
     }
     
-    initializeProductSelect('#productName_1');
-    $('#datepicker').datepicker({ autoclose: true, format: 'dd-mm-yyyy' });
-    
-    // Form toggles
-    $('#addNewBank').click(function() { 
-        $('#bankDetailsForm').slideDown(300); 
-        $('#bank_id').prop('disabled', true); 
-    });
-    $('#cancelBankForm').click(function() { 
-        $('#bankDetailsForm').slideUp(300); 
-        $('#bank_id').prop('disabled', false); 
-        clearBankForm(); 
-    });
-    
-    // Client form toggles
-    $('#addNewClient').click(function() { 
-        $('#clientDetailsForm').slideDown(300); 
-        $('#supplier').prop('disabled', true); 
-    });
-    $('#cancelClientForm, #cancelClientForm2').click(function() { 
-        $('#clientDetailsForm').slideUp(300); 
-        $('#supplier').prop('disabled', false); 
-        clearClientForm(); 
-    });
-    
-    // Signature form toggles
-    $('#addNewSignature').click(function() { 
-        $('#signatureDetailsForm').slideDown(300); 
-        $('#signature_id').prop('disabled', true); 
-    });
-    $('#cancelSignatureForm').click(function() { 
-        $('#signatureDetailsForm').slideUp(300); 
-        $('#signature_id').prop('disabled', false); 
-        clearSignatureForm(); 
-    });
-    
-    // Add New Item form handlers
-    $(document).on('click', '.add-new-item', function(e) { 
-        e.preventDefault();
-        currentItemRow = $(this).closest('tr'); 
-        $('#itemDetailsForm').slideDown(300);
-        $('#new_item_name').focus();
-    });
-    
-    // Multiple cancel handlers for different buttons
-    $('#cancelItemForm, #cancelItemForm2').click(function() { 
-        $('#itemDetailsForm').slideUp(300); 
-        currentItemRow = null; 
-        clearItemForm(); 
-    });
-    
-    // Save handlers
-    $('#saveItemDetails').click(function() {
-        var itemName = $('#new_item_name').val().trim();
-        var itemDesc = $('#new_item_desc').val().trim();
+    // Save handlers with improved UI feedback
+    $('#saveClient').click(function() {
+        var $btn = $(this);
+        var originalHtml = $btn.html();
+        
+        // Collect form data
+        var clientData = {
+            c_name: $('#new_client_name').val().trim(),
+            c_add: $('#new_client_address').val().trim(),
+            mob: $('#new_client_mobile').val().trim(),
+            country: $('#new_client_country').val().trim() || 'Uganda',
+            gst: $('#new_client_gst').val().trim(),
+            email: $('#new_client_email').val().trim(),
+            c_type: $('#new_client_type').val(),
+            u_type: parseInt($('#new_client_user_type').val())
+        };
         
         // Clear previous errors
-        $('#item_name_error').text('');
-        $('#new_item_name').removeClass('is-invalid');
-        $('#itemFormMessage').hide();
-        
-        // Validation
-        if (!itemName) { 
-            $('#item_name_error').text('Item name is required');
-            $('#new_item_name').addClass('is-invalid').focus();
-            return; 
-        }
-        
-        // Disable button to prevent double clicks
-        $(this).prop('disabled', true).html('<i class="fa fa-spinner fa-spin"></i> Saving...');
-        
-        $.ajax({
-            url: base_url + '/proinv/saveitem',
-            method: 'POST',
-            dataType: 'json',
-            data: { 
-                item_name: itemName, 
-                description: itemDesc 
-            },
-            success: function(response) {
-                
-                if (response && response.success) {
-                    // Show success message
-                    $('#itemFormMessage').text('Item "' + itemName + '" saved successfully!').show();
-                    
-                    if (currentItemRow) {
-                        var selectElement = currentItemRow.find('.item_name');
-                        
-                        // Clear existing selection first
-                        selectElement.val(null).trigger('change');
-                        
-                        // Add new option
-                        var newOption = new Option(itemName, itemName, true, true);
-                        selectElement.append(newOption).trigger('change');
-                        
-                        // Set description
-                        currentItemRow.find('.item_desc').val(itemDesc);
-                    }
-                    
-                    // Close form after 2 seconds
-                    setTimeout(function() {
-                        $('#itemDetailsForm').slideUp(300); 
-                        currentItemRow = null; 
-                        clearItemForm();
-                    }, 2000);
-                    
-                } else { 
-                    alert('Failed to save item: ' + (response.message || 'Unknown error')); 
-                }
-            },
-            error: function(xhr, status, error) { 
-                alert('Error saving item: ' + error); 
-            },
-            complete: function() {
-                // Re-enable button
-                $('#saveItemDetails').prop('disabled', false).html('<i class="fa fa-save"></i> Save Item');
-            }
-        });
-    });
-    
-    $('#saveBankDetails').click(function() {
-        var bankName = $('#new_bank_name').val().trim();
-        var accountNumber = $('#new_account_number').val().trim();
-        var bankCode = $('#new_bank_code').val().trim();
-        var accountName = $('#new_account_name').val().trim();
-        
-        // Clear previous errors
-        $('.bank-form .error').removeClass('error');
-        $('.bank-form [id$="_error"]').text('');
-        
-        // Validation
-        if (!bankName) { $('#new_bank_name').addClass('error'); return; }
-        if (!accountNumber) { $('#new_account_number').addClass('error'); return; }
-        if (!bankCode) { $('#new_bank_code').addClass('error'); return; }
-        if (!accountName) { $('#new_account_name').addClass('error'); return; }
-        
-        // Disable button to prevent double clicks
-        $(this).prop('disabled', true).html('<i class="fa fa-spinner fa-spin"></i> Saving...');
-        
-        $.ajax({
-            url: base_url + '/proinv/savebank',
-            method: 'POST',
-            dataType: 'json',
-            data: { 
-                bname: bankName, 
-                ac: accountNumber, 
-                ifsc: bankCode, 
-                account_name: accountName 
-            },
-            success: function(response) {
-                if (response && response.success) {
-                    // Add new option to bank dropdown
-                    var newOption = new Option(bankName + ' - ' + accountNumber, response.bank_id, true, true);
-                    $('#bank_id').append(newOption).trigger('change');
-                    
-                    // Close form and reset
-                    $('#bankDetailsForm').slideUp(300);
-                    $('#bank_id').prop('disabled', false);
-                    clearBankForm();
-                    
-                    alert('Bank saved successfully!');
-                } else {
-                    alert('Failed to save bank details: ' + (response.message || 'Unknown error'));
-                }
-            },
-            error: function(xhr, status, error) {
-                alert('Error saving bank details: ' + error);
-            },
-            complete: function() {
-                // Re-enable button
-                $('#saveBankDetails').prop('disabled', false).html('Save Bank');
-            }
-        });
-    });
-    
-    $('#saveClientDetails').click(function() {
-        var clientName = $('#new_client_name').val().trim();
-        var clientAddress = $('#new_client_address').val().trim();
-        var clientMobile = $('#new_client_mobile').val().trim();
-        var clientCountry = $('#new_client_country').val().trim();
-        var clientGst = $('#new_client_gst').val().trim();
-        var clientEmail = $('#new_client_email').val().trim();
-        var clientType = $('#new_client_type').val();
-        var clientUserType = $('#new_client_user_type').val();
-        
-        // Clear previous errors
-        $('#clientFormMessage').hide();
-        $('.help-block').text('');
-        $('.form-control').removeClass('is-invalid');
+        $('.error-text').text('');
+        $('.form-control-modern').removeClass('error');
         
         // Validation
         var isValid = true;
-        if (!clientName) { 
+        if (!clientData.c_name) {
             $('#client_name_error').text('Client name is required');
-            $('#new_client_name').addClass('is-invalid');
+            $('#new_client_name').addClass('error');
             isValid = false;
         }
-        if (!clientAddress) { 
+        if (!clientData.c_add) {
             $('#client_address_error').text('Address is required');
-            $('#new_client_address').addClass('is-invalid');
+            $('#new_client_address').addClass('error');
             isValid = false;
         }
-        if (!clientMobile) { 
+        if (!clientData.mob) {
             $('#client_mobile_error').text('Mobile number is required');
-            $('#new_client_mobile').addClass('is-invalid');
+            $('#new_client_mobile').addClass('error');
             isValid = false;
         }
-        if (!clientType) { 
+        if (!clientData.c_type) {
             $('#client_type_error').text('Client type is required');
-            $('#new_client_type').addClass('is-invalid');
+            $('#new_client_type').addClass('error');
             isValid = false;
         }
-        if (!clientUserType) { 
+        if (!clientData.u_type && clientData.u_type !== 0) {
             $('#client_user_type_error').text('User type is required');
-            $('#new_client_user_type').addClass('is-invalid');
+            $('#new_client_user_type').addClass('error');
             isValid = false;
         }
         
-        if (!isValid) {
-            return;
-        }
+        if (!isValid) return;
         
-        // Disable button to prevent double clicks
-        $(this).prop('disabled', true).html('<i class="fa fa-spinner fa-spin"></i> Saving...');
-        
-        // Prepare data for submission
-        var clientData = {
-            c_name: clientName,
-            c_add: clientAddress,
-            mob: clientMobile,
-            country: clientCountry || 'India',
-            gst: clientGst,
-            email: clientEmail,
-            c_type: clientType,
-            u_type: parseInt(clientUserType)
-        };
+        // Show loading state
+        $btn.addClass('btn-loading').html('<div class="spinner"></div> Saving...');
         
         $.ajax({
             url: base_url + '/proinv/saveclient',
@@ -967,60 +1086,122 @@ $(document).ready(function() {
             data: clientData,
             success: function(response) {
                 if (response && response.success) {
-                    // Show success message
-                    $('#clientFormMessage').text('Client "' + clientName + '" saved successfully!').show();
+                    $('#clientSuccessMessage').text('Client "' + clientData.c_name + '" saved successfully!').show();
                     
-                    // Add new option to client dropdown
-                    var newOption = new Option(clientName, response.client_id, true, true);
+                    // Add to dropdown
+                    var newOption = new Option(clientData.c_name, response.client_id, true, true);
                     $('#supplier').append(newOption).trigger('change');
+                    $('#c_add').val(clientData.c_add);
                     
-                    // Set address automatically
-                    $('#c_add').val(clientAddress);
-                    
-                    // Close form after 2 seconds
-                    setTimeout(function() {
-                        $('#clientDetailsForm').slideUp(300); 
-                        $('#supplier').prop('disabled', false);
-                        clearClientForm();
-                    }, 2000);
-                    
-                } else { 
-                    alert('Failed to save client: ' + (response.message || 'Unknown error')); 
+                    setTimeout(() => closeModal('clientModal'), 1500);
+                } else {
+                    alert('Failed to save client: ' + (response.message || 'Unknown error'));
                 }
             },
-            error: function(xhr, status, error) { 
-                alert('Error saving client: ' + error); 
+            error: function(xhr) {
+                alert('Error saving client: ' + (xhr.responseText || 'Unknown error'));
             },
             complete: function() {
-                // Re-enable button
-                $('#saveClientDetails').prop('disabled', false).html('<i class="fa fa-save"></i> Save Client');
+                $btn.removeClass('btn-loading').html(originalHtml);
             }
         });
     });
     
-    $('#saveSignatureDetails').click(function() {
+    $('#saveBank').click(function() {
+        var $btn = $(this);
+        var originalHtml = $btn.html();
+        
+        var bankData = {
+            bname: $('#new_bank_name').val().trim(),
+            ac: $('#new_account_number').val().trim(),
+            ifsc: $('#new_bank_code').val().trim(),
+            account_name: $('#new_account_name').val().trim()
+        };
+        
+        // Clear errors
+        $('.error-text').text('');
+        $('.form-control-modern').removeClass('error');
+        
+        // Validation
+        var isValid = true;
+        if (!bankData.bname) {
+            $('#bank_name_error').text('Bank name is required');
+            $('#new_bank_name').addClass('error');
+            isValid = false;
+        }
+        if (!bankData.ac) {
+            $('#account_number_error').text('Account number is required');
+            $('#new_account_number').addClass('error');
+            isValid = false;
+        }
+        if (!bankData.ifsc) {
+            $('#bank_code_error').text('Bank code is required');
+            $('#new_bank_code').addClass('error');
+            isValid = false;
+        }
+        if (!bankData.account_name) {
+            $('#account_name_error').text('Account name is required');
+            $('#new_account_name').addClass('error');
+            isValid = false;
+        }
+        
+        if (!isValid) return;
+        
+        $btn.addClass('btn-loading').html('<div class="spinner"></div> Saving...');
+        
+        $.ajax({
+            url: base_url + '/proinv/savebank',
+            method: 'POST',
+            dataType: 'json',
+            data: bankData,
+            success: function(response) {
+                if (response && response.success) {
+                    $('#bankSuccessMessage').text('Bank saved successfully!').show();
+                    
+                    var newOption = new Option(bankData.bname + ' - ' + bankData.ac, response.bank_id, true, true);
+                    $('#bank_id').append(newOption).trigger('change');
+                    
+                    setTimeout(() => closeModal('bankModal'), 1500);
+                } else {
+                    alert('Failed to save bank: ' + (response.message || 'Unknown error'));
+                }
+            },
+            error: function(xhr) {
+                alert('Error saving bank: ' + (xhr.responseText || 'Unknown error'));
+            },
+            complete: function() {
+                $btn.removeClass('btn-loading').html(originalHtml);
+            }
+        });
+    });
+    
+    $('#saveSignature').click(function() {
+        var $btn = $(this);
+        var originalHtml = $btn.html();
+        
         var signatureName = $('#new_signature_name').val().trim();
         var signatureFile = $('#new_signature_file')[0].files[0];
         var setAsDefault = $('#set_as_default').is(':checked');
         
-        // Clear previous errors
-        $('.bank-form .error').removeClass('error');
-        $('.bank-form [id$="_error"]').text('');
+        // Clear errors
+        $('.error-text').text('');
+        $('.form-control-modern').removeClass('error');
         
-        // Validation
-        if (!signatureName) { 
-            $('#new_signature_name').addClass('error'); 
-            alert('Signature name is required');
-            return; 
+        var isValid = true;
+        if (!signatureName) {
+            $('#signature_name_error').text('Signature name is required');
+            $('#new_signature_name').addClass('error');
+            isValid = false;
         }
-        if (!signatureFile) { 
-            $('#new_signature_file').addClass('error'); 
-            alert('Please select a signature file');
-            return; 
+        if (!signatureFile) {
+            $('#signature_file_error').text('Please select a signature file');
+            $('#new_signature_file').addClass('error');
+            isValid = false;
         }
         
-        // Disable button to prevent double clicks
-        $(this).prop('disabled', true).html('<i class="fa fa-spinner fa-spin"></i> Saving...');
+        if (!isValid) return;
+        
+        $btn.addClass('btn-loading').html('<div class="spinner"></div> Saving...');
         
         var formData = new FormData();
         formData.append('signature_name', signatureName);
@@ -1036,52 +1217,42 @@ $(document).ready(function() {
             processData: false,
             success: function(response) {
                 if (response && response.success) {
-                    // Add new option to signature dropdown
+                    $('#signatureSuccessMessage').text('Signature saved successfully!').show();
+                    
                     var newOption = new Option(signatureName, response.signature_id, true, true);
                     $('#signature_id').append(newOption).trigger('change');
                     
-                    // Close form and reset
-                    $('#signatureDetailsForm').slideUp(300);
-                    $('#signature_id').prop('disabled', false);
-                    clearSignatureForm();
-                    
-                    alert('Signature saved successfully!');
+                    setTimeout(() => closeModal('signatureModal'), 1500);
                 } else {
                     alert('Failed to save signature: ' + (response.message || 'Unknown error'));
                 }
             },
-            error: function(xhr, status, error) {
-                alert('Error saving signature: ' + error);
+            error: function(xhr) {
+                alert('Error saving signature: ' + (xhr.responseText || 'Unknown error'));
             },
             complete: function() {
-                // Re-enable button
-                $('#saveSignatureDetails').prop('disabled', false).html('Save Signature');
+                $btn.removeClass('btn-loading').html(originalHtml);
             }
         });
     });
     
-    function clearBankForm() { 
-        $('#new_bank_name, #new_account_number, #new_bank_code, #new_account_name').val(''); 
-    }
-    
-    function clearClientForm() { 
-        $('#new_client_name, #new_client_address, #new_client_mobile, #new_client_country, #new_client_gst, #new_client_email').val(''); 
+    function clearAllForms() {
+        // Clear client form
+        $('#new_client_name, #new_client_address, #new_client_mobile, #new_client_country, #new_client_gst, #new_client_email').val('');
         $('#new_client_type, #new_client_user_type').val('');
-        $('.help-block').text('');
-        $('.form-control').removeClass('is-invalid');
-        $('#clientFormMessage').hide();
-    }
-    
-    function clearSignatureForm() { 
-        $('#new_signature_name, #new_signature_file').val(''); 
+        $('#new_client_country').val('Uganda');
+        
+        // Clear bank form
+        $('#new_bank_name, #new_account_number, #new_bank_code, #new_account_name').val('');
+        
+        // Clear signature form
+        $('#new_signature_name, #new_signature_file').val('');
         $('#set_as_default').prop('checked', false);
-    }
-    
-    function clearItemForm() { 
-        $('#new_item_name, #new_item_desc').val(''); 
-        $('#item_name_error').text('');
-        $('#new_item_name').removeClass('is-invalid');
-        $('#itemFormMessage').hide();
+        
+        // Clear all errors
+        $('.error-text').text('');
+        $('.form-control-modern').removeClass('error');
+        $('.success-message').hide();
     }
     
     // Add/Remove rows
@@ -1090,11 +1261,13 @@ $(document).ready(function() {
         var html = '<tr class="datarow">';
         html += '<td><input class="itemRow" type="checkbox"></td>';
         html += '<td><input type="text" name="item_code[]" id="productCode_' + rowCount + '" value="' + rowCount + '" class="form-control"></td>';
-        html += '<td><div class="input-group">';
-        html += '<select name="item_name[]" id="productName_' + rowCount + '" class="form-control item_name" onchange="showHsn(' + rowCount + ',this.value)"><option value="">Select Item</option></select>';
-        html += '<div class="input-group-btn"><button type="button" class="btn btn-info btn-sm add-new-item" title="Add New Item"><i class="fa fa-plus"></i></button></div>';
-        html += '</div></td>';
-        html += '<td><input type="text" name="item_desc[]" id="productDesc_' + rowCount + '" class="form-control item_desc"></td>';
+        html += '<td>';
+        html += '<div class="item-input-wrapper">';
+        html += '<input type="text" name="item_name[]" id="productName_' + rowCount + '" class="form-control item_name" placeholder="Type item description..." onchange="saveItemIfNew(this.value, ' + rowCount + ')">';
+        html += '<div class="item-suggestions" id="suggestions_' + rowCount + '"></div>';
+        html += '</div>';
+        html += '</td>';
+        // html += '<td><input type="text" name="item_desc[]" id="productDesc_' + rowCount + '" class="form-control item_desc"></td>';
         html += '<td><input type="number" name="item_quantity[]" id="quantity_' + rowCount + '" min="1" value="1" class="form-control quantity"></td>';
         html += '<td><input type="text" name="unit[]" id="unit_' + rowCount + '" value="Kgs" class="form-control unit"></td>';
         html += '<td><input type="number" name="price[]" id="price_' + rowCount + '" class="form-control price"></td>';
@@ -1103,10 +1276,13 @@ $(document).ready(function() {
         html += '<td><button type="button" name="remove" class="btn btn-danger btn-sm remove"><span class="glyphicon glyphicon-minus"></span></button></td>';
         html += '</tr>';
         $('#item_table tbody').append(html);
-        initializeProductSelect('#productName_' + rowCount);
     });
     
-    $(document).on('click', '.remove', function() { $(this).closest('tr').remove(); calculateTotals(); });
+    $(document).on('click', '.remove', function() { 
+        $(this).closest('tr').remove(); 
+        calculateTotals(); 
+    });
+    
     $(document).on('input', '.quantity, .price', function() {
         calculateRowTotal($(this).closest('tr'));
         calculateTotals();
@@ -1127,7 +1303,6 @@ $(document).ready(function() {
         var total = subtotal;
         
         if (vatStatus === 'taxable') {
-            // Fixed 18% VAT rate
             var vatRate = 18;
             vatAmount = (subtotal * vatRate) / 100;
             total = subtotal + vatAmount;
@@ -1152,7 +1327,6 @@ $(document).ready(function() {
             var rowTotal = rowSubtotal;
             
             if (vatStatus === 'taxable') {
-                // Fixed 18% VAT rate
                 var vatRate = 18;
                 rowVatAmount = (rowSubtotal * vatRate) / 100;
                 rowTotal = rowSubtotal + rowVatAmount;
@@ -1168,19 +1342,33 @@ $(document).ready(function() {
         $('#totalAftertax').val(totalAmount.toFixed(2));
     }
     
-    // Form submission
+    // Form submission with retry mechanism
     $('#proformaForm').submit(function(e) {
         e.preventDefault();
         var isValid = true;
+        var retryCount = 0;
+        var maxRetries = 3;
         
         $('.error').removeClass('error');
         $('[id$="_error"]').text('');
         
-        if (!$('#supplier').val()) { $('#supplier').addClass('error'); $('#supplier_error').text('Please select a client'); isValid = false; }
+        if (!$('#supplier').val()) { 
+            $('#supplier').addClass('error'); 
+            $('#supplier_error').text('Please select a client'); 
+            isValid = false; 
+        }
         
         var hasItems = false;
-        $('.item_name').each(function() { if ($(this).val()) { hasItems = true; return false; } });
-        if (!hasItems) { isValid = false; alert('At least one item is required'); }
+        $('.item_name').each(function() { 
+            if ($(this).val()) { 
+                hasItems = true; 
+                return false; 
+            } 
+        });
+        if (!hasItems) { 
+            isValid = false; 
+            alert('At least one item is required'); 
+        }
         
         $('.datarow').each(function() {
             var row = $(this);
@@ -1188,85 +1376,143 @@ $(document).ready(function() {
             var quantity = row.find('.quantity').val();
             var price = row.find('.price').val();
             if (itemName) {
-                if (!quantity || quantity <= 0) { row.find('.quantity').addClass('error'); isValid = false; }
-                if (!price || price <= 0) { row.find('.price').addClass('error'); isValid = false; }
+                if (!quantity || quantity <= 0) { 
+                    row.find('.quantity').addClass('error'); 
+                    isValid = false; 
+                }
+                if (!price || price <= 0) { 
+                    row.find('.price').addClass('error'); 
+                    isValid = false; 
+                }
             }
         });
         
-        if (!$('#bank_id').val() && !$('#new_bank_name').val()) { $('#bank_error').text('Please select a bank'); isValid = false; }
-        if (!$('#signature_id').val() && !$('#new_signature_name').val()) { $('#signature_error').text('Please select a signature'); isValid = false; }
+        if (!$('#bank_id').val()) { 
+            $('#bank_error').text('Please select a bank'); 
+            isValid = false; 
+        }
         
-        if (!isValid) { $('#main-error-message').text('Please correct the errors and try again.'); return; }
+        if (!isValid) { 
+            $('#main-error-message').text('Please correct the errors and try again.'); 
+            return; 
+        }
         
-        $('#submitbtn').prop('disabled', true).val('Saving...');
-        var formData = new FormData(this);
-        
-
-        
-        $.ajax({
-            url: $(this).attr('action'), 
-            type: 'POST', 
-            data: formData, 
-            contentType: false, 
-            processData: false,
-            dataType: 'json',
-            success: function(response) {
-                if (response && response.success) {
-                    alert('Proforma Invoice created successfully!');
-                    if (response.orderid) { 
-                        window.open(base_url + '/proinv/printproinv?orderid=' + response.orderid, '_blank'); 
+        function submitForm() {
+            $('#submitbtn').prop('disabled', true).val('Saving...');
+            var formData = new FormData($('#proformaForm')[0]);
+            
+            $.ajax({
+                url: $('#proformaForm').attr('action'), 
+                type: 'POST', 
+                data: formData, 
+                contentType: false, 
+                processData: false,
+                dataType: 'json',
+                success: function(response) {
+                    if (response && response.success) {
+                        var message = 'Proforma Invoice created successfully!';
+                        
+                        // Check if invoice ID was changed due to conflict
+                        if (response.invid && response.original_invid && response.invid !== response.original_invid) {
+                            message += '\n\nNote: Invoice ID was automatically changed from ' + response.original_invid + ' to ' + response.invid + ' to avoid conflicts.';
+                        }
+                        
+                        alert(message);
+                        
+                        if (response.orderid) { 
+                            window.open(base_url + '/proinv/printproinv?orderid=' + response.orderid, '_blank'); 
+                        }
+                        $('#proformaForm')[0].reset(); 
+                        location.reload();
+                    } else { 
+                        alert('Error: ' + (response.message || 'Failed to create invoice')); 
+                        $('#submitbtn').prop('disabled', false).val('Save Invoice');
                     }
-                    $('#proformaForm')[0].reset(); 
-                    location.reload();
-                } else { 
-                    alert('Error: ' + (response.message || 'Failed to create invoice')); 
+                },
+                error: function(xhr, status, error) { 
+                    retryCount++;
+                    
+                    // Check if it's a database conflict error and we haven't exceeded max retries
+                    if (retryCount < maxRetries && (xhr.status === 500 || xhr.status === 409)) {
+                        console.log('Retrying submission, attempt ' + retryCount + ' of ' + maxRetries);
+                        $('#submitbtn').val('Retrying... (' + retryCount + '/' + maxRetries + ')');
+                        
+                        // Wait a bit before retrying
+                        setTimeout(function() {
+                            submitForm();
+                        }, 1000 * retryCount); // Increasing delay with each retry
+                    } else {
+                        let errorMessage = 'An error occurred while saving';
+                        try {
+                            const response = JSON.parse(xhr.responseText);
+                            if (response && response.message) {
+                                errorMessage = response.message;
+                            }
+                        } catch (e) {
+                            if (xhr.responseText) {
+                                errorMessage = xhr.responseText;
+                            }
+                        }
+                        alert('Error: ' + errorMessage + (retryCount >= maxRetries ? '\n\nMaximum retry attempts reached.' : '')); 
+                        $('#submitbtn').prop('disabled', false).val('Save Invoice');
+                    }
                 }
-            },
-            error: function(xhr, status, error) { 
-                let errorMessage = 'An error occurred while saving';
-                try {
-                    const response = JSON.parse(xhr.responseText);
-                    if (response && response.message) {
-                        errorMessage = response.message;
-                    }
-                } catch (e) {
-                    if (xhr.responseText) {
-                        errorMessage = xhr.responseText;
-                    }
-                }
-                alert('Error: ' + errorMessage); 
-            },
-            complete: function() { 
-                $('#submitbtn').prop('disabled', false).val('Save Invoice'); 
-            }
-        });
+            });
+        }
+        
+        // Start the submission process
+        submitForm();
     });
 });
 
 function showCustomer(clientId) {
     if (clientId) {
         $.ajax({
-            url: base_url + '/proinv/getclient', data: { client_id: clientId },
+            url: base_url + '/proinv/getclient', 
+            data: { client_id: clientId },
             success: function(response) {
                 if (response && response.length > 0) {
                     var client = response.find(function(c) { return c.id == clientId; });
-                    if (client && client.c_add) { $('#c_add').val(client.c_add); }
+                    if (client && client.c_add) { 
+                        $('#c_add').val(client.c_add); 
+                    }
                 }
             }
         });
     }
 }
 
-function showHsn(rowNumber, productName) {
-    // HSN functionality disabled as per requirements
-    // if (productName) {
-    //     $.ajax({
-    //         url: base_url + '/proinv/getproducthsn', dataType: 'json', data: { q: productName },
-    //         success: function(response) {
-    //             if (response && response.hsn) { $('#hsn_' + rowNumber).val(response.hsn); }
-    //         }
-    //     });
-    // }
+function saveItemIfNew(itemName, rowId) {
+    if (!itemName || itemName.trim() === '') return;
+    
+    $.ajax({
+        url: base_url + '/proinv/checkitem',
+        method: 'GET',
+        dataType: 'json',
+        data: { item_name: itemName.trim() },
+        success: function(response) {
+            if (!response.exists) {
+                $.ajax({
+                    url: base_url + '/proinv/saveitem',
+                    method: 'POST',
+                    dataType: 'json',
+                    data: { 
+                        item_name: itemName.trim(),
+                        description: '' 
+                    },
+                    success: function(saveResponse) {
+                        console.log('New item saved automatically: ' + itemName);
+                    },
+                    error: function() {
+                        console.log('Could not auto-save item: ' + itemName);
+                    }
+                });
+            }
+        },
+        error: function() {
+            console.log('Could not check if item exists: ' + itemName);
+        }
+    });
 }
 </script>
 

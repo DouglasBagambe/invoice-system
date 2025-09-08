@@ -32,12 +32,53 @@ class Proinv extends Controller
         $this->validation = \Config\Services::validation();
     }
 
+    /**
+     * Generate a unique invoice ID with conflict checking
+     */
+    private function generateUniqueInvoiceId($db, $maxRetries = 10) {
+        if (date('m') > 3) {
+            $year = date('y') . "-" . (date('y') + 1);
+        } else {
+            $year = (date('y') - 1) . "-" . date('y');
+        }
+
+        for ($attempt = 0; $attempt < $maxRetries; $attempt++) {
+            // Get current count of invoices for this year
+            $datalogger = "SELECT COUNT(*) as count FROM protest2 WHERE invid LIKE 'PI/$year/%'";
+            $stmt = $db->query($datalogger);
+            $row = $stmt->getRow();
+
+            // Determine the invoice number
+            if ($row && $row->count > 0) {
+                $nextNumber = $row->count + 1;
+                $proposedId = "PI/" . $year . "/" . sprintf('%04d', $nextNumber);
+            } else {
+                // No records found, start from 0001
+                $proposedId = "PI/" . $year . "/0001";
+            }
+
+            // Check if this ID already exists (race condition check)
+            $checkQuery = "SELECT COUNT(*) as count FROM protest2 WHERE invid = ?";
+            $checkStmt = $db->query($checkQuery, [$proposedId]);
+            $checkRow = $checkStmt->getRow();
+
+            if ($checkRow && $checkRow->count == 0) {
+                // ID is unique, return it
+                return $proposedId;
+            }
+
+            // ID exists, wait a tiny bit and try again
+            usleep(10000); // 10ms delay
+        }
+
+        // If we've exhausted retries, use timestamp-based ID as fallback
+        $timestamp = time();
+        return "PI/" . $year . "/" . sprintf('%04d', $timestamp % 10000);
+    }
+
     public function genproinv()
   {
-
-
     $db = \Config\Database::connect();
-
     $session = session(); 
 
     if ($session->has('user_id')) {
@@ -46,31 +87,8 @@ class Proinv extends Controller
             return redirect()->to(base_url().'/login');
         }
 
-            
-        if (date('m') > 3) {
-            $year = date('y') . "-" . (date('y') + 1);
-        } else {
-            $year = (date('y') - 1) . "-" . date('y');
-        }
-
-        $date = date('Y-m-d');
-
-
-        // Simple query to get the next invoice ID
-        $datalogger = "SELECT COUNT(*) as count FROM protest2 WHERE invid LIKE 'PI/$year/%'";
-        
-        // Execute the query
-        $stmt = $db->query($datalogger);
-        $row = $stmt->getRow();
-
-        // Determine the invoice number
-        if ($row && $row->count > 0) {
-            $nextNumber = $row->count + 1;
-            $value = "PI/" . $year . "/" . sprintf('%04d', $nextNumber);
-        } else {
-            // No records found, start from 0001
-            $value = "PI/" . $year . "/0001";
-        }
+        // Generate unique invoice ID
+        $value = $this->generateUniqueInvoiceId($db);
 
         // Return the generated invoice ID (you can return it as JSON or any format you prefer)
         //return $this->response->setJSON(['invoice_id' => $value]);
@@ -887,11 +905,15 @@ public function insert() {
         
         $this->crudModel4 = new Protest_model2();
         $this->crudModel = new Protest_model();
+        $db = \Config\Database::connect();
         
         // Get form data
-        $invid = $this->request->getPost('invid');
+        $originalInvid = $this->request->getPost('invid');
         $supplier = $this->request->getPost('supplier');
         $datepicker = $this->request->getPost('datepicker');
+        
+        // Generate a unique invoice ID to avoid conflicts
+        $invid = $this->generateUniqueInvoiceId($db);
         
         // Convert date format using working version approach
         $date = new \DateTime($datepicker);
@@ -1000,6 +1022,8 @@ public function insert() {
                 'success' => true,
                 'message' => 'Proforma Invoice Data Inserted!',
                 'orderid' => $orderid,
+                'invid' => $invid, // Return the actual invoice ID used
+                'original_invid' => $originalInvid, // Return original ID for reference
             ]);
         } else {
             return $this->response->setJSON([
