@@ -1385,7 +1385,7 @@ $(document).ready(function() {
             formData.append('orderid', orderId);
             
             $.ajax({
-                url: $('#proformaForm').attr('action') + '/' + orderId, 
+                url: base_url + '/proinv/updateproinv/' + orderId, 
                 type: 'POST', 
                 data: formData, 
                 contentType: false, 
@@ -1465,9 +1465,23 @@ $(document).ready(function() {
                     $('#invid').val(inv.invid);
                     
                     // Format date to yyyy-mm-dd for input[type=date]
-                    var dateParts = inv.created.split('-');
-                    var formattedDate = dateParts[0] + '-' + dateParts[1] + '-' + dateParts[2];
-                    $('#datepicker').val(formattedDate);
+                    var dateStr = inv.created;
+                    if (dateStr) {
+                        // Handle different date formats
+                        if (dateStr.includes('-')) {
+                            var dateParts = dateStr.split('-');
+                            if (dateParts.length === 3) {
+                                // If already in YYYY-MM-DD format, use as is
+                                if (dateParts[0].length === 4) {
+                                    $('#datepicker').val(dateStr);
+                                } else {
+                                    // If in DD-MM-YYYY format, convert to YYYY-MM-DD
+                                    var formattedDate = dateParts[2] + '-' + dateParts[1] + '-' + dateParts[0];
+                                    $('#datepicker').val(formattedDate);
+                                }
+                            }
+                        }
+                    }
                     
                     // Pre-select client
                     var clientOption = new Option(inv.c_name, inv.cid, true, true);
@@ -1475,10 +1489,14 @@ $(document).ready(function() {
                     $('#c_add').val(inv.c_add);
                     
                     // Pre-select bank
-                    $('#bank_id').val(inv.bank_id).trigger('change');
+                    if (inv.bank_id) {
+                        $('#bank_id').val(inv.bank_id).trigger('change');
+                    }
                     
                     // Pre-select signature
-                    $('#signature_id').val(inv.signature_id).trigger('change');
+                    if (inv.signature_id) {
+                        $('#signature_id').val(inv.signature_id).trigger('change');
+                    }
                     
                     // Populate terms
                     $('#validity_period').val(inv.validity_period || 90);
@@ -1493,36 +1511,40 @@ $(document).ready(function() {
                         html += '<td><input type="text" name="item_code[]" id="productCode_' + rowCount + '" value="' + (index + 1) + '" class="form-control"></td>';
                         html += '<td>';
                         html += '<div class="item-input-wrapper">';
-                        html += '<input type="text" name="item_name[]" id="productName_' + rowCount + '" value="' + item.item_name + '" class="form-control item_name" placeholder="Type item description..." onchange="saveItemIfNew(this.value, ' + rowCount + ')">';
+                        html += '<input type="text" name="item_name[]" id="productName_' + rowCount + '" value="' + (item.item_name || '') + '" class="form-control item_name" placeholder="Type item description..." onchange="saveItemIfNew(this.value, ' + rowCount + ')">';
                         html += '<div class="item-suggestions" id="suggestions_' + rowCount + '"></div>';
                         html += '</div>';
                         html += '</td>';
-                        html += '<td><input type="number" name="item_quantity[]" id="quantity_' + rowCount + '" min="1" value="' + item.quantity + '" class="form-control quantity"></td>';
+                        html += '<td><input type="number" name="item_quantity[]" id="quantity_' + rowCount + '" min="1" value="' + (item.quantity || 1) + '" class="form-control quantity"></td>';
                         html += '<td><input type="text" name="unit[]" id="unit_' + rowCount + '" value="' + (item.unit || 'Kgs') + '" class="form-control unit" placeholder="Kgs"></td>';
-                        html += '<td><input type="number" name="price[]" id="price_' + rowCount + '" value="' + item.price + '" class="form-control price"></td>';
+                        html += '<td><input type="number" name="price[]" id="price_' + rowCount + '" value="' + (item.price || 0) + '" class="form-control price"></td>';
                         html += '<td>';
                         html += '<select name="vat_status[]" id="vat_status_' + rowCount + '" class="form-control vat_status">';
                         html += '<option value="taxable" ' + (item.vat_status === 'taxable' ? 'selected' : '') + '>Vat (18%)</option>';
                         html += '<option value="exempt" ' + (item.vat_status === 'exempt' ? 'selected' : '') + '>Exempt</option>';
                         html += '</select>';
                         html += '</td>';
-                        html += '<td><input type="number" name="total[]" id="total_' + rowCount + '" value="' + item.total + '" class="form-control total" readonly></td>';
+                        html += '<td><input type="number" name="total[]" id="total_' + rowCount + '" value="' + (item.total || 0) + '" class="form-control total" readonly></td>';
                         html += '<td><button type="button" name="remove" class="btn btn-danger btn-sm remove"><span class="glyphicon glyphicon-minus"></span></button></td>';
                         html += '</tr>';
                         $('#item_table tbody').append(html);
                     });
                     
                     // Populate totals
-                    $('#subTotal').val(inv.subtotal);
-                    $('#taxAmount').val(inv.taxamount);
-                    $('#totalAftertax').val(inv.totalamount);
+                    $('#subTotal').val(inv.subtotal || 0);
+                    $('#taxAmount').val(inv.taxamount || 0);
+                    $('#totalAftertax').val(inv.totalamount || 0);
                     
                     // Recalculate to ensure consistency
                     calculateTotals();
+                } else {
+                    console.error('Invalid response format:', response);
+                    alert('Failed to load invoice data - invalid response format.');
                 }
             },
-            error: function() {
-                alert('Failed to load invoice data.');
+            error: function(xhr, status, error) {
+                console.error('AJAX Error:', xhr.responseText);
+                alert('Failed to load invoice data: ' + error);
             }
         });
     }

@@ -57,7 +57,7 @@ class Protest_model2 extends Model
     {
         //return $this->update($id, $data); // Update data in the table
         $this->db->table('protest2')->where('orderid', $orderid)->update($updateData);
-
+        return $this->db->affectedRows() > 0;
     }
 
 

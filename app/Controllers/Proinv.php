@@ -117,105 +117,144 @@ class Proinv extends Controller
 
 
 
-public function editproinv()
+public function editproinv($orderid = null)
     {
-        if ($this->request->getMethod() === 'get' || $this->request->isAJAX()) {  // Corrected to use $this->request->isAJAX()
-
-          
+        if ($this->request->getMethod() === 'get' || $this->request->isAJAX()) {
             
-        $edit_id = $this->request->getGet('orderid');  // Corrected to use $this->request->getGet()
+            // Get orderid from URL parameter or GET request
+            $edit_id = $orderid ?: $this->request->getGet('orderid');
+            
+            if (!$edit_id) {
+                return $this->response->setJSON([
+                    'success' => false,
+                    'message' => 'Order ID is required'
+                ]);
+            }
 
-        $this->crudModel3 = new Protest_model();
-     
-       $records = $this->crudModel3-> where ('orderid',$edit_id)->findAll();
+            $this->crudModel3 = new Protest_model();
+            $records = $this->crudModel3->where('orderid', $edit_id)->findAll();
 
+            $this->crudModel4 = new Protest_model2();
+            $builder = $this->crudModel4->db->table('protest2');
+            $builder->select('protest2.*, client.c_name, client.c_add');
+            $builder->join('client', 'protest2.cid = client.cid', 'inner');
+            $builder->where('protest2.orderid', $edit_id);
+            $records2 = $builder->get()->getResultArray();
 
-       $this->crudModel4 = new Protest_model2();
-     
-        $builder = $this->crudModel4->db->table('protest2'); // Assuming 'quote2' is your table
-        $builder->select('protest2.*, client.c_name,client.c_add'); // Select all columns from quote2 and c_name from client
-        $builder->join('client', 'protest2.cid = client.cid', 'inner'); // Perform inner join
-        $builder->where('protest2.orderid', $edit_id); // Add where 
-        $records2 = $builder->get()->getResultArray(); // Fetch the result as an array
+            // Get banks and signatures for the form
+            $bankModel = new \App\Models\Bank_model();
+            $banks = $bankModel->findAll();
+            
+            $signatureModel = new \App\Models\User_signature_model();
+            $userSignatures = $signatureModel->where('user_id', session()->get('user_id'))->findAll();
+            
+            // If it's an AJAX request, return JSON
+            if ($this->request->isAJAX()) {
+                return $this->response->setJSON([
+                    'records' => $records,
+                    'records2' => $records2,
+                ]);
+            }
+            
+            $data = [
+                'records' => $records,
+                'records2' => $records2,
+                'banks' => $banks,
+                'userSignatures' => $userSignatures,
+            ];
 
-          
-          // If it's an AJAX request, return JSON
-    if ($this->request->isAJAX()) {
-
-           return $this->response->setJSON([
-        'records' => $records,
-        'records2' => $records2,
-    ]);
-}
-    
-
-    $data = [
-        'records' => json_encode($records),
-        'records2' => json_encode($records2),
-    ];
-
-    return view('edit layout/editproinv', $data);
+            return view('edit layout/editproinv', $data);
+        }
+        
+        throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
     }
-}
 
-
-
-public function updateproinv()
+public function updateproinv($orderid = null)
 {
     if ($this->request->getMethod() === 'post' || $this->request->isAJAX()) {
 
         $this->crudModel4 = new Protest_model2(); // Load model
         $this->crudModel = new Protest_model(); // Load model
 
-        $orderid = $this->request->getPost('orderid');
+        // Get orderid from URL parameter or POST data
+        $orderid = $orderid ?: $this->request->getPost('orderid');
+        
+        if (!$orderid) {
+            return $this->response->setJSON([
+                'success' => false,
+                'message' => 'Order ID is required'
+            ]);
+        }
 
         $invid = $this->request->getPost('invid');
         $supplier = $this->request->getPost('supplier');
         $datepicker = $this->request->getPost('datepicker');
         $subtotal = $this->request->getPost('subTotal');
-        $taxrate = $this->request->getPost('taxRate');
+        $taxrate = $this->request->getPost('taxRate') ?: 18; // Default VAT rate
         $taxamount = $this->request->getPost('taxAmount');
         $totalaftertax = $this->request->getPost('totalAftertax');
+        $bank_id = $this->request->getPost('bank_id');
+        $signature_id = $this->request->getPost('signature_id');
+        $validity_period = $this->request->getPost('validity_period') ?: 90;
+        $delivery_period = $this->request->getPost('delivery_period') ?: 4;
+        $payment_terms = $this->request->getPost('payment_terms') ?: 'Payment must be within 30 working days after delivery';
 
         $itemNames = $this->request->getPost('item_name'); // Array
         $itemDescs = $this->request->getPost('item_desc'); // Array
         $hsn = $this->request->getPost('hsn'); // Array
         $quantities = $this->request->getPost('item_quantity'); // Array
         $prices = $this->request->getPost('price'); // Array
+        $vatStatuses = $this->request->getPost('vat_status'); // Array
+        $units = $this->request->getPost('unit'); // Array
         $totals = $this->request->getPost('total'); // Array
 
-         $dateParts = explode('-', $datepicker);
-    if (count($dateParts) === 3) {
-        $formattedDate = (new \DateTime("{$dateParts[2]}-{$dateParts[1]}-{$dateParts[0]}"))->format('Y-m-d');
-    } else {
-        throw new \Exception('Invalid date format');
-    }
+        // Format date properly
+        $formattedDate = $datepicker;
+        if (strpos($datepicker, '-') !== false) {
+            $dateParts = explode('-', $datepicker);
+            if (count($dateParts) === 3) {
+                $formattedDate = (new \DateTime("{$dateParts[2]}-{$dateParts[1]}-{$dateParts[0]}"))->format('Y-m-d');
+            }
+        }
 
         // Prepare data for updating main invoice
         $updateData = [
             'invid' => $invid,
             'cid' => $supplier,
-            'totalitems' => count($itemNames),
+            'totalitems' => count(array_filter($itemNames)),
             'subtotal' => $subtotal,
             'taxrate' => $taxrate,
             'taxamount' => $taxamount,
             'totalamount' => $totalaftertax,
-            'created' => $formattedDate
+            'created' => $formattedDate,
+            'bank_id' => $bank_id,
+            'signature_id' => $signature_id,
+            'validity_period' => $validity_period,
+            'delivery_period' => $delivery_period,
+            'payment_terms' => $payment_terms
         ];
 
         $itemData = [];
         if (!empty($itemNames) && is_array($itemNames)) {
             for ($i = 0; $i < count($itemNames); $i++) {
                 if (!empty($itemNames[$i])) {
+                    $vatStatus = isset($vatStatuses[$i]) ? $vatStatuses[$i] : 'taxable';
+                    $vatRate = ($vatStatus === 'taxable') ? 18 : 0;
+                    
                     $itemData[] = [
                         'orderno'=> null,
                         'orderid' => $orderid,
                         'item_name' => $itemNames[$i],
-                        'item_desc' => !empty($itemDescs[$i]) ? $itemDescs[$i] : null,
+                        'item_desc' => !empty($itemDescs[$i]) ? $itemDescs[$i] : '',
                         'hsn' => (isset($hsn[$i]) && !empty($hsn[$i])) ? $hsn[$i] : (8443 + $i),
-                        'quantity' => !empty($quantities[$i]) ? $quantities[$i] : null,
-                        'price' => !empty($prices[$i]) ? $prices[$i] : null,
-                        'total' => !empty($totals[$i]) ? $totals[$i] : null,
+                        'quantity' => !empty($quantities[$i]) ? $quantities[$i] : 1,
+                        'price' => !empty($prices[$i]) ? $prices[$i] : 0,
+                        'unit' => !empty($units[$i]) ? $units[$i] : 'Kgs',
+                        'vat_rate' => $vatRate,
+                        'vat_type' => 'percentage',
+                        'vat_status' => $vatStatus,
+                        'vat_amount' => ($vatStatus === 'taxable') ? (($quantities[$i] * $prices[$i]) * $vatRate / 100) : 0,
+                        'total' => !empty($totals[$i]) ? $totals[$i] : 0,
                     ];
                 }
             }
@@ -233,6 +272,8 @@ public function updateproinv()
                 'success' => true,
                 'message' => 'Proforma Invoice updated successfully!',
                 'orderid' => $orderid,
+                'invid' => $invid,
+                'original_invid' => $invid
             ]);
         } else {
             return $this->response->setJSON([
@@ -417,77 +458,6 @@ public function saveclient()
                         'message' => 'Failed to save client. Please try again.'
                     ]);
                 }
-        } catch (\Exception $e) {
-            return $this->response->setJSON([
-                'success' => false,
-                'message' => 'Database error: ' . $e->getMessage()
-            ]);
-        }
-    }
-    
-    return $this->response->setJSON([
-        'success' => false,
-        'message' => 'Invalid request method'
-    ]);
-}
-
-public function savesignature()
-{
-    if ($this->request->getMethod() === 'post' || $this->request->isAJAX()) {
-        $userSignatureModel = new \App\Models\User_signature_model();
-        $session = session();
-        
-        // Get form data
-        $signatureName = $this->request->getPost('signature_name');
-        $signatureFile = $this->request->getFile('signature_file');
-        $setAsDefault = $this->request->getPost('set_as_default');
-        
-        // Validate required fields
-        if (!$signatureName || !$signatureFile || !$signatureFile->isValid()) {
-            return $this->response->setJSON([
-                'success' => false,
-                'message' => 'Signature name and file are required'
-            ]);
-        }
-        
-        try {
-            // Create uploads directory if it doesn't exist
-            $uploadPath = ROOTPATH . 'public/uploads/signatures/';
-            if (!is_dir($uploadPath)) {
-                mkdir($uploadPath, 0755, true);
-            }
-            
-            $newName = time() . '_' . uniqid() . '.' . $signatureFile->getExtension();
-            $signatureFile->move($uploadPath, $newName);
-            $signaturePath = 'public/uploads/signatures/' . $newName;
-            
-            // If setting as default, unset other defaults first
-            if ($setAsDefault) {
-                $userSignatureModel->where('user_id', $session->get('user_id'))
-                                 ->set('is_default', 0)
-                                 ->update();
-            }
-            
-            $data = [
-                'user_id' => $session->get('user_id'),
-                'signature_name' => $signatureName,
-                'signature_path' => $signaturePath,
-                'is_default' => $setAsDefault ? 1 : 0
-            ];
-            
-            if ($userSignatureModel->addSignature($data)) {
-                $insertId = $userSignatureModel->getInsertID();
-                return $this->response->setJSON([
-                    'success' => true,
-                    'message' => 'Signature saved successfully',
-                    'signature_id' => $insertId
-                ]);
-            } else {
-                return $this->response->setJSON([
-                    'success' => false,
-                    'message' => 'Failed to save signature'
-                ]);
-            }
         } catch (\Exception $e) {
             return $this->response->setJSON([
                 'success' => false,
@@ -728,6 +698,99 @@ public function getproducthsn()
 
     // Fallback: empty response if not an AJAX request
     return $this->response->setJSON($results);
+}
+
+public function savesignature()
+{
+    if ($this->request->getMethod() === 'post' || $this->request->isAJAX()) {
+        $signatureModel = new \App\Models\User_signature_model();
+        
+        // Get form data
+        $signature_name = $this->request->getPost('signature_name');
+        $set_as_default = $this->request->getPost('set_as_default');
+        $signature_file = $this->request->getFile('signature_file');
+        
+        // Validate required fields
+        if (empty($signature_name) || !$signature_file || !$signature_file->isValid()) {
+            return $this->response->setJSON([
+                'success' => false,
+                'message' => 'Signature name and file are required'
+            ]);
+        }
+        
+        // Generate unique filename
+        $newName = $signature_file->getRandomName();
+        $signature_file->move(WRITEPATH . 'uploads/signatures/', $newName);
+        
+        // If setting as default, unset other defaults first
+        if ($set_as_default) {
+            $signatureModel->where('user_id', session()->get('user_id'))
+                          ->set(['is_default' => 0])
+                          ->update();
+        }
+        
+        $data = [
+            'user_id' => session()->get('user_id'),
+            'signature_name' => $signature_name,
+            'signature_path' => 'uploads/signatures/' . $newName,
+            'is_default' => $set_as_default ? 1 : 0,
+            'created_at' => date('Y-m-d H:i:s')
+        ];
+        
+        try {
+            if ($signatureModel->insert($data)) {
+                $insertId = $signatureModel->getInsertID();
+                return $this->response->setJSON([
+                    'success' => true,
+                    'message' => 'Signature saved successfully',
+                    'signature_id' => $insertId
+                ]);
+            } else {
+                $errors = $signatureModel->errors();
+                return $this->response->setJSON([
+                    'success' => false,
+                    'message' => 'Failed to save signature: ' . implode(', ', $errors)
+                ]);
+            }
+        } catch (\Exception $e) {
+            return $this->response->setJSON([
+                'success' => false,
+                'message' => 'Database error: ' . $e->getMessage()
+            ]);
+        }
+    }
+    
+    return $this->response->setJSON([
+        'success' => false,
+        'message' => 'Invalid request method'
+    ]);
+}
+
+public function checkitem()
+{
+    if ($this->request->getMethod() === 'get' || $this->request->isAJAX()) {
+        $item_name = $this->request->getGet('item_name');
+        
+        if (empty($item_name)) {
+            return $this->response->setJSON([
+                'exists' => false,
+                'message' => 'Item name is required'
+            ]);
+        }
+        
+        $productModel = new \App\Models\Product_model();
+        $exists = $productModel->where('name', $item_name)->first();
+        
+        return $this->response->setJSON([
+            'exists' => $exists ? true : false,
+            'message' => $exists ? 'Item exists' : 'Item does not exist'
+        ]);
+    }
+    
+    return $this->response->setJSON([
+        'exists' => false,
+        'message' => 'Invalid request method'
+    ]);
 }
 
 public function saveitem()
