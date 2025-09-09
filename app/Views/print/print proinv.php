@@ -802,7 +802,7 @@ page {
     </button>
     <div class="dropdown-content" id="dropdownContent">
         <a href="#" class="print-action" onclick="printInvoice()">🖨️ Print</a>
-        <a href="<?= base_url(); ?>proinv/editproinv?orderid=<?= $invDetails[0]['orderid']; ?>" class="edit-action">✏️ Edit</a>
+        <a href="<?= base_url(); ?>/proinv/editproinv?orderid=<?= $invDetails[0]['orderid']; ?>" class="edit-action">✏️ Edit</a>
         <a href="#" class="delete-action" onclick="deleteInvoice('<?= $invDetails[0]['orderid']; ?>')">🗑️ Delete</a>
     </div>
 </div>
