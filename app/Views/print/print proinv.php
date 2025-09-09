@@ -802,10 +802,13 @@ page {
     </button>
     <div class="dropdown-content" id="dropdownContent">
         <a href="#" class="print-action" onclick="printInvoice()">🖨️ Print</a>
-        <a href="<?= base_url(); ?>Proinvoice/edit/<?= $invDetails[0]['invid']; ?>" class="edit-action">✏️ Edit</a>
-        <a href="<?= base_url(); ?>Proinvoice/delete/<?= $invDetails[0]['invid']; ?>" class="delete-action" onclick="return confirm('Are you sure you want to delete this invoice?')">🗑️ Delete</a>
+        <a href="<?= base_url(); ?>proinv/editproinv?orderid=<?= $invDetails[0]['orderid']; ?>" class="edit-action">✏️ Edit</a>
+        <a href="#" class="delete-action" onclick="deleteInvoice('<?= $invDetails[0]['orderid']; ?>')">🗑️ Delete</a>
     </div>
 </div>
+
+<!-- Include SweetAlert2 for better delete confirmation -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <script>
   var base_url = "<?= base_url(); ?>";
@@ -838,6 +841,64 @@ page {
     
     // Close dropdown
     document.getElementById("actionsButton").classList.remove("show");
+  }
+  
+  function deleteInvoice(orderId) {
+    // Close dropdown first
+    document.getElementById("actionsButton").classList.remove("show");
+    
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "This invoice will be deleted permanently!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!',
+      allowOutsideClick: false        
+    }).then((result) => {
+      if (result.isConfirmed) {
+        // Show loading
+        Swal.fire({
+          title: 'Deleting...',
+          text: 'Please wait while we delete the invoice.',
+          allowOutsideClick: false,
+          didOpen: () => {
+            Swal.showLoading();
+          }
+        });
+        
+        // Make AJAX call to delete
+        fetch(base_url + '/proinv/delete/' + orderId, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'X-Requested-With': 'XMLHttpRequest'
+          }
+        })
+        .then(response => response.json())
+        .then(data => {
+          if (data.res === 'success') {
+            Swal.fire({
+              title: 'Deleted!',
+              text: data.message,
+              icon: 'success',
+              timer: 2000,
+              showConfirmButton: false
+            }).then(() => {
+              // Redirect to proforma invoice list
+              window.location.href = base_url + '/proinv/showprodata';
+            });
+          } else {
+            Swal.fire('Error!', data.message || 'Something went wrong. Please try again.', 'error');
+          }
+        })
+        .catch(error => {
+          console.error('Error:', error);
+          Swal.fire('Error!', 'Something went wrong. Please try again.', 'error');
+        });
+      }
+    });
   }
   
   // Auto-hide actions button when printing

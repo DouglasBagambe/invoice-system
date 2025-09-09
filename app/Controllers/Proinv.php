@@ -174,12 +174,6 @@ public function editproinv($orderid = null)
 
 public function updateproinv($orderid = null)
 {
-    // DEBUG: Log the start of the method
-    error_log("=== UPDATE PROINV DEBUG START ===");
-    error_log("Method: " . $this->request->getMethod());
-    error_log("Is AJAX: " . ($this->request->isAJAX() ? 'YES' : 'NO'));
-    error_log("Order ID from URL: " . ($orderid ?: 'NULL'));
-    
     if ($this->request->getMethod() === 'post' || $this->request->isAJAX()) {
         
         $this->crudModel4 = new Protest_model2();
@@ -188,33 +182,23 @@ public function updateproinv($orderid = null)
         // Get orderid from URL parameter or POST data
         $orderid = $orderid ?: $this->request->getPost('orderid');
         
-        error_log("Final Order ID: " . ($orderid ?: 'NULL'));
-        
         if (!$orderid) {
-            error_log("ERROR: No Order ID provided");
             return $this->response->setJSON([
                 'success' => false,
                 'message' => 'Order ID is required'
             ]);
         }
 
-        // Get form data and log everything
+        // Get form data
         $invid = $this->request->getPost('invid');
         $supplier = $this->request->getPost('supplier');
         $datepicker = $this->request->getPost('datepicker');
         
-        error_log("Form Data:");
-        error_log("- invid: " . ($invid ?: 'NULL'));
-        error_log("- supplier: " . ($supplier ?: 'NULL'));
-        error_log("- datepicker: " . ($datepicker ?: 'NULL'));
-        
-        // Convert date format using working version approach
+        // Convert date format
         try {
             $date = new \DateTime($datepicker);
             $formattedDate = $date->format('Y-m-d');
-            error_log("Formatted date: " . $formattedDate);
         } catch (Exception $e) {
-            error_log("Date conversion error: " . $e->getMessage());
             $formattedDate = date('Y-m-d');
         }
         
@@ -229,65 +213,21 @@ public function updateproinv($orderid = null)
         $vatStatuses = $this->request->getPost('vat_status');
         $totals = $this->request->getPost('total');
         
-        error_log("Item Arrays:");
-        error_log("- itemNames: " . print_r($itemNames, true));
-        error_log("- quantities: " . print_r($quantities, true));
-        error_log("- prices: " . print_r($prices, true));
-        error_log("- vatStatuses: " . print_r($vatStatuses, true));
-        
         // Get totals
         $subtotal = $this->request->getPost('subTotal');
         $taxamount = $this->request->getPost('taxAmount');
         $totalaftertax = $this->request->getPost('totalAftertax');
         
-        error_log("Totals:");
-        error_log("- subtotal: " . ($subtotal ?: 'NULL'));
-        error_log("- taxamount: " . ($taxamount ?: 'NULL'));
-        error_log("- totalaftertax: " . ($totalaftertax ?: 'NULL'));
-        
-        // Get additional fields
-        $bank_id = $this->request->getPost('bank_id');
-        $validity_period = $this->request->getPost('validity_period');
-        $delivery_period = $this->request->getPost('delivery_period');
-        $payment_terms = $this->request->getPost('payment_terms');
-        $signature_id = $this->request->getPost('signature_id');
-        
-        error_log("Additional fields:");
-        error_log("- bank_id: " . ($bank_id ?: 'NULL'));
-        error_log("- validity_period: " . ($validity_period ?: 'NULL'));
-        error_log("- delivery_period: " . ($delivery_period ?: 'NULL'));
-        error_log("- payment_terms: " . ($payment_terms ?: 'NULL'));
-        error_log("- signature_id: " . ($signature_id ?: 'NULL'));
-        
-        // Handle signature - get from database if signature_id is provided
-        $signature_path = null;
-        if ($signature_id) {
-            try {
-                $userSignatureModel = new \App\Models\User_signature_model();
-                $signature = $userSignatureModel->find($signature_id);
-                if ($signature) {
-                    $signature_path = $signature['signature_path'];
-                    error_log("Signature path: " . $signature_path);
-                }
-            } catch (Exception $e) {
-                error_log("Signature error: " . $e->getMessage());
-            }
-        }
-        
-        // Prepare item data using working version approach
+        // Prepare item data
         $insertData = [];
         if (!empty($itemNames) && is_array($itemNames)) {
             for ($i = 0; $i < count($itemNames); $i++) {
                 if (!empty($itemNames[$i])) {
-                    // Calculate VAT amount for this item
                     $quantity = !empty($quantities[$i]) ? $quantities[$i] : 0;
                     $price = !empty($prices[$i]) ? $prices[$i] : 0;
-                    $vatRate = !empty($vatRates[$i]) ? $vatRates[$i] : 18; // Default to 18%
+                    $vatRate = !empty($vatRates[$i]) ? $vatRates[$i] : 18;
                     $vatType = !empty($vatTypes[$i]) ? $vatTypes[$i] : 'exclusive';
                     $vatStatus = !empty($vatStatuses[$i]) ? $vatStatuses[$i] : 'taxable';
-                    
-                    $rowSubtotal = $quantity * $price;
-                    $vatAmount = 0;
                     
                     // Calculate total for this item
                     $itemTotal = $quantity * $price;
@@ -300,7 +240,7 @@ public function updateproinv($orderid = null)
                         'orderid' => $orderid,
                         'item_name' => $itemNames[$i],
                         'item_desc' => !empty($itemDescs[$i]) ? $itemDescs[$i] : null,
-                        'hsn' => !empty($hsn[$i]) ? $hsn[$i] : 8443, // Default HSN if not provided
+                        'hsn' => !empty($hsn[$i]) ? $hsn[$i] : 8443,
                         'quantity' => $quantity,
                         'price' => $price,
                         'total' => $itemTotal,
@@ -309,64 +249,36 @@ public function updateproinv($orderid = null)
             }
         }
         
-        error_log("Prepared insert data: " . print_r($insertData, true));
-        
-        // Prepare main invoice data using working version approach
-        // Only include fields that exist in the database table
+        // Prepare main invoice data
         $updateData = [
             'invid' => $invid,
             'cid' => $supplier,
             'totalitems' => count($itemNames),
             'subtotal' => $subtotal,
-            'taxrate' => 0, // Not used anymore with per-item VAT
+            'taxrate' => 0,
             'taxamount' => $taxamount,
             'totalamount' => $totalaftertax,
             'created' => $formattedDate,
         ];
         
-        error_log("Prepared update data: " . print_r($updateData, true));
-        
-        // Update the main invoice
-        error_log("Attempting to update main invoice...");
-        error_log("Order ID for update: " . $orderid);
-        error_log("Update data: " . print_r($updateData, true));
-        
-        // Check if the record exists first
+        // Check if the record exists
         $existingRecord = $this->crudModel4->where('orderid', $orderid)->first();
-        error_log("Existing record: " . print_r($existingRecord, true));
         
         if (!$existingRecord) {
-            error_log("ERROR: No existing record found with orderid: " . $orderid);
             return $this->response->setJSON([
                 'success' => false,
                 'message' => 'No existing invoice found with order ID: ' . $orderid
             ]);
         }
         
+        // Update the main invoice
         $mainUpdate = $this->crudModel4->updaterecord($orderid, $updateData);
-        error_log("Main update result: " . ($mainUpdate ? 'SUCCESS' : 'FAILED'));
         
-        // Get the last query for debugging
-        $lastQuery = $this->crudModel4->db->getLastQuery();
-        error_log("Last query: " . $lastQuery);
-        
-        // Get database error if any
-        $dbError = $this->crudModel4->db->error();
-        if ($dbError['code'] != 0) {
-            error_log("Database error: " . print_r($dbError, true));
-        }
-        
-        // Always update items by deleting old and inserting new
-        error_log("Deleting old items...");
-        $deleteResult = $this->crudModel->deleterecord($orderid);
-        error_log("Delete result: " . ($deleteResult ? 'SUCCESS' : 'FAILED'));
-        
-        error_log("Inserting new items...");
+        // Update items by deleting old and inserting new
+        $this->crudModel->deleterecord($orderid);
         $itemsInsert = $this->crudModel->insertBatch($insertData);
-        error_log("Items insert result: " . ($itemsInsert ? 'SUCCESS' : 'FAILED'));
 
         if ($mainUpdate && $itemsInsert) {
-            error_log("=== UPDATE SUCCESS ===");
             return $this->response->setJSON([
                 'success' => true,
                 'message' => 'Proforma Invoice updated successfully!',
@@ -375,17 +287,13 @@ public function updateproinv($orderid = null)
                 'original_invid' => $invid
             ]);
         } else {
-            error_log("=== UPDATE FAILED ===");
-            error_log("Main update: " . ($mainUpdate ? 'SUCCESS' : 'FAILED'));
-            error_log("Items insert: " . ($itemsInsert ? 'SUCCESS' : 'FAILED'));
             return $this->response->setJSON([
                 'success' => false,
-                'message' => 'Failed to update invoice. Main: ' . ($mainUpdate ? 'OK' : 'FAILED') . ', Items: ' . ($itemsInsert ? 'OK' : 'FAILED'),
+                'message' => 'Failed to update invoice.',
             ]);
         }
     }
     
-    error_log("=== INVALID REQUEST METHOD ===");
     return $this->response->setJSON([
         'success' => false,
         'message' => 'Invalid request method'

@@ -1381,32 +1381,18 @@ $(document).ready(function() {
             $('#submitbtn').prop('disabled', true).val('Updating...');
             var formData = new FormData($('#proformaForm')[0]);
             
-            // Get orderid from URL - fix the parsing
-            var url = window.location.href;
-            console.log('Full URL:', url);
-            
-            // Extract orderid from URL parameters
+            // Get orderid from URL parameters
             var urlParams = new URLSearchParams(window.location.search);
             var orderId = urlParams.get('orderid');
             
-            console.log('Extracted orderid from params:', orderId);
-            
             // Fallback: try to extract from path if not in params
             if (!orderId) {
+                var url = window.location.href;
                 var pathParts = url.split('/');
                 orderId = pathParts[pathParts.length - 1];
-                console.log('Fallback orderid from path:', orderId);
             }
             
             formData.append('orderid', orderId);
-            
-            // DEBUG: Log all form data being sent
-            console.log('=== FORM SUBMISSION DEBUG ===');
-            console.log('Order ID:', orderId);
-            console.log('Form data entries:');
-            for (var pair of formData.entries()) {
-                console.log(pair[0] + ': ' + pair[1]);
-            }
             
             $.ajax({
                 url: base_url + '/proinv/updateproinv', 
@@ -1416,9 +1402,6 @@ $(document).ready(function() {
                 processData: false,
                 dataType: 'json',
                 success: function(response) {
-                    console.log('=== AJAX SUCCESS RESPONSE ===');
-                    console.log('Response:', response);
-                    
                     if (response && response.success) {
                         var message = 'Proforma Invoice updated successfully!';
                         
@@ -1434,25 +1417,15 @@ $(document).ready(function() {
                         }
                         location.reload();
                     } else { 
-                        console.log('=== AJAX SUCCESS BUT FAILED ===');
-                        console.log('Response success:', response ? response.success : 'undefined');
-                        console.log('Response message:', response ? response.message : 'undefined');
                         alert('Error: ' + (response.message || 'Failed to update invoice')); 
                         $('#submitbtn').prop('disabled', false).val('Update Invoice');
                     }
                 },
                 error: function(xhr, status, error) { 
-                    console.log('=== AJAX ERROR ===');
-                    console.log('Status:', status);
-                    console.log('Error:', error);
-                    console.log('Response Text:', xhr.responseText);
-                    console.log('Status Code:', xhr.status);
-                    
                     retryCount++;
                     
                     // Check if it's a database conflict error and we haven't exceeded max retries
                     if (retryCount < maxRetries && (xhr.status === 500 || xhr.status === 409)) {
-                        console.log('Retrying submission, attempt ' + retryCount + ' of ' + maxRetries);
                         $('#submitbtn').val('Retrying... (' + retryCount + '/' + maxRetries + ')');
                         
                         // Wait a bit before retrying
