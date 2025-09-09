@@ -125,10 +125,13 @@ public function editproinv($orderid = null)
             $edit_id = $orderid ?: $this->request->getGet('orderid');
             
             if (!$edit_id) {
-                return $this->response->setJSON([
-                    'success' => false,
-                    'message' => 'Order ID is required'
-                ]);
+                if ($this->request->isAJAX()) {
+                    return $this->response->setJSON([
+                        'success' => false,
+                        'message' => 'Order ID is required'
+                    ]);
+                }
+                throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
             }
 
             $this->crudModel3 = new Protest_model();
