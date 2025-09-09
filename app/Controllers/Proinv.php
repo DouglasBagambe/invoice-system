@@ -175,10 +175,10 @@ public function editproinv($orderid = null)
 public function updateproinv($orderid = null)
 {
     if ($this->request->getMethod() === 'post' || $this->request->isAJAX()) {
-
-        $this->crudModel4 = new Protest_model2(); // Load model
-        $this->crudModel = new Protest_model(); // Load model
-
+        
+        $this->crudModel4 = new Protest_model2();
+        $this->crudModel = new Protest_model();
+        
         // Get orderid from URL parameter or POST data
         $orderid = $orderid ?: $this->request->getPost('orderid');
         
@@ -189,86 +189,113 @@ public function updateproinv($orderid = null)
             ]);
         }
 
+        // Get form data
         $invid = $this->request->getPost('invid');
         $supplier = $this->request->getPost('supplier');
         $datepicker = $this->request->getPost('datepicker');
+        
+        // Convert date format using working version approach
+        $date = new \DateTime($datepicker);
+        $formattedDate = $date->format('Y-m-d');
+        
+        // Get item arrays
+        $itemNames = $this->request->getPost('item_name');
+        $itemDescs = $this->request->getPost('item_desc');
+        $hsn = $this->request->getPost('hsn');
+        $quantities = $this->request->getPost('item_quantity');
+        $prices = $this->request->getPost('price');
+        $vatRates = $this->request->getPost('vat_rate');
+        $vatTypes = $this->request->getPost('vat_type');
+        $vatStatuses = $this->request->getPost('vat_status');
+        $totals = $this->request->getPost('total');
+        
+        // Get totals
         $subtotal = $this->request->getPost('subTotal');
-        $taxrate = $this->request->getPost('taxRate') ?: 18; // Default VAT rate
         $taxamount = $this->request->getPost('taxAmount');
         $totalaftertax = $this->request->getPost('totalAftertax');
+        
+        // Get additional fields
         $bank_id = $this->request->getPost('bank_id');
+        $validity_period = $this->request->getPost('validity_period');
+        $delivery_period = $this->request->getPost('delivery_period');
+        $payment_terms = $this->request->getPost('payment_terms');
         $signature_id = $this->request->getPost('signature_id');
-        $validity_period = $this->request->getPost('validity_period') ?: 90;
-        $delivery_period = $this->request->getPost('delivery_period') ?: 4;
-        $payment_terms = $this->request->getPost('payment_terms') ?: 'Payment must be within 30 working days after delivery';
-
-        $itemNames = $this->request->getPost('item_name'); // Array
-        $itemDescs = $this->request->getPost('item_desc'); // Array
-        $hsn = $this->request->getPost('hsn'); // Array
-        $quantities = $this->request->getPost('item_quantity'); // Array
-        $prices = $this->request->getPost('price'); // Array
-        $vatStatuses = $this->request->getPost('vat_status'); // Array
-        $units = $this->request->getPost('unit'); // Array
-        $totals = $this->request->getPost('total'); // Array
-
-        // Format date properly
-        $formattedDate = $datepicker;
-        if (strpos($datepicker, '-') !== false) {
-            $dateParts = explode('-', $datepicker);
-            if (count($dateParts) === 3) {
-                $formattedDate = (new \DateTime("{$dateParts[2]}-{$dateParts[1]}-{$dateParts[0]}"))->format('Y-m-d');
+        
+        // Handle signature - get from database if signature_id is provided
+        $signature_path = null;
+        if ($signature_id) {
+            $userSignatureModel = new \App\Models\User_signature_model();
+            $signature = $userSignatureModel->find($signature_id);
+            if ($signature) {
+                $signature_path = $signature['signature_path'];
             }
         }
-
-        // Prepare data for updating main invoice
-        $updateData = [
-            'invid' => $invid,
-            'cid' => $supplier,
-            'totalitems' => count(array_filter($itemNames)),
-            'subtotal' => $subtotal,
-            'taxrate' => $taxrate,
-            'taxamount' => $taxamount,
-            'totalamount' => $totalaftertax,
-            'created' => $formattedDate,
-            'bank_id' => $bank_id,
-            'signature_id' => $signature_id,
-            'validity_period' => $validity_period,
-            'delivery_period' => $delivery_period,
-            'payment_terms' => $payment_terms
-        ];
-
-        $itemData = [];
+        
+        // Prepare item data using working version approach
+        $insertData = [];
         if (!empty($itemNames) && is_array($itemNames)) {
             for ($i = 0; $i < count($itemNames); $i++) {
                 if (!empty($itemNames[$i])) {
-                    $vatStatus = isset($vatStatuses[$i]) ? $vatStatuses[$i] : 'taxable';
-                    $vatRate = ($vatStatus === 'taxable') ? 18 : 0;
+                    // Calculate VAT amount for this item
+                    $quantity = !empty($quantities[$i]) ? $quantities[$i] : 0;
+                    $price = !empty($prices[$i]) ? $prices[$i] : 0;
+                    $vatRate = !empty($vatRates[$i]) ? $vatRates[$i] : 0;
+                    $vatType = !empty($vatTypes[$i]) ? $vatTypes[$i] : 'exclusive';
+                    $vatStatus = !empty($vatStatuses[$i]) ? $vatStatuses[$i] : 'taxable';
                     
-                    $itemData[] = [
-                        'orderno'=> null,
+                    $rowSubtotal = $quantity * $price;
+                    $vatAmount = 0;
+                    
+                    if ($vatStatus === 'taxable' && $vatRate > 0) {
+                        if ($vatType === 'exclusive') {
+                            $vatAmount = ($rowSubtotal * $vatRate) / 100;
+                        } else {
+                            // VAT inclusive - extract VAT from total
+                            $total = $rowSubtotal;
+                            $vatAmount = $total - ($total / (1 + ($vatRate / 100)));
+                        }
+                    }
+                    
+                    $insertData[] = [
                         'orderid' => $orderid,
                         'item_name' => $itemNames[$i],
-                        'item_desc' => !empty($itemDescs[$i]) ? $itemDescs[$i] : '',
-                        'hsn' => (isset($hsn[$i]) && !empty($hsn[$i])) ? $hsn[$i] : (8443 + $i),
-                        'quantity' => !empty($quantities[$i]) ? $quantities[$i] : 1,
-                        'price' => !empty($prices[$i]) ? $prices[$i] : 0,
-                        'unit' => !empty($units[$i]) ? $units[$i] : 'Kgs',
+                        'item_desc' => !empty($itemDescs[$i]) ? $itemDescs[$i] : null,
+                        'hsn' => !empty($hsn[$i]) ? $hsn[$i] : 8443, // Default HSN if not provided
+                        'quantity' => $quantity,
+                        'price' => $price,
                         'vat_rate' => $vatRate,
-                        'vat_type' => 'percentage',
+                        'vat_type' => $vatType,
                         'vat_status' => $vatStatus,
-                        'vat_amount' => ($vatStatus === 'taxable') ? (($quantities[$i] * $prices[$i]) * $vatRate / 100) : 0,
-                        'total' => !empty($totals[$i]) ? $totals[$i] : 0,
+                        'vat_amount' => $vatAmount,
+                        'total' => !empty($totals[$i]) ? $totals[$i] : null,
                     ];
                 }
             }
         }
-
+        
+        // Prepare main invoice data using working version approach
+        $updateData = [
+            'invid' => $invid,
+            'cid' => $supplier,
+            'totalitems' => count($itemNames),
+            'subtotal' => $subtotal,
+            'taxrate' => 0, // Not used anymore with per-item VAT
+            'taxamount' => $taxamount,
+            'totalamount' => $totalaftertax,
+            'created' => $formattedDate,
+            'bank_id' => $bank_id,
+            'validity_period' => $validity_period,
+            'delivery_period' => $delivery_period,
+            'payment_terms' => $payment_terms,
+            'signature_path' => $signature_path,
+        ];
+        
         // Update the main invoice
-        $mainUpdate = $this->crudModel4->updaterecord(['orderid' => $orderid], $updateData);
+        $mainUpdate = $this->crudModel4->updaterecord($orderid, $updateData);
         
         // Always update items by deleting old and inserting new
         $this->crudModel->deleterecord($orderid);
-        $itemsInsert = $this->crudModel->insertBatch($itemData);
+        $itemsInsert = $this->crudModel->insertBatch($insertData);
 
         if ($mainUpdate && $itemsInsert) {
             return $this->response->setJSON([
@@ -286,7 +313,10 @@ public function updateproinv($orderid = null)
         }
     }
     
-    throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
+    return $this->response->setJSON([
+        'success' => false,
+        'message' => 'Invalid request method'
+    ]);
 }
 
 
