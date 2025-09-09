@@ -1383,11 +1383,19 @@ $(document).ready(function() {
             
             // Get orderid from URL - fix the parsing
             var url = window.location.href;
-            var orderId = url.substring(url.lastIndexOf('/') + 1);
+            console.log('Full URL:', url);
             
-            // If the orderId contains query parameters, extract just the ID
-            if (orderId.includes('?')) {
-                orderId = orderId.split('?')[0];
+            // Extract orderid from URL parameters
+            var urlParams = new URLSearchParams(window.location.search);
+            var orderId = urlParams.get('orderid');
+            
+            console.log('Extracted orderid from params:', orderId);
+            
+            // Fallback: try to extract from path if not in params
+            if (!orderId) {
+                var pathParts = url.split('/');
+                orderId = pathParts[pathParts.length - 1];
+                console.log('Fallback orderid from path:', orderId);
             }
             
             formData.append('orderid', orderId);
@@ -1401,7 +1409,7 @@ $(document).ready(function() {
             }
             
             $.ajax({
-                url: base_url + '/proinv/updateproinv/' + orderId, 
+                url: base_url + '/proinv/updateproinv', 
                 type: 'POST', 
                 data: formData, 
                 contentType: false, 

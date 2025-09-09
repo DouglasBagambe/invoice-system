@@ -119,10 +119,10 @@ $routes->group('proinv', function($routes) {
     $routes->get('showprodata', 'Proinv::showprodata');
     $routes->post('insert', 'Proinv::insert');
     $routes->get('edit/(:num)', 'Proinv::edit/$1');
-    $routes->get('editproinv/(:any)', 'Proinv::editproinv/$1');
+    $routes->get('editproinv', 'Proinv::editproinv');
     $routes->get('delete/(:num)', 'Proinv::delete/$1');
     $routes->post('update', 'Proinv::update');
-    $routes->post('updateproinv/(:any)', 'Proinv::updateproinv/$1');
+    $routes->post('updateproinv', 'Proinv::updateproinv');
     $routes->post('savebank', 'Proinv::savebank');
     $routes->post('saveitem', 'Proinv::saveitem');
     $routes->post('saveclient', 'Proinv::saveclient');

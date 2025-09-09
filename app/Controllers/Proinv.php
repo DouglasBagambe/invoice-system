@@ -335,12 +335,26 @@ public function updateproinv($orderid = null)
         $existingRecord = $this->crudModel4->where('orderid', $orderid)->first();
         error_log("Existing record: " . print_r($existingRecord, true));
         
+        if (!$existingRecord) {
+            error_log("ERROR: No existing record found with orderid: " . $orderid);
+            return $this->response->setJSON([
+                'success' => false,
+                'message' => 'No existing invoice found with order ID: ' . $orderid
+            ]);
+        }
+        
         $mainUpdate = $this->crudModel4->updaterecord($orderid, $updateData);
         error_log("Main update result: " . ($mainUpdate ? 'SUCCESS' : 'FAILED'));
         
         // Get the last query for debugging
         $lastQuery = $this->crudModel4->db->getLastQuery();
         error_log("Last query: " . $lastQuery);
+        
+        // Get database error if any
+        $dbError = $this->crudModel4->db->error();
+        if ($dbError['code'] != 0) {
+            error_log("Database error: " . print_r($dbError, true));
+        }
         
         // Always update items by deleting old and inserting new
         error_log("Deleting old items...");
