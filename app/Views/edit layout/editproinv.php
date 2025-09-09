@@ -1386,6 +1386,14 @@ $(document).ready(function() {
             var orderId = url.substring(url.lastIndexOf('/') + 1);
             formData.append('orderid', orderId);
             
+            // DEBUG: Log all form data being sent
+            console.log('=== FORM SUBMISSION DEBUG ===');
+            console.log('Order ID:', orderId);
+            console.log('Form data entries:');
+            for (var pair of formData.entries()) {
+                console.log(pair[0] + ': ' + pair[1]);
+            }
+            
             $.ajax({
                 url: base_url + '/proinv/updateproinv/' + orderId, 
                 type: 'POST', 
@@ -1394,6 +1402,9 @@ $(document).ready(function() {
                 processData: false,
                 dataType: 'json',
                 success: function(response) {
+                    console.log('=== AJAX SUCCESS RESPONSE ===');
+                    console.log('Response:', response);
+                    
                     if (response && response.success) {
                         var message = 'Proforma Invoice updated successfully!';
                         
@@ -1409,11 +1420,20 @@ $(document).ready(function() {
                         }
                         location.reload();
                     } else { 
+                        console.log('=== AJAX SUCCESS BUT FAILED ===');
+                        console.log('Response success:', response ? response.success : 'undefined');
+                        console.log('Response message:', response ? response.message : 'undefined');
                         alert('Error: ' + (response.message || 'Failed to update invoice')); 
                         $('#submitbtn').prop('disabled', false).val('Update Invoice');
                     }
                 },
                 error: function(xhr, status, error) { 
+                    console.log('=== AJAX ERROR ===');
+                    console.log('Status:', status);
+                    console.log('Error:', error);
+                    console.log('Response Text:', xhr.responseText);
+                    console.log('Status Code:', xhr.status);
+                    
                     retryCount++;
                     
                     // Check if it's a database conflict error and we haven't exceeded max retries
