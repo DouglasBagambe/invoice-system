@@ -1381,9 +1381,15 @@ $(document).ready(function() {
             $('#submitbtn').prop('disabled', true).val('Updating...');
             var formData = new FormData($('#proformaForm')[0]);
             
-            // Get orderid from URL
+            // Get orderid from URL - fix the parsing
             var url = window.location.href;
             var orderId = url.substring(url.lastIndexOf('/') + 1);
+            
+            // If the orderId contains query parameters, extract just the ID
+            if (orderId.includes('?')) {
+                orderId = orderId.split('?')[0];
+            }
+            
             formData.append('orderid', orderId);
             
             // DEBUG: Log all form data being sent

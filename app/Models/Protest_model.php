@@ -12,7 +12,7 @@ class Protest_model extends Model
 
         
 
-    protected $allowedFields = ['orderid', 'item_name', 'item_desc','hsn','quantity','price', 'vat_rate', 'vat_type', 'vat_amount', 'vat_status', 'total']; // Specify allowed fields
+    protected $allowedFields = ['orderid', 'item_name', 'item_desc','hsn','quantity','price', 'total']; // Specify allowed fields
 
     
 

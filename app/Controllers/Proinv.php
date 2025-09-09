@@ -289,14 +289,11 @@ public function updateproinv($orderid = null)
                     $rowSubtotal = $quantity * $price;
                     $vatAmount = 0;
                     
+                    // Calculate total for this item
+                    $itemTotal = $quantity * $price;
                     if ($vatStatus === 'taxable' && $vatRate > 0) {
-                        if ($vatType === 'exclusive') {
-                            $vatAmount = ($rowSubtotal * $vatRate) / 100;
-                        } else {
-                            // VAT inclusive - extract VAT from total
-                            $total = $rowSubtotal;
-                            $vatAmount = $total - ($total / (1 + ($vatRate / 100)));
-                        }
+                        $vatAmount = ($itemTotal * $vatRate) / 100;
+                        $itemTotal = $itemTotal + $vatAmount;
                     }
                     
                     $insertData[] = [
@@ -306,11 +303,7 @@ public function updateproinv($orderid = null)
                         'hsn' => !empty($hsn[$i]) ? $hsn[$i] : 8443, // Default HSN if not provided
                         'quantity' => $quantity,
                         'price' => $price,
-                        'vat_rate' => $vatRate,
-                        'vat_type' => $vatType,
-                        'vat_status' => $vatStatus,
-                        'vat_amount' => $vatAmount,
-                        'total' => !empty($totals[$i]) ? $totals[$i] : null,
+                        'total' => $itemTotal,
                     ];
                 }
             }
@@ -319,6 +312,7 @@ public function updateproinv($orderid = null)
         error_log("Prepared insert data: " . print_r($insertData, true));
         
         // Prepare main invoice data using working version approach
+        // Only include fields that exist in the database table
         $updateData = [
             'invid' => $invid,
             'cid' => $supplier,
@@ -328,19 +322,25 @@ public function updateproinv($orderid = null)
             'taxamount' => $taxamount,
             'totalamount' => $totalaftertax,
             'created' => $formattedDate,
-            'bank_id' => $bank_id,
-            'validity_period' => $validity_period,
-            'delivery_period' => $delivery_period,
-            'payment_terms' => $payment_terms,
-            'signature_path' => $signature_path,
         ];
         
         error_log("Prepared update data: " . print_r($updateData, true));
         
         // Update the main invoice
         error_log("Attempting to update main invoice...");
+        error_log("Order ID for update: " . $orderid);
+        error_log("Update data: " . print_r($updateData, true));
+        
+        // Check if the record exists first
+        $existingRecord = $this->crudModel4->where('orderid', $orderid)->first();
+        error_log("Existing record: " . print_r($existingRecord, true));
+        
         $mainUpdate = $this->crudModel4->updaterecord($orderid, $updateData);
         error_log("Main update result: " . ($mainUpdate ? 'SUCCESS' : 'FAILED'));
+        
+        // Get the last query for debugging
+        $lastQuery = $this->crudModel4->db->getLastQuery();
+        error_log("Last query: " . $lastQuery);
         
         // Always update items by deleting old and inserting new
         error_log("Deleting old items...");
