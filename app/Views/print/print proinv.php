@@ -671,7 +671,7 @@ for ($page = 0; $page < $pages; $page++):
     <table class="summary-table">
         <tr>
             <td class="note-cell">
-                <div class="amount-words-title">Amount in Words:</div>
+                <div class="amount-words-title"><strong>Amount in Words:</strong></div><br>
                 <div class="amount-words-content">
                     <?php 
                     helper('number_to_words_helper');
