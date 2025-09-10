@@ -9,7 +9,7 @@ class Protest_model2 extends Model
     protected $table = 'protest2'; // Specify your table name
     //protected $primaryKey = 'invid'; // Specify your primary key column
 
-    protected $allowedFields = ['invid','cid', 'orderid', 'totalitems','subtotal','taxrate','taxamount','totalamount','created']; // Specify allowed fields
+    protected $allowedFields = ['invid','cid', 'orderid', 'totalitems','subtotal','taxrate','taxamount','totalamount','created','bank_id','validity_period','delivery_period','payment_terms','signature_path','notes']; // Specify allowed fields
 
     // Optionally, you can define validation rules
     // protected $validationRules = [
@@ -171,8 +171,9 @@ public function printprodata($orderid)
     }
 
     $builder = $this->db->table('protest2');
-    $builder->select('client.*, protest2.*');
+    $builder->select('client.*, protest2.*, bankdetails.bname, bankdetails.ac, bankdetails.ifsc, bankdetails.branch');
     $builder->join('client', 'protest2.cid = client.cid', 'inner');
+    $builder->join('bankdetails', 'protest2.bank_id = bankdetails.bid', 'left');
     $builder->where('protest2.orderid', $orderid);
 
     $query = $builder->get();

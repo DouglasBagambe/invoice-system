@@ -753,7 +753,7 @@
                         <option value="">Select Signature</option>
                         <?php if(isset($userSignatures) && !empty($userSignatures)): ?>
                           <?php foreach ($userSignatures as $signature): ?>
-                            <option value="<?= $signature['id'] ?>" <?= $signature['is_default'] ? 'selected' : '' ?>>
+                            <option value="<?= $signature['id'] ?>" data-path="<?= $signature['signature_path'] ?>" <?= $signature['is_default'] ? 'selected' : '' ?>>
                               <?= $signature['signature_name'] ?>
                             </option>
                           <?php endforeach; ?>
@@ -1477,25 +1477,37 @@ $(document).ready(function() {
         $('#supplier').append(clientOption).trigger('change');
         $('#c_add').val(inv.c_add);
         
-        // Since bank and signature data is not stored in the database,
-        // we'll just set default values for the form
-        // The user will need to re-select bank and signature when editing
-        
-        // Set default bank if available
+        // Set bank from database if available
         setTimeout(function() {
             var $bankSelect = $('#bank_id');
-            if ($bankSelect.find('option').length > 1) {
-                // Select the first available bank as default
-                $bankSelect.val($bankSelect.find('option:eq(1)').val()).trigger('change');
-            }
+            <?php if(isset($records2[0]['bank_id']) && !empty($records2[0]['bank_id'])): ?>
+                // Use the actual bank from database
+                $bankSelect.val('<?= $records2[0]['bank_id'] ?>').trigger('change');
+            <?php else: ?>
+                // Fallback to first available bank
+                if ($bankSelect.find('option').length > 1) {
+                    $bankSelect.val($bankSelect.find('option:eq(1)').val()).trigger('change');
+                }
+            <?php endif; ?>
         }, 200);
         
-        // Set default signature if available
+        // Set signature from database if available
         setTimeout(function() {
             var $signatureSelect = $('#signature_id');
-            <?php if(isset($defaultSignature) && !empty($defaultSignature)): ?>
-                // Use the actual default signature from database
-                $signatureSelect.val('<?= $defaultSignature['id'] ?>').trigger('change');
+            <?php if(isset($records2[0]['signature_path']) && !empty($records2[0]['signature_path'])): ?>
+                // Find signature by path in the options
+                var signaturePath = '<?= $records2[0]['signature_path'] ?>';
+                var found = false;
+                $signatureSelect.find('option').each(function() {
+                    if ($(this).data('path') === signaturePath) {
+                        $signatureSelect.val($(this).val()).trigger('change');
+                        found = true;
+                        return false;
+                    }
+                });
+                if (!found && $signatureSelect.find('option').length > 1) {
+                    $signatureSelect.val($signatureSelect.find('option:eq(1)').val()).trigger('change');
+                }
             <?php else: ?>
                 // Fallback to first available signature
                 if ($signatureSelect.find('option').length > 1) {
@@ -1504,10 +1516,10 @@ $(document).ready(function() {
             <?php endif; ?>
         }, 200);
         
-        // Set default terms since they're not stored in the database
-        $('#validity_period').val(90);
-        $('#delivery_period').val(4);
-        $('#payment_terms').val('Payment must be within 30 working days after delivery');
+        // Set terms from database
+        $('#validity_period').val('<?= $records2[0]['validity_period'] ?? 90 ?>');
+        $('#delivery_period').val('<?= $records2[0]['delivery_period'] ?? 4 ?>');
+        $('#payment_terms').val('<?= $records2[0]['payment_terms'] ?? 'Payment must be within 30 working days after delivery' ?>');
         
         // Populate items table
         records.forEach(function(item, index) {

@@ -726,10 +726,10 @@ for ($page = 0; $page < $pages; $page++):
             <td class="bank-cell">
                 <div class="bank-details">
                     <h4>Bank details</h4>
-                    <div>Bank Name: <strong><?= isset($bankDetails[0]) ? $bankDetails[0]['bname'] : 'EQUITY BANK UGANDA LIMITED' ?></strong></div>
-                    <div>Account Number: <strong><?= isset($bankDetails[0]) ? $bankDetails[0]['ac'] : '1004201798242' ?></strong></div>
-                    <div>Bank Code: <strong><?= isset($bankDetails[0]) ? $bankDetails[0]['ifsc'] : 'EQBLUGKAXXX' ?></strong></div>
-                    <div>Account Name: <strong><?= isset($bankDetails[0]) ? $bankDetails[0]['branch'] : 'EMAX' ?></strong></div>
+                    <div>Bank Name: <strong><?= isset($invDetails[0]['bname']) ? $invDetails[0]['bname'] : 'EQUITY BANK UGANDA LIMITED' ?></strong></div>
+                    <div>Account Number: <strong><?= isset($invDetails[0]['ac']) ? $invDetails[0]['ac'] : '1004201798242' ?></strong></div>
+                    <div>Bank Code: <strong><?= isset($invDetails[0]['ifsc']) ? $invDetails[0]['ifsc'] : 'EQBLUGKAXXX' ?></strong></div>
+                    <div>Account Name: <strong><?= isset($invDetails[0]['branch']) ? $invDetails[0]['branch'] : (isset($companyDetails['c_name']) ? $companyDetails['c_name'] : 'Emax Supplies & Logistics Limited') ?></strong></div>
                 </div>
                 
                 <div class="payment-terms">
@@ -741,14 +741,14 @@ for ($page = 0; $page < $pages; $page++):
                 <div class="signature-content">
                     <div><strong>Signed-By:</strong></div>
                     <div class="signature-line">
-                        <?php if (isset($defaultSignature) && !empty($defaultSignature['signature_path'])): ?>
+                        <?php if (isset($invDetails[0]['signature_path']) && !empty($invDetails[0]['signature_path'])): ?>
                             <?php 
-                            // Try different possible paths
+                            // Try different possible paths for the signature
                             $possiblePaths = [
-                                ROOTPATH . 'public/' . $defaultSignature['signature_path'],
-                                ROOTPATH . $defaultSignature['signature_path'],
-                                WRITEPATH . $defaultSignature['signature_path'],
-                                FCPATH . $defaultSignature['signature_path']
+                                ROOTPATH . 'public/' . $invDetails[0]['signature_path'],
+                                ROOTPATH . $invDetails[0]['signature_path'],
+                                WRITEPATH . $invDetails[0]['signature_path'],
+                                FCPATH . $invDetails[0]['signature_path']
                             ];
                             
                             $signatureFound = false;
@@ -764,14 +764,10 @@ for ($page = 0; $page < $pages; $page++):
                             if ($signatureFound): ?>
                                 <img src="data:image/jpeg;base64,<?= base64_encode(file_get_contents($foundPath)); ?>" alt="Signature" style="max-width: 120px; max-height: 50px;">
                             <?php else: ?>
-                                <div class="signature-box" style="width: 120px; height: 50px; margin: 10px 0; border: 1px dashed #ccc; display: flex; align-items: center; justify-content: center; font-size: 10px; color: #999;">
-                                    No Signature
-                                </div>
+                                <div class="signature-box" style="width: 120px; height: 50px; margin: 10px 0;"></div>
                             <?php endif; ?>
                         <?php else: ?>
-                            <div class="signature-box" style="width: 120px; height: 50px; margin: 10px 0; border: 1px dashed #ccc; display: flex; align-items: center; justify-content: center; font-size: 10px; color: #999;">
-                                No Default Signature
-                            </div>
+                            <div class="signature-box" style="width: 120px; height: 50px; margin: 10px 0;"></div>
                         <?php endif; ?>
                     </div>
                     <div>

@@ -139,8 +139,9 @@ public function editproinv($orderid = null)
 
             $this->crudModel4 = new Protest_model2();
             $builder = $this->crudModel4->db->table('protest2');
-            $builder->select('protest2.*, client.c_name, client.c_add');
+            $builder->select('protest2.*, client.c_name, client.c_add, bankdetails.bname, bankdetails.ac, bankdetails.ifsc, bankdetails.branch');
             $builder->join('client', 'protest2.cid = client.cid', 'inner');
+            $builder->join('bankdetails', 'protest2.bank_id = bankdetails.bid', 'left');
             $builder->where('protest2.orderid', $edit_id);
             $records2 = $builder->get()->getResultArray();
 
@@ -220,6 +221,23 @@ public function updateproinv($orderid = null)
         $taxamount = $this->request->getPost('taxAmount');
         $totalaftertax = $this->request->getPost('totalAftertax');
         
+        // Get additional fields
+        $bank_id = $this->request->getPost('bank_id');
+        $validity_period = $this->request->getPost('validity_period');
+        $delivery_period = $this->request->getPost('delivery_period');
+        $payment_terms = $this->request->getPost('payment_terms');
+        $signature_id = $this->request->getPost('signature_id');
+        
+        // Handle signature - get from database if signature_id is provided
+        $signature_path = null;
+        if ($signature_id) {
+            $userSignatureModel = new \App\Models\User_signature_model();
+            $signature = $userSignatureModel->find($signature_id);
+            if ($signature) {
+                $signature_path = $signature['signature_path'];
+            }
+        }
+        
         // Prepare item data
         $insertData = [];
         if (!empty($itemNames) && is_array($itemNames)) {
@@ -261,6 +279,11 @@ public function updateproinv($orderid = null)
             'taxamount' => $taxamount,
             'totalamount' => $totalaftertax,
             'created' => $formattedDate,
+            'bank_id' => $bank_id,
+            'validity_period' => $validity_period,
+            'delivery_period' => $delivery_period,
+            'payment_terms' => $payment_terms,
+            'signature_path' => $signature_path,
         ];
         
         // Check if the record exists
@@ -1093,6 +1116,11 @@ public function insert() {
             'taxamount' => $taxamount,
             'totalamount' => $totalaftertax,
             'created' => date('Y-m-d H:i:s'),
+            'bank_id' => $bank_id,
+            'validity_period' => $validity_period,
+            'delivery_period' => $delivery_period,
+            'payment_terms' => $payment_terms,
+            'signature_path' => $signature_path,
         ];
         
         // Insert data using working version approach
@@ -1283,7 +1311,7 @@ public function printproinv(){
     //$this->crudModel4 = new Delivery_model();
 
 
-    $invDetails =$this->crudModel2-> printprodata($orderid);
+    $invDetails = $this->crudModel2->printprodata($orderid);
 
         //$invid = $invDetails[0]['invid'];
 
