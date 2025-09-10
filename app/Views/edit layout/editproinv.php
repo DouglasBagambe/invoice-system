@@ -854,6 +854,7 @@ $(document).ready(function() {
         closeAllModals();
     });
     
+    // Initialize select2 dropdowns
     $('#supplier').select2({
         placeholder: "Select Client",
         ajax: {
@@ -864,6 +865,14 @@ $(document).ready(function() {
             processResults: function (data) { return { results: data }; },
             cache: true
         }
+    });
+    
+    $('#bank_id').select2({
+        placeholder: "Select Bank"
+    });
+    
+    $('#signature_id').select2({
+        placeholder: "Select Signature"
     });
     
     $('#datepicker').datepicker({ autoclose: true, format: 'dd-mm-yyyy' });
@@ -1470,12 +1479,34 @@ $(document).ready(function() {
         
         // Pre-select bank
         if (inv.bank_id) {
-            $('#bank_id').val(inv.bank_id).trigger('change');
+            // Wait for select2 to be initialized, then set the value
+            setTimeout(function() {
+                var $bankSelect = $('#bank_id');
+                if ($bankSelect.find('option[value="' + inv.bank_id + '"]').length > 0) {
+                    $bankSelect.val(inv.bank_id).trigger('change');
+                } else {
+                    // If option doesn't exist, add it first
+                    var bankText = inv.bank_name || 'Bank ' + inv.bank_id;
+                    var newOption = new Option(bankText, inv.bank_id, true, true);
+                    $bankSelect.append(newOption).trigger('change');
+                }
+            }, 200);
         }
         
         // Pre-select signature
         if (inv.signature_id) {
-            $('#signature_id').val(inv.signature_id).trigger('change');
+            // Wait for select2 to be initialized, then set the value
+            setTimeout(function() {
+                var $signatureSelect = $('#signature_id');
+                if ($signatureSelect.find('option[value="' + inv.signature_id + '"]').length > 0) {
+                    $signatureSelect.val(inv.signature_id).trigger('change');
+                } else {
+                    // If option doesn't exist, add it first
+                    var signatureText = inv.signature_name || 'Signature ' + inv.signature_id;
+                    var newOption = new Option(signatureText, inv.signature_id, true, true);
+                    $signatureSelect.append(newOption).trigger('change');
+                }
+            }, 200);
         }
         
         // Populate terms
