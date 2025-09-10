@@ -73,12 +73,30 @@ page:last-child {
     padding: 0px 15px 15px 15px !important;
     margin: 0 !important;
   }
+  
+  /* CRITICAL: Page break controls for printing */
+  .page-break {
+    page-break-before: always !important;
+    break-before: page !important;
+  }
+  
+  /* Prevent page breaks inside tables */
+  .items-table {
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
+  }
+  
+  /* Allow page breaks between table rows if needed */
+  .items-table tbody tr {
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
+  }
 }
 
 .main-container {
   padding: 40px 25px 25px 25px;
   position: relative;
-  height: calc(100vh - 50px);
+  height: auto; /* Changed from calc(100vh - 50px) */
   page-break-inside: avoid;
 }
 
@@ -108,7 +126,6 @@ page:last-child {
   width: 100%;
   margin-bottom: 10px;
   background: #fff;
-  /* padding: 0 10px; */
   display: flex;
   align-items: center;
 }
@@ -220,8 +237,9 @@ page:last-child {
 .items-table {
   width: 100%;
   border-collapse: collapse;
-  /* margin-bottom: 15px; */
+  margin-bottom: 15px; /* Add margin for spacing */
   font-size: 13px;
+  page-break-inside: auto; /* Allow breaking inside table */
 }
 
 .items-table th {
@@ -229,7 +247,7 @@ page:last-child {
   border-right: 1px solid #000 !important;
   border-top: 1px solid #000 !important;
   border-left: 1px solid #000 !important;
-  border-bottom: none;
+  border-bottom: 1px solid #000 !important; /* Add bottom border for headers */
   padding: 8px 6px;
   text-align: center;
   font-weight: bold;
@@ -243,7 +261,7 @@ page:last-child {
   border-right: 1px solid #000 !important;
   border-top: 1px solid #000 !important;
   border-left: 1px solid #000 !important;
-  border-bottom: none;
+  border-bottom: 1px solid #000 !important; /* Add bottom border for data cells */
   padding: 8px 6px;
   color: #000 !important;
   background-color: white !important;
@@ -265,9 +283,8 @@ page:last-child {
   width: 100%;
   border-collapse: collapse;
   font-size: 13px;
-  /* margin-bottom: 15px; */
   margin-bottom: 20px;
-  border-bottom: 1px solid #000 !important
+  border-bottom: 1px solid #000 !important;
 }
 
 .summary-table td {
@@ -275,13 +292,12 @@ page:last-child {
   border-right: 1px solid #000 !important;
   border-top: 1px solid #000 !important;
   border-left: 1px solid #000 !important;
-  border-bottom: 1px solid #000 !important
+  border-bottom: 1px solid #000 !important;
   background-color: white !important;
   color: #000 !important;
   -webkit-print-color-adjust: exact !important;
   color-adjust: exact !important;
   print-color-adjust: exact !important;
-  margin-bottom: 20px;
 }
 
 .summary-table .note-cell {
@@ -309,7 +325,6 @@ page:last-child {
 .total-label, .total-amount {
   display: table-cell;
   padding: 10px;
-  /* border-bottom: 1px solid #000 !important; */
   vertical-align: middle;
   color: #000 !important;
   -webkit-print-color-adjust: exact !important;
@@ -335,82 +350,7 @@ page:last-child {
 
 .total-row:nth-child(2) .total-label,
 .total-row:nth-child(2) .total-amount {
-  border-bottom: 1px solid #000 !important
-}
-
-/* Amount in Words Table - FIXED COLORS */
-.amount-words-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-bottom: 20px;
-  font-size: 13px;
-}
-
-.amount-words-table td {
-  border: 1px solid #000 !important;
-  padding: 10px;
-  background-color: white !important;
-  color: #000 !important;
-  -webkit-print-color-adjust: exact !important;
-  color-adjust: exact !important;
-  print-color-adjust: exact !important;
-}
-
-.amount-words-table .words-cell {
-  width: 60%;
-  padding: 15px;
-  vertical-align: top;
-}
-
-.amount-words-title {
-  font-size: 15px;
-  font-weight: bold;
-  color: #000 !important;
-  margin-bottom: 8px;
-  display: block;
-}
-
-.amount-words-content {
-  font-size: 14px;
-  color: #000 !important;
-  line-height: 1.4;
-  margin-top: 8px;
-}
-
-.amount-words-table .grand-total-cell {
-  width: 40%;
-  padding: 0;
-  font-weight: bold;
-  text-align: center;
-  vertical-align: middle;
-}
-
-.grand-total-content {
-  display: flex;
-  justify-content: space-between;
-  padding: 10px;
-  height: 100%;
-}
-
-.grand-total-content2 {
-  border-right: 1px solid #000 !important;
-  padding-right: 10px;
-  flex: 1;
-  text-align: right;
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  color: #000 !important;
-}
-
-.grand-total-amount {
-  flex: 1;
-  text-align: right;
-  padding-left: 10px;
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  color: #000 !important;
+  border-bottom: 1px solid #000 !important;
 }
 
 /* Terms Table - FIXED COLORS */
@@ -518,6 +458,12 @@ page:last-child {
   margin: 10px 0;
 }
 
+/* Page break utility class */
+.page-break {
+  page-break-before: always;
+  break-before: page;
+}
+
 /* Actions Button Styles */
 .actions-dropdown {
   position: fixed;
@@ -599,17 +545,49 @@ page:last-child {
 
 </head>
 <body>
-<page size="A4">
+
 <?php if ((!$companyDetails) && (!$invDetails[0])): ?>
-    <p>No company details available.</p>
+    <page size="A4">
+        <div class="main-container">
+            <p>No company details available.</p>
+        </div>
+    </page>
 <?php else: ?>
 
+<?php 
+$maxItemsPerPage = 12; // Reduced to allow space for other content
+$totalItems = count($itemDetails);
+$pages = ceil($totalItems / $maxItemsPerPage);
+
+// Calculate totals once
+$calculatedSubtotal = 0;
+$calculatedTaxAmount = 0;
+
+foreach ($itemDetails as $item) {
+    $itemTotal = $item['quantity'] * $item['price'];
+    $calculatedSubtotal += $itemTotal;
+    
+    $vatStatus = isset($item['vat_status']) ? $item['vat_status'] : 'taxable';
+    if ($vatStatus === 'taxable') {
+        $calculatedTaxAmount += ($itemTotal * 18) / 100;
+    }
+}
+
+$calculatedGrandTotal = $calculatedSubtotal + $calculatedTaxAmount;
+
+// Loop through pages
+for ($page = 0; $page < $pages; $page++): 
+    $startIndex = $page * $maxItemsPerPage;
+    $endIndex = min($startIndex + $maxItemsPerPage, $totalItems);
+    $pageItems = array_slice($itemDetails, $startIndex, $maxItemsPerPage);
+    $isLastPage = ($page == $pages - 1);
+?>
+
+<page size="A4">
 <div class="main-container">
 <div class="main-border">
     
-    <!-- <div class="profoma-label">Profoma</div> -->
-    
-    <!-- Header Section -->
+    <!-- Header Section (show on every page) -->
     <div class="header-section">
         <div class="company-logo">
             <img src="data:image/jpeg;base64,<?= base64_encode(file_get_contents(ROOTPATH . 'public/dist/img/Emax_logo.jpg')); ?>" alt="Emax Logo" style="max-width: 100%; max-height: 100%; object-fit: contain; display: block;">
@@ -627,7 +605,7 @@ page:last-child {
         </div>
     </div>
 
-    <!-- Quotation Table -->
+    <!-- Quotation Table (show on every page) -->
     <table class="quotation-table">
         <tr>
             <th class="quotation-header">Quotation for</th>
@@ -638,26 +616,14 @@ page:last-child {
             <td style="text-align: right; padding-right: 20px;">
                 <div style="margin-bottom: 8px;"><strong>Proforma #:</strong> <?= $invDetails[0]['invid']; ?></div>
                 <div><strong>Date:</strong> <?= date("Y-m-d", strtotime($invDetails[0]['created'])); ?></div>
+                <?php if ($page > 0): ?>
+                    <div style="margin-top: 8px;"><strong>Page:</strong> <?= $page + 1; ?> of <?= $pages; ?></div>
+                <?php endif; ?>
             </td>
         </tr>
     </table>
 
     <!-- Items Table -->
-    <?php 
-    $maxItemsPerPage = 15; // Maximum items per page
-    $totalItems = count($itemDetails);
-    $pages = ceil($totalItems / $maxItemsPerPage);
-    
-    for ($page = 0; $page < $pages; $page++): 
-        $startIndex = $page * $maxItemsPerPage;
-        $endIndex = min($startIndex + $maxItemsPerPage, $totalItems);
-        $pageItems = array_slice($itemDetails, $startIndex, $maxItemsPerPage);
-    ?>
-    
-    <?php if ($page > 0): ?>
-        <div style="page-break-before: always;"></div>
-    <?php endif; ?>
-    
     <table class="items-table">
         <thead>
             <tr>
@@ -697,12 +663,11 @@ page:last-child {
         </tbody>
     </table>
     
-    <?php endfor; ?>
-
-    <!-- Summary Table -->
+    <?php if ($isLastPage): ?>
+    <!-- Summary Table (only on last page) -->
     <table class="summary-table">
         <tr>
-            <td class="words-cell">
+            <td class="note-cell">
                 <div class="amount-words-title">Amount in Words:</div>
                 <div class="amount-words-content">
                     <?php 
@@ -721,23 +686,6 @@ page:last-child {
             </td>
             <td class="totals-cell">
                 <div class="totals-inner">
-                    <?php
-                    // Calculate proper subtotal (sum of all item totals before tax)
-                    $calculatedSubtotal = 0;
-                    $calculatedTaxAmount = 0;
-                    
-                    foreach ($itemDetails as $item) {
-                        $itemTotal = $item['quantity'] * $item['price'];
-                        $calculatedSubtotal += $itemTotal;
-                        
-                        $vatStatus = isset($item['vat_status']) ? $item['vat_status'] : 'taxable';
-                        if ($vatStatus === 'taxable') {
-                            $calculatedTaxAmount += ($itemTotal * 18) / 100;
-                        }
-                    }
-                    
-                    $calculatedGrandTotal = $calculatedSubtotal + $calculatedTaxAmount;
-                    ?>
                     <div class="total-row" style="border-bottom: 1px solid #000 !important;">
                         <div class="total-label"><strong>Sub Total</strong></div>
                         <div class="total-amount"><strong><?= number_format($calculatedSubtotal, 0); ?></strong></div>
@@ -755,7 +703,7 @@ page:last-child {
         </tr>
     </table>
 
-    <!-- Terms & Conditions Table -->
+    <!-- Terms & Conditions Table (only on last page) -->
     <table class="terms-table">
         <thead>
             <tr>
@@ -772,7 +720,7 @@ page:last-child {
         </tbody>
     </table>
 
-    <!-- Bottom Section Table -->
+    <!-- Bottom Section Table (only on last page) -->
     <table class="bottom-table">
         <tr>
             <td class="bank-cell">
@@ -795,9 +743,6 @@ page:last-child {
                     <div class="signature-line">
                         <?php if (isset($defaultSignature) && !empty($defaultSignature['signature_path'])): ?>
                             <?php 
-                            // Debug: Show what we're looking for
-                            // echo "<!-- Debug: Looking for signature at: " . $defaultSignature['signature_path'] . " -->";
-                            
                             // Try different possible paths
                             $possiblePaths = [
                                 ROOTPATH . 'public/' . $defaultSignature['signature_path'],
@@ -819,13 +764,11 @@ page:last-child {
                             if ($signatureFound): ?>
                                 <img src="data:image/jpeg;base64,<?= base64_encode(file_get_contents($foundPath)); ?>" alt="Signature" style="max-width: 120px; max-height: 50px;">
                             <?php else: ?>
-                                <!-- Debug: Signature not found at any path -->
                                 <div class="signature-box" style="width: 120px; height: 50px; margin: 10px 0; border: 1px dashed #ccc; display: flex; align-items: center; justify-content: center; font-size: 10px; color: #999;">
                                     No Signature
                                 </div>
                             <?php endif; ?>
                         <?php else: ?>
-                            <!-- Debug: No default signature data -->
                             <div class="signature-box" style="width: 120px; height: 50px; margin: 10px 0; border: 1px dashed #ccc; display: flex; align-items: center; justify-content: center; font-size: 10px; color: #999;">
                                 No Default Signature
                             </div>
@@ -838,12 +781,15 @@ page:last-child {
             </td>
         </tr>
     </table>
+    <?php endif; ?>
 
 </div>
 </div>
+</page>
+
+<?php endfor; ?>
 
 <?php endif; ?>
-</page>
 
 <!-- Actions Button (only visible on screen) -->
 <div class="actions-dropdown" id="actionsButton">
