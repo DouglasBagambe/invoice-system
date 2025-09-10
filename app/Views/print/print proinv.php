@@ -648,6 +648,9 @@ for ($page = 0; $page < $pages; $page++):
                 <td>
                   <?php 
                   $vatStatus = isset($item['vat_status']) ? $item['vat_status'] : 'taxable';
+                  
+                  // Debug: Show what we're getting
+                  echo "<!-- Debug: vat_status = " . $vatStatus . " -->";
 
                   if ($vatStatus === 'exempt') {
                     echo 'Exempt';
