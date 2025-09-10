@@ -549,7 +549,7 @@ page:last-child {
 <?php if ((!$companyDetails) && (!$invDetails[0])): ?>
     <page size="A4">
         <div class="main-container">
-            <p>No company details available.</p>
+    <p>No company details available.</p>
         </div>
     </page>
 <?php else: ?>
@@ -650,7 +650,7 @@ for ($page = 0; $page < $pages; $page++):
                   $vatStatus = isset($item['vat_status']) ? $item['vat_status'] : 'taxable';
                   
                   // Debug: Show what we're getting
-                  echo "<!-- Debug: vat_status = " . $vatStatus . " -->";
+                  // echo "<!-- Debug: vat_status = " . $vatStatus . " -->";
 
                   if ($vatStatus === 'exempt') {
                     echo 'Exempt';
@@ -665,7 +665,7 @@ for ($page = 0; $page < $pages; $page++):
             <?php endforeach; ?>
         </tbody>
     </table>
-    
+
     <?php if ($isLastPage): ?>
     <!-- Summary Table (only on last page) -->
     <table class="summary-table">
