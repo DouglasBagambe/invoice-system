@@ -432,11 +432,11 @@ public function saveclient()
         $c_type = $this->request->getPost('c_type');
         $u_type = $this->request->getPost('u_type');
         
-        // Validate required fields - check for empty strings and null values
-        if (empty($c_name) || empty($c_add) || empty($mob) || empty($c_type) || $u_type === null || $u_type === '') {
+        // Validate required fields - only client name is required
+        if (empty($c_name)) {
             return $this->response->setJSON([
                 'success' => false,
-                'message' => 'Client name, address, mobile, client type, and user type are required'
+                'message' => 'Client name is required'
             ]);
         }
         
