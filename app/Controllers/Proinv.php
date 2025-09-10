@@ -276,7 +276,12 @@ public function updateproinv($orderid = null)
         
         // Update items by deleting old and inserting new
         $this->crudModel->deleterecord($orderid);
-        $itemsInsert = $this->crudModel->insertBatch($insertData);
+        
+        // Handle item insertion - if no items, consider it successful
+        $itemsInsert = true; // Default to true for empty items
+        if (!empty($insertData)) {
+            $itemsInsert = $this->crudModel->insertBatch($insertData);
+        }
 
         if ($mainUpdate && $itemsInsert) {
             return $this->response->setJSON([
