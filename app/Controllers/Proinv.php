@@ -280,7 +280,7 @@ public function updateproinv($orderid = null)
         // Handle item insertion - if no items, consider it successful
         $itemsInsert = true; // Default to true for empty items
         if (!empty($insertData)) {
-            $itemsInsert = $this->crudModel->insertBatch($insertData);
+        $itemsInsert = $this->crudModel->insertBatch($insertData);
         }
 
         if ($mainUpdate && $itemsInsert) {
@@ -1298,6 +1298,11 @@ public function printproinv(){
         // Fallback to default bank if none selected
         $bankDetails = $this->crudModel3->findAll();
     }
+    
+    // Get user signatures for the print view
+    $userSignatureModel = new \App\Models\User_signature_model();
+    $userSignatures = $userSignatureModel->getUserSignatures(session()->get('user_id'));
+    $defaultSignature = $userSignatureModel->getDefaultSignature(session()->get('user_id'));
 
     // if (empty($taxinvData)) {
     //     return view('errors/custom_error', ['message' => 'No data found for the given Order ID.']);
@@ -1313,7 +1318,9 @@ public function printproinv(){
         return view('print/print proinv',['companyDetails' => $companyDetails,
                                            'invDetails' => $invDetails,
                                            'itemDetails' =>$itemDetails,
-                                            'bankDetails'=> $bankDetails]);
+                                            'bankDetails'=> $bankDetails,
+                                            'userSignatures' => $userSignatures,
+                                            'defaultSignature' => $defaultSignature]);
     }
     
 }

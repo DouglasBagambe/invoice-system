@@ -27,6 +27,11 @@ page {
   width: 21cm;
   min-height: 29.7cm;
   position: relative;
+  page-break-after: always;
+}
+
+page:last-child {
+  page-break-after: avoid;
 }
 
 /* CRITICAL: Force all colors to print exactly as displayed */
@@ -74,6 +79,7 @@ page {
   padding: 40px 25px 25px 25px;
   position: relative;
   height: calc(100vh - 50px);
+  page-break-inside: avoid;
 }
 
 .main-border {
@@ -216,6 +222,39 @@ page {
   border-collapse: collapse;
   /* margin-bottom: 15px; */
   font-size: 13px;
+  page-break-inside: auto;
+}
+
+.items-table tbody tr {
+  page-break-inside: avoid;
+  page-break-after: auto;
+}
+
+/* Force page break before summary if items are too many */
+.items-table + .summary-table {
+  page-break-before: auto;
+}
+
+/* Ensure proper page breaks for long content */
+.summary-table,
+.terms-table,
+.bottom-table {
+  page-break-inside: avoid;
+}
+
+/* Allow items table to break across pages but keep rows together */
+.items-table tbody {
+  page-break-inside: auto;
+}
+
+.items-table tbody tr {
+  page-break-inside: avoid;
+  page-break-after: auto;
+}
+
+/* Ensure header stays with first row */
+.items-table thead {
+  page-break-after: avoid;
 }
 
 .items-table th {
@@ -770,16 +809,16 @@ page {
                 <div class="signature-content">
                     <div><strong>Signed-By:</strong></div>
                     <div class="signature-line">
-                        <?php if (isset($invDetails[0]['signature_path']) && !empty($invDetails[0]['signature_path'])): ?>
+                        <?php if (isset($defaultSignature) && !empty($defaultSignature['signature_path'])): ?>
                             <?php 
-                            $signaturePath = ROOTPATH . $invDetails[0]['signature_path'];
+                            $signaturePath = ROOTPATH . 'public/' . $defaultSignature['signature_path'];
                             if (file_exists($signaturePath)): ?>
                                 <img src="data:image/jpeg;base64,<?= base64_encode(file_get_contents($signaturePath)); ?>" alt="Signature" style="max-width: 120px; max-height: 50px;">
                             <?php else: ?>
-                                <div class="signature-box" style="width: 120px; height: 50px; margin: 10px 0;"></div>
+                                <div class="signature-box" style="width: 120px; height: 50px; margin: 10px 0; border: 1px solid #ccc;"></div>
                             <?php endif; ?>
                         <?php else: ?>
-                            <div class="signature-box" style="width: 120px; height: 50px; margin: 10px 0;"></div>
+                            <div class="signature-box" style="width: 120px; height: 50px; margin: 10px 0; border: 1px solid #ccc;"></div>
                         <?php endif; ?>
                     </div>
                     <div>
@@ -905,11 +944,31 @@ page {
   // Auto-hide actions button when printing
   window.addEventListener('beforeprint', function() {
     document.getElementById('actionsButton').style.display = 'none';
+    // Handle page breaks for long item lists
+    handlePageBreaks();
   });
   
   window.addEventListener('afterprint', function() {
     document.getElementById('actionsButton').style.display = 'block';
   });
+  
+  // Function to handle page breaks for long item lists
+  function handlePageBreaks() {
+    const itemsTable = document.querySelector('.items-table tbody');
+    if (!itemsTable) return;
+    
+    const rows = itemsTable.querySelectorAll('tr');
+    const maxRowsPerPage = 15; // Adjust based on your needs
+    
+    if (rows.length > maxRowsPerPage) {
+      // Add page break after every maxRowsPerPage rows
+      for (let i = maxRowsPerPage; i < rows.length; i += maxRowsPerPage) {
+        if (rows[i]) {
+          rows[i].style.pageBreakBefore = 'always';
+        }
+      }
+    }
+  }
 </script>
 
 </body>
