@@ -149,7 +149,8 @@ public function editproinv($orderid = null)
             $banks = $bankModel->findAll();
             
             $signatureModel = new \App\Models\User_signature_model();
-            $userSignatures = $signatureModel->where('user_id', session()->get('user_id'))->findAll();
+            $userSignatures = $signatureModel->getUserSignatures(session()->get('user_id'));
+            $defaultSignature = $signatureModel->getDefaultSignature(session()->get('user_id'));
             
             // If it's an AJAX request, return JSON
             if ($this->request->isAJAX()) {
@@ -164,6 +165,7 @@ public function editproinv($orderid = null)
                 'records2' => $records2,
                 'banks' => $banks,
                 'userSignatures' => $userSignatures,
+                'defaultSignature' => $defaultSignature,
             ];
 
             return view('edit layout/editproinv', $data);

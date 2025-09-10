@@ -1493,10 +1493,15 @@ $(document).ready(function() {
         // Set default signature if available
         setTimeout(function() {
             var $signatureSelect = $('#signature_id');
-            if ($signatureSelect.find('option').length > 1) {
-                // Select the first available signature as default
-                $signatureSelect.val($signatureSelect.find('option:eq(1)').val()).trigger('change');
-            }
+            <?php if(isset($defaultSignature) && !empty($defaultSignature)): ?>
+                // Use the actual default signature from database
+                $signatureSelect.val('<?= $defaultSignature['id'] ?>').trigger('change');
+            <?php else: ?>
+                // Fallback to first available signature
+                if ($signatureSelect.find('option').length > 1) {
+                    $signatureSelect.val($signatureSelect.find('option:eq(1)').val()).trigger('change');
+                }
+            <?php endif; ?>
         }, 200);
         
         // Set default terms since they're not stored in the database

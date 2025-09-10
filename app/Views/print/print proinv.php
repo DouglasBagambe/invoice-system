@@ -222,39 +222,6 @@ page:last-child {
   border-collapse: collapse;
   /* margin-bottom: 15px; */
   font-size: 13px;
-  page-break-inside: auto;
-}
-
-.items-table tbody tr {
-  page-break-inside: avoid;
-  page-break-after: auto;
-}
-
-/* Force page break before summary if items are too many */
-.items-table + .summary-table {
-  page-break-before: auto;
-}
-
-/* Ensure proper page breaks for long content */
-.summary-table,
-.terms-table,
-.bottom-table {
-  page-break-inside: avoid;
-}
-
-/* Allow items table to break across pages but keep rows together */
-.items-table tbody {
-  page-break-inside: auto;
-}
-
-.items-table tbody tr {
-  page-break-inside: avoid;
-  page-break-after: auto;
-}
-
-/* Ensure header stays with first row */
-.items-table thead {
-  page-break-after: avoid;
 }
 
 .items-table th {
@@ -676,6 +643,21 @@ page:last-child {
     </table>
 
     <!-- Items Table -->
+    <?php 
+    $maxItemsPerPage = 15; // Maximum items per page
+    $totalItems = count($itemDetails);
+    $pages = ceil($totalItems / $maxItemsPerPage);
+    
+    for ($page = 0; $page < $pages; $page++): 
+        $startIndex = $page * $maxItemsPerPage;
+        $endIndex = min($startIndex + $maxItemsPerPage, $totalItems);
+        $pageItems = array_slice($itemDetails, $startIndex, $maxItemsPerPage);
+    ?>
+    
+    <?php if ($page > 0): ?>
+        <div style="page-break-before: always;"></div>
+    <?php endif; ?>
+    
     <table class="items-table">
         <thead>
             <tr>
@@ -690,8 +672,8 @@ page:last-child {
         </thead>
         <tbody>
             <?php 
-            $cnt = 1;
-            foreach ($itemDetails as $item): ?>
+            $cnt = $startIndex + 1;
+            foreach ($pageItems as $item): ?>
             <tr>
                 <td><?= $cnt++; ?></td>
                 <td><?= number_format($item['quantity'], 0); ?></td>
@@ -714,6 +696,8 @@ page:last-child {
             <?php endforeach; ?>
         </tbody>
     </table>
+    
+    <?php endfor; ?>
 
     <!-- Summary Table -->
     <table class="summary-table">
@@ -811,14 +795,40 @@ page:last-child {
                     <div class="signature-line">
                         <?php if (isset($defaultSignature) && !empty($defaultSignature['signature_path'])): ?>
                             <?php 
-                            $signaturePath = ROOTPATH . 'public/' . $defaultSignature['signature_path'];
-                            if (file_exists($signaturePath)): ?>
-                                <img src="data:image/jpeg;base64,<?= base64_encode(file_get_contents($signaturePath)); ?>" alt="Signature" style="max-width: 120px; max-height: 50px;">
+                            // Debug: Show what we're looking for
+                            // echo "<!-- Debug: Looking for signature at: " . $defaultSignature['signature_path'] . " -->";
+                            
+                            // Try different possible paths
+                            $possiblePaths = [
+                                ROOTPATH . 'public/' . $defaultSignature['signature_path'],
+                                ROOTPATH . $defaultSignature['signature_path'],
+                                WRITEPATH . $defaultSignature['signature_path'],
+                                FCPATH . $defaultSignature['signature_path']
+                            ];
+                            
+                            $signatureFound = false;
+                            $foundPath = '';
+                            foreach ($possiblePaths as $signaturePath) {
+                                if (file_exists($signaturePath)) {
+                                    $signatureFound = true;
+                                    $foundPath = $signaturePath;
+                                    break;
+                                }
+                            }
+                            
+                            if ($signatureFound): ?>
+                                <img src="data:image/jpeg;base64,<?= base64_encode(file_get_contents($foundPath)); ?>" alt="Signature" style="max-width: 120px; max-height: 50px;">
                             <?php else: ?>
-                                <div class="signature-box" style="width: 120px; height: 50px; margin: 10px 0; border: 1px solid #ccc;"></div>
+                                <!-- Debug: Signature not found at any path -->
+                                <div class="signature-box" style="width: 120px; height: 50px; margin: 10px 0; border: 1px dashed #ccc; display: flex; align-items: center; justify-content: center; font-size: 10px; color: #999;">
+                                    No Signature
+                                </div>
                             <?php endif; ?>
                         <?php else: ?>
-                            <div class="signature-box" style="width: 120px; height: 50px; margin: 10px 0; border: 1px solid #ccc;"></div>
+                            <!-- Debug: No default signature data -->
+                            <div class="signature-box" style="width: 120px; height: 50px; margin: 10px 0; border: 1px dashed #ccc; display: flex; align-items: center; justify-content: center; font-size: 10px; color: #999;">
+                                No Default Signature
+                            </div>
                         <?php endif; ?>
                     </div>
                     <div>
@@ -944,31 +954,11 @@ page:last-child {
   // Auto-hide actions button when printing
   window.addEventListener('beforeprint', function() {
     document.getElementById('actionsButton').style.display = 'none';
-    // Handle page breaks for long item lists
-    handlePageBreaks();
   });
   
   window.addEventListener('afterprint', function() {
     document.getElementById('actionsButton').style.display = 'block';
   });
-  
-  // Function to handle page breaks for long item lists
-  function handlePageBreaks() {
-    const itemsTable = document.querySelector('.items-table tbody');
-    if (!itemsTable) return;
-    
-    const rows = itemsTable.querySelectorAll('tr');
-    const maxRowsPerPage = 15; // Adjust based on your needs
-    
-    if (rows.length > maxRowsPerPage) {
-      // Add page break after every maxRowsPerPage rows
-      for (let i = maxRowsPerPage; i < rows.length; i += maxRowsPerPage) {
-        if (rows[i]) {
-          rows[i].style.pageBreakBefore = 'always';
-        }
-      }
-    }
-  }
 </script>
 
 </body>
