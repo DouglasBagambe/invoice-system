@@ -1091,11 +1091,6 @@ public function insert() {
             'taxamount' => $taxamount,
             'totalamount' => $totalaftertax,
             'created' => date('Y-m-d H:i:s'),
-            'bank_id' => $bank_id,
-            'validity_period' => $validity_period,
-            'delivery_period' => $delivery_period,
-            'payment_terms' => $payment_terms,
-            'signature_path' => $signature_path,
         ];
         
         // Insert data using working version approach

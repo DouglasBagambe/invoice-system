@@ -1477,42 +1477,32 @@ $(document).ready(function() {
         $('#supplier').append(clientOption).trigger('change');
         $('#c_add').val(inv.c_add);
         
-        // Pre-select bank
-        if (inv.bank_id) {
-            // Wait for select2 to be initialized, then set the value
-            setTimeout(function() {
-                var $bankSelect = $('#bank_id');
-                if ($bankSelect.find('option[value="' + inv.bank_id + '"]').length > 0) {
-                    $bankSelect.val(inv.bank_id).trigger('change');
-                } else {
-                    // If option doesn't exist, add it first
-                    var bankText = inv.bank_name || 'Bank ' + inv.bank_id;
-                    var newOption = new Option(bankText, inv.bank_id, true, true);
-                    $bankSelect.append(newOption).trigger('change');
-                }
-            }, 200);
-        }
+        // Since bank and signature data is not stored in the database,
+        // we'll just set default values for the form
+        // The user will need to re-select bank and signature when editing
         
-        // Pre-select signature
-        if (inv.signature_id) {
-            // Wait for select2 to be initialized, then set the value
-            setTimeout(function() {
-                var $signatureSelect = $('#signature_id');
-                if ($signatureSelect.find('option[value="' + inv.signature_id + '"]').length > 0) {
-                    $signatureSelect.val(inv.signature_id).trigger('change');
-                } else {
-                    // If option doesn't exist, add it first
-                    var signatureText = inv.signature_name || 'Signature ' + inv.signature_id;
-                    var newOption = new Option(signatureText, inv.signature_id, true, true);
-                    $signatureSelect.append(newOption).trigger('change');
-                }
-            }, 200);
-        }
+        // Set default bank if available
+        setTimeout(function() {
+            var $bankSelect = $('#bank_id');
+            if ($bankSelect.find('option').length > 1) {
+                // Select the first available bank as default
+                $bankSelect.val($bankSelect.find('option:eq(1)').val()).trigger('change');
+            }
+        }, 200);
         
-        // Populate terms
-        $('#validity_period').val(inv.validity_period || 90);
-        $('#delivery_period').val(inv.delivery_period || 4);
-        $('#payment_terms').val(inv.payment_terms || 'Payment must be within 30 working days after delivery');
+        // Set default signature if available
+        setTimeout(function() {
+            var $signatureSelect = $('#signature_id');
+            if ($signatureSelect.find('option').length > 1) {
+                // Select the first available signature as default
+                $signatureSelect.val($signatureSelect.find('option:eq(1)').val()).trigger('change');
+            }
+        }, 200);
+        
+        // Set default terms since they're not stored in the database
+        $('#validity_period').val(90);
+        $('#delivery_period').val(4);
+        $('#payment_terms').val('Payment must be within 30 working days after delivery');
         
         // Populate items table
         records.forEach(function(item, index) {
