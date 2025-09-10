@@ -263,6 +263,10 @@ public function updateproinv($orderid = null)
                         'hsn' => !empty($hsn[$i]) ? $hsn[$i] : 8443,
                         'quantity' => $quantity,
                         'price' => $price,
+                        'vat_rate' => $vatRate,
+                        'vat_type' => $vatType,
+                        'vat_status' => $vatStatus,
+                        'vat_amount' => $vatStatus === 'taxable' && $vatRate > 0 ? (($quantity * $price) * $vatRate) / 100 : 0,
                         'total' => $itemTotal,
                     ];
                 }

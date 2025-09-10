@@ -1380,6 +1380,7 @@ $(document).ready(function() {
         
         function submitForm() {
             $('#submitbtn').prop('disabled', true).val('Saving...');
+            
             var formData = new FormData($('#proformaForm')[0]);
             
             $.ajax({
