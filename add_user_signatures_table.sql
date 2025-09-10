@@ -18,3 +18,5 @@ CREATE TABLE IF NOT EXISTS `user_signatures` (
 INSERT INTO `user_signatures` (`user_id`, `signature_name`, `signature_path`, `is_default`, `created_at`) VALUES
 (1, 'Default Signature', 'public/uploads/signatures/default_signature.png', 1, NOW());
 
+
+

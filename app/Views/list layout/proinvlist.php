@@ -3,7 +3,8 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>AdminLTE 2 | Advanced form elements</title>
+  <title>EMAX | Advanced form elements</title>
+  <link rel="icon" type="image/jpeg" href="<?= base_url(); ?>/Emax_logo.jpg">
 
 <?= $this->include('Include/links.php');?>
 

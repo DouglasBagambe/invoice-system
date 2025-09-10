@@ -4,7 +4,7 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>AdminLTE 2 | General Form Elements</title>
+  <title>EMAX | General Form Elements</title>
   <?= $this->include('Include/links.php');?>
   <style>
 

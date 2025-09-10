@@ -5,6 +5,7 @@
 <html>
 <head>
 <title>Proforma Invoice</title>
+<link rel="icon" type="image/jpeg" href="<?= base_url(); ?>/Emax_logo.jpg">
 <?= $this->include('Include/links.php');?>
 
 <style type="text/css">

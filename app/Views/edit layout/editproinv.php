@@ -3,7 +3,8 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>AdminLTE 2 | Edit Proforma Invoice</title>
+  <title>EMAX | Edit Proforma Invoice</title>
+  <link rel="icon" type="image/jpeg" href="<?= base_url(); ?>/Emax_logo.jpg">
   <?= $this->include('Include/links.php');?>
   <style>
     [class^='select2'] { border-radius: 0px !important; line-height: 25px !important; }
@@ -434,13 +435,13 @@
         </div>
         
         <div class="form-group-modern">
-          <label>Address <span style="color: #e74c3c;">*</span></label>
+          <label>Address</label>
           <textarea id="new_client_address" class="form-control-modern" rows="2" placeholder="Enter client address" style="resize: vertical; height: auto; min-height: 80px;"></textarea>
           <span class="error-text" id="client_address_error"></span>
         </div>
         
         <div class="form-group-modern">
-          <label>Mobile Number <span style="color: #e74c3c;">*</span></label>
+          <label>Mobile Number</label>
           <input type="text" id="new_client_mobile" class="form-control-modern" placeholder="Enter mobile number">
           <span class="error-text" id="client_mobile_error"></span>
         </div>
@@ -467,7 +468,7 @@
     <div class="row">
       <div class="col-md-6">
         <div class="form-group-modern">
-          <label>Client Type <span style="color: #e74c3c;">*</span></label>
+          <label>Client Type</label>
           <select id="new_client_type" class="form-control-modern">
             <option value="">Select Type</option>
             <option value="Loc">Local</option>
@@ -478,7 +479,7 @@
       </div>
       <div class="col-md-6">
         <div class="form-group-modern">
-          <label>User Type <span style="color: #e74c3c;">*</span></label>
+          <label>User Type</label>
           <select id="new_client_user_type" class="form-control-modern">
             <option value="">Select User Type</option>
             <option value="0">Regular</option>
@@ -1024,26 +1025,6 @@ $(document).ready(function() {
         if (!clientData.c_name) {
             $('#client_name_error').text('Client name is required');
             $('#new_client_name').addClass('error');
-            isValid = false;
-        }
-        if (!clientData.c_add) {
-            $('#client_address_error').text('Address is required');
-            $('#new_client_address').addClass('error');
-            isValid = false;
-        }
-        if (!clientData.mob) {
-            $('#client_mobile_error').text('Mobile number is required');
-            $('#new_client_mobile').addClass('error');
-            isValid = false;
-        }
-        if (!clientData.c_type) {
-            $('#client_type_error').text('Client type is required');
-            $('#new_client_type').addClass('error');
-            isValid = false;
-        }
-        if (!clientData.u_type && clientData.u_type !== 0) {
-            $('#client_user_type_error').text('User type is required');
-            $('#new_client_user_type').addClass('error');
             isValid = false;
         }
         
