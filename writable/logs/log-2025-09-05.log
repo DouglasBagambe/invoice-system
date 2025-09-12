@@ -1,0 +1,28 @@
+CRITICAL - 2025-09-05 17:53:01 --> Table 'db.user_signatures' doesn't exist
+#0 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\system\Database\MySQLi\Connection.php(314): mysqli->query('SELECT *\nFROM `...')
+#1 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\system\Database\BaseConnection.php(713): CodeIgniter\Database\MySQLi\Connection->execute('SELECT *\nFROM `...')
+#2 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\system\Database\BaseConnection.php(641): CodeIgniter\Database\BaseConnection->simpleQuery('SELECT *\nFROM `...')
+#3 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\system\Database\BaseBuilder.php(1866): CodeIgniter\Database\BaseConnection->query('SELECT *\nFROM `...', Array, false)
+#4 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\system\Model.php(213): CodeIgniter\Database\BaseBuilder->get()
+#5 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\system\BaseModel.php(583): CodeIgniter\Model->doFindAll(0, 0)
+#6 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\app\Models\User_signature_model.php(18): CodeIgniter\BaseModel->findAll()
+#7 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\app\Controllers\Proinv.php(89): App\Models\User_signature_model->getUserSignatures('5')
+#8 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\system\CodeIgniter.php(936): App\Controllers\Proinv->genproinv()
+#9 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\system\CodeIgniter.php(432): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Proinv))
+#10 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\system\CodeIgniter.php(333): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#11 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\index.php(44): CodeIgniter\CodeIgniter->run()
+#12 {main}
+CRITICAL - 2025-09-05 17:55:32 --> Table 'db.user_signatures' doesn't exist
+#0 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\system\Database\MySQLi\Connection.php(314): mysqli->query('SELECT *\nFROM `...')
+#1 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\system\Database\BaseConnection.php(713): CodeIgniter\Database\MySQLi\Connection->execute('SELECT *\nFROM `...')
+#2 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\system\Database\BaseConnection.php(641): CodeIgniter\Database\BaseConnection->simpleQuery('SELECT *\nFROM `...')
+#3 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\system\Database\BaseBuilder.php(1866): CodeIgniter\Database\BaseConnection->query('SELECT *\nFROM `...', Array, false)
+#4 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\system\Model.php(213): CodeIgniter\Database\BaseBuilder->get()
+#5 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\system\BaseModel.php(583): CodeIgniter\Model->doFindAll(0, 0)
+#6 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\app\Models\User_signature_model.php(18): CodeIgniter\BaseModel->findAll()
+#7 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\app\Controllers\Proinv.php(89): App\Models\User_signature_model->getUserSignatures('5')
+#8 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\system\CodeIgniter.php(936): App\Controllers\Proinv->genproinv()
+#9 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\system\CodeIgniter.php(432): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Proinv))
+#10 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\system\CodeIgniter.php(333): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#11 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\index.php(44): CodeIgniter\CodeIgniter->run()
+#12 {main}
