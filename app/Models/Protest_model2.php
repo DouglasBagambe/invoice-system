@@ -55,9 +55,11 @@ class Protest_model2 extends Model
      */
    public function updaterecord($orderid, array $updateData)
     {
-        //return $this->update($id, $data); // Update data in the table
-        $this->db->table('protest2')->where('orderid', $orderid)->update($updateData);
-        return $this->db->affectedRows() > 0;
+        // Use builder's boolean return; treat 0 affected rows as success (no-op updates)
+        $updated = $this->db->table('protest2')
+                            ->where('orderid', $orderid)
+                            ->update($updateData);
+        return $updated !== false;
     }
 
 

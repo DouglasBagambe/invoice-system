@@ -447,15 +447,7 @@ page:last-child {
   color: #000 !important;
 }
 
-.signed-by-label {
-  font-weight: bold;
-  margin-bottom: 6px;
-}
-
-.signed-person-name {
-  margin-top: 6px;
-  font-weight: bold;
-}
+ 
 
 .signature-line {
   margin: 40px 0 15px 0;
@@ -752,7 +744,7 @@ for ($page = 0; $page < $pages; $page++):
             </td>
             <td class="signature-cell">
                 <div class="signature-content">
-                    <div class="signed-by-label">Signed By</div>
+                    <div><strong>Signed-By:</strong></div>
                     <div class="signature-line">
                         <?php if (isset($invDetails[0]['signature_path']) && !empty($invDetails[0]['signature_path'])): ?>
                             <?php 
@@ -783,12 +775,8 @@ for ($page = 0; $page < $pages; $page++):
                             <div class="signature-box" style="width: 120px; height: 50px; margin: 10px 0;"></div>
                         <?php endif; ?>
                     </div>
-                    <?php if (!empty($loggedInUserName)): ?>
-                    <div class="signed-person-name"><?= htmlspecialchars($loggedInUserName); ?></div>
-                    <?php endif; ?>
-                    <div style="margin-top: 8px;">
-                        <strong>On Behalf of</strong><br>
-                        <strong>EMAX SUPPLIES & LOGISTICS LIMITED</strong>
+                    <div>
+                        <strong>On Behalf of<br>EMAX SUPPLIES & LOGISTICS LIMITED</strong>
                     </div>
                 </div>
             </td>
