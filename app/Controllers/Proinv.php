@@ -205,18 +205,17 @@ public function updateproinv($orderid = null)
             $formattedDate = date('Y-m-d');
         }
         
-        // Get item arrays
-        $itemNames = $this->request->getPost('item_name');
-        $itemDescs = $this->request->getPost('item_desc');
-        $hsn = $this->request->getPost('hsn');
-        $quantities = $this->request->getPost('item_quantity');
-        $prices = $this->request->getPost('price');
-        $units = $this->request->getPost('unit');
-        $units = $this->request->getPost('unit');
-        $vatRates = $this->request->getPost('vat_rate');
-        $vatTypes = $this->request->getPost('vat_type');
-        $vatStatuses = $this->request->getPost('vat_status');
-        $totals = $this->request->getPost('total');
+        // Get item arrays (normalize indices to keep arrays aligned)
+        $itemNames = array_values((array)$this->request->getPost('item_name'));
+        $itemDescs = array_values((array)$this->request->getPost('item_desc'));
+        $hsn = array_values((array)$this->request->getPost('hsn'));
+        $quantities = array_values((array)$this->request->getPost('item_quantity'));
+        $prices = array_values((array)$this->request->getPost('price'));
+        $units = array_values((array)$this->request->getPost('unit'));
+        $vatRates = array_values((array)$this->request->getPost('vat_rate'));
+        $vatTypes = array_values((array)$this->request->getPost('vat_type'));
+        $vatStatuses = array_values((array)$this->request->getPost('vat_status'));
+        $totals = array_values((array)$this->request->getPost('total'));
         
         // Get totals
         $subtotal = $this->request->getPost('subTotal');
@@ -1033,16 +1032,17 @@ public function insert() {
         $date = new \DateTime($datepicker);
         $formattedDate = $date->format('Y-m-d');
         
-        // Get item arrays
-        $itemNames = $this->request->getPost('item_name');
-        $itemDescs = $this->request->getPost('item_desc');
-        $hsn = $this->request->getPost('hsn');
-        $quantities = $this->request->getPost('item_quantity');
-        $prices = $this->request->getPost('price');
-        $vatRates = $this->request->getPost('vat_rate');
-        $vatTypes = $this->request->getPost('vat_type');
-        $vatStatuses = $this->request->getPost('vat_status');
-        $totals = $this->request->getPost('total');
+        // Get item arrays (normalize indices to keep arrays aligned)
+        $itemNames = array_values((array)$this->request->getPost('item_name'));
+        $itemDescs = array_values((array)$this->request->getPost('item_desc'));
+        $hsn = array_values((array)$this->request->getPost('hsn'));
+        $quantities = array_values((array)$this->request->getPost('item_quantity'));
+        $prices = array_values((array)$this->request->getPost('price'));
+        $vatRates = array_values((array)$this->request->getPost('vat_rate'));
+        $vatTypes = array_values((array)$this->request->getPost('vat_type'));
+        $vatStatuses = array_values((array)$this->request->getPost('vat_status'));
+        $totals = array_values((array)$this->request->getPost('total'));
+        $units = array_values((array)$this->request->getPost('unit'));
         
         // Get totals
         $subtotal = $this->request->getPost('subTotal');
