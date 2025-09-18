@@ -643,7 +643,7 @@ for ($page = 0; $page < $pages; $page++):
             <tr>
                 <td><?= $cnt++; ?></td>
                 <td><?= number_format($item['quantity'], 0); ?></td>
-                <td><?= isset($item['unit']) ? $item['unit'] : 'Kgs' ?></td>
+                <td><?= htmlspecialchars(isset($item['unit']) && $item['unit'] !== '' ? $item['unit'] : 'Kgs'); ?></td>
                 <td><?= $item['item_name']; ?></td>
                 <td>
                   <?php 

@@ -211,6 +211,8 @@ public function updateproinv($orderid = null)
         $hsn = $this->request->getPost('hsn');
         $quantities = $this->request->getPost('item_quantity');
         $prices = $this->request->getPost('price');
+        $units = $this->request->getPost('unit');
+        $units = $this->request->getPost('unit');
         $vatRates = $this->request->getPost('vat_rate');
         $vatTypes = $this->request->getPost('vat_type');
         $vatStatuses = $this->request->getPost('vat_status');
@@ -262,6 +264,7 @@ public function updateproinv($orderid = null)
                         'item_desc' => !empty($itemDescs[$i]) ? $itemDescs[$i] : null,
                         'hsn' => !empty($hsn[$i]) ? $hsn[$i] : 8443,
                         'quantity' => $quantity,
+                        'unit' => isset($units[$i]) && $units[$i] !== '' ? $units[$i] : 'Kgs',
                         'price' => $price,
                         'vat_rate' => $vatRate,
                         'vat_type' => $vatType,
@@ -1097,6 +1100,7 @@ public function insert() {
                         'item_desc' => !empty($itemDescs[$i]) ? $itemDescs[$i] : null,
                         'hsn' => !empty($hsn[$i]) ? $hsn[$i] : 8443, // Default HSN if not provided
                         'quantity' => $quantity,
+                        'unit' => isset($units[$i]) && $units[$i] !== '' ? $units[$i] : 'Kgs',
                         'price' => $price,
                         'vat_rate' => $vatRate,
                         'vat_type' => $vatType,
