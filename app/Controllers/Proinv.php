@@ -1353,12 +1353,20 @@ public function printproinv(){
     //print_r($itemDetails);
     //print_r($bankDetails);
     //return view('print/print quote', ['quoteDetails' => $quoteData]);
+        // Determine logged in user's display name from session with safe fallbacks
+        $session = session();
+        $loggedInUserName = $session->get('name')
+            ?: ($session->get('username')
+            ?: ($session->get('user_name')
+            ?: ($session->get('email') ?: '')));
+
         return view('print/print proinv',['companyDetails' => $companyDetails,
                                            'invDetails' => $invDetails,
                                            'itemDetails' =>$itemDetails,
                                             'bankDetails'=> $bankDetails,
                                             'userSignatures' => $userSignatures,
-                                            'defaultSignature' => $defaultSignature]);
+                                            'defaultSignature' => $defaultSignature,
+                                            'loggedInUserName' => $loggedInUserName]);
     }
     
 }
