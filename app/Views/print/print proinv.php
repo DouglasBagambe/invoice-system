@@ -654,8 +654,8 @@ for ($page = 0; $page < $pages; $page++):
                   // Debug: Show what we're getting
                   // echo "<!-- Debug: vat_status = " . $vatStatus . " -->";
 
-                  if ($vatStatus === 'exempt') {
-                    echo 'Exempt';
+                  if ($vatStatus === 'exempt' || $vatStatus === 'zero_rated') {
+                    echo $vatStatus === 'zero_rated' ? 'Zero Rated' : 'Exempt';
                   } else {
                     echo 'Vat (18%)';
                   }

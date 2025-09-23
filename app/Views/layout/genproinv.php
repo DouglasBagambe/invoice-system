@@ -709,6 +709,7 @@
                           <select name="vat_status[]" id="vat_status_1" class="form-control vat_status">
                             <option value="taxable">Vat (18%)</option>
                             <option value="exempt">Exempt</option>
+                            <option value="zero_rated">Zero Rated</option>
                           </select>
                         </td>
                         <td><input type="number" name="total[]" id="total_1" class="form-control total" readonly></td>
@@ -1252,7 +1253,7 @@ $(document).ready(function() {
         html += '<td><input type="number" name="item_quantity[]" id="quantity_' + rowCount + '" min="1" value="1" class="form-control quantity"></td>';
         html += '<td><input type="text" name="unit[]" id="unit_' + rowCount + '" value="Kgs" class="form-control unit"></td>';
         html += '<td><input type="number" name="price[]" id="price_' + rowCount + '" class="form-control price"></td>';
-        html += '<td><select name="vat_status[]" id="vat_status_' + rowCount + '" class="form-control vat_status"><option value="taxable">Vat (18%)</option><option value="exempt">Exempt</option></select></td>';
+        html += '<td><select name="vat_status[]" id="vat_status_' + rowCount + '" class="form-control vat_status"><option value="taxable">Vat (18%)</option><option value="exempt">Exempt</option><option value="zero_rated">Zero Rated</option></select></td>';
         html += '<td><input type="number" name="total[]" id="total_' + rowCount + '" class="form-control total" readonly></td>';
         html += '<td><button type="button" name="remove" class="btn btn-danger btn-sm remove"><span class="glyphicon glyphicon-minus"></span></button></td>';
         html += '</tr>';

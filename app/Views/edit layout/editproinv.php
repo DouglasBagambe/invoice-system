@@ -1238,6 +1238,7 @@ $(document).ready(function() {
         html += '<select name="vat_status[]" id="vat_status_' + rowCount + '" class="form-control vat_status">';
         html += '<option value="taxable">Vat (18%)</option>';
         html += '<option value="exempt">Exempt</option>';
+        html += '<option value="zero_rated">Zero Rated</option>';
         html += '</select>';
         html += '<input type="hidden" name="vat_rate[]" value="18">';
         html += '<input type="hidden" name="vat_type[]" value="exclusive">';
@@ -1540,6 +1541,7 @@ $(document).ready(function() {
                         html += '<select name="vat_status[]" id="vat_status_' + rowCount + '" class="form-control vat_status">';
                         html += '<option value="taxable" ' + (item.vat_status === 'taxable' ? 'selected' : '') + '>Vat (18%)</option>';
                         html += '<option value="exempt" ' + (item.vat_status === 'exempt' ? 'selected' : '') + '>Exempt</option>';
+                        html += '<option value="zero_rated" ' + (item.vat_status === 'zero_rated' ? 'selected' : '') + '>Zero Rated</option>';
                         html += '</select>';
                         html += '<input type="hidden" name="vat_rate[]" value="18">';
                         html += '<input type="hidden" name="vat_type[]" value="exclusive">';
