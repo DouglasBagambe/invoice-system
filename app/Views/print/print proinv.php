@@ -656,6 +656,8 @@ for ($page = 0; $page < $pages; $page++):
 
                   if ($vatStatus === 'exempt' || $vatStatus === 'zero_rated') {
                     echo $vatStatus === 'zero_rated' ? 'Zero Rated' : 'Exempt';
+                  } else if ($vatStatus === '') {
+                    echo 'Zero Rated';
                   } else {
                     echo 'Vat (18%)';
                   }
