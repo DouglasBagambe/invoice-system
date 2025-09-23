@@ -662,7 +662,7 @@ for ($page = 0; $page < $pages; $page++):
                   ?>
                 </td>
                 <td><?= number_format($item['price'], 0); ?></td>
-                <td><?= number_format($item['total'], 0); ?></td>
+                <td><?= number_format($item['quantity'] * $item['price'], 0); ?></td>
             </tr>
             <?php endforeach; ?>
         </tbody>
