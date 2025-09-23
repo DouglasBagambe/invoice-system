@@ -217,6 +217,9 @@ public function updateproinv($orderid = null)
         $vatStatuses = array_values((array)$this->request->getPost('vat_status'));
         $totals = array_values((array)$this->request->getPost('total'));
         
+        // Debug: Log VAT statuses for update
+        error_log('UPDATE - VAT Statuses received: ' . print_r($vatStatuses, true));
+        
         // Get totals
         $subtotal = $this->request->getPost('subTotal');
         $taxamount = $this->request->getPost('taxAmount');
@@ -1043,6 +1046,9 @@ public function insert() {
         $vatStatuses = array_values((array)$this->request->getPost('vat_status'));
         $totals = array_values((array)$this->request->getPost('total'));
         $units = array_values((array)$this->request->getPost('unit'));
+        
+        // Debug: Log VAT statuses specifically
+        error_log('VAT Statuses received: ' . print_r($vatStatuses, true));
         
         // Get totals
         $subtotal = $this->request->getPost('subTotal');
