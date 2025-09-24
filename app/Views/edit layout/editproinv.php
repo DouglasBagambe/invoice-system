@@ -875,7 +875,7 @@ $(document).ready(function() {
         placeholder: "Select Signature"
     });
     
-    $('#datepicker').datepicker({ autoclose: true, format: 'dd-mm-yyyy' });
+    // Removed jQuery datepicker to rely on native input[type="date"] which uses YYYY-MM-DD
     
     // Item name autocomplete functionality
     $(document).on('input', '.item_name', function() {
