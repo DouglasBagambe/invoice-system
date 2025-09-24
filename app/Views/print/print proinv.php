@@ -720,8 +720,14 @@ for ($page = 0; $page < $pages; $page++):
         <tbody>
             <tr>
                 <td>
-                    <strong>Validity Period:</strong> <?= isset($invDetails[0]['validity_period']) ? $invDetails[0]['validity_period'] : '90' ?> Days<br>
-                    <strong>Delivery Period: </strong>Delivery is within <?= isset($invDetails[0]['delivery_period']) ? $invDetails[0]['delivery_period'] : '4' ?> days after LPO
+                    <?php 
+                    $validityVal = isset($invDetails[0]['validity_period']) ? (int)$invDetails[0]['validity_period'] : 90;
+                    $validityUnit = ($validityVal === 1) ? 'Day' : 'Days';
+                    $deliveryVal = isset($invDetails[0]['delivery_period']) ? (int)$invDetails[0]['delivery_period'] : 4;
+                    $deliveryUnit = ($deliveryVal === 1) ? 'day' : 'days';
+                    ?>
+                    <strong>Validity Period:</strong> <?= $validityVal ?> <?= $validityUnit ?><br>
+                    <strong>Delivery Period: </strong>Delivery is within <?= $deliveryVal ?> <?= $deliveryUnit ?> after LPO
                 </td>
             </tr>
         </tbody>
