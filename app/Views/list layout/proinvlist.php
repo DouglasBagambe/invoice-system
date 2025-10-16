@@ -624,10 +624,10 @@ function getActionDropdown(orderid) {
           <i class="fa fa-print"></i>
           <span>Print</span>
         </button>
-        <button class="action-menu-item download-action" onclick="downloadInvoice(event, '${orderid}')">
+        <a href="#" class="action-menu-item download-action" onclick="downloadInvoice()">
           <i class="fa fa-download"></i>
           <span>Download PDF</span>
-        </button>        
+        </a>        
         <a href="editproinv?orderid=${orderid}" class="action-menu-item edit-action" onclick="event.stopPropagation()">
           <i class="fa fa-pencil"></i>
           <span>Edit</span>
@@ -669,153 +669,21 @@ function printInvoice(event, orderid) {
   window.open(base_url + '/proinv/printproinv?orderid=' + orderid, '_blank');
 }
 
-// Download invoice as PDF - Fixed version
-function downloadInvoice(event, orderid) {
-  event.preventDefault();
-  event.stopPropagation();
-  
-  // Close dropdown
-  event.target.closest('.action-menu').classList.remove('show');
-  
-  // Show loading notification
-  Swal.fire({
-    title: 'Preparing Download...',
-    text: 'Your invoice is being generated',
-    icon: 'info',
-    allowOutsideClick: false,
-    showConfirmButton: false,
-    didOpen: () => {
-      Swal.showLoading();
-    }
-  });
-  
-  // Create a temporary link for download
-  const downloadUrl = base_url + '/proinv/downloadpdf?orderid=' + orderid;
-  
-  // Try using fetch first to check if the request is successful
-  fetch(downloadUrl, {
-    method: 'GET',
-    headers: {
-      'Accept': 'application/pdf',
-      'Content-Type': 'application/pdf'
-    }
-  })
-  .then(response => {
-    console.log('Response status:', response.status);
-    console.log('Response headers:', response.headers);
+// Download invoice as PDF
+function downloadInvoice() {
+ // Hide the actions button before printing
+    document.getElementById('actionsButton').style.display = 'none';
     
-    if (!response.ok) {
-      // If response is not ok, try to parse as JSON for error message
-      return response.text().then(text => {
-        try {
-          const errorData = JSON.parse(text);
-          throw new Error(errorData.message || 'Download failed');
-        } catch (e) {
-          throw new Error('Server error: ' + response.status + ' - ' + text);
-        }
-      });
-    }
+    // Print the page
+    window.print();
     
-    // Check if response is actually a PDF
-    const contentType = response.headers.get('content-type');
-    if (!contentType || !contentType.includes('application/pdf')) {
-      return response.text().then(text => {
-        console.log('Non-PDF response:', text);
-        try {
-          const errorData = JSON.parse(text);
-          throw new Error(errorData.message || 'Invalid response format');
-        } catch (e) {
-          throw new Error('Expected PDF but got: ' + contentType);
-        }
-      });
-    }
+    // Show the actions button again after print dialog closes
+    setTimeout(function() {
+      document.getElementById('actionsButton').style.display = 'block';
+    }, 1000);
     
-    return response.blob();
-  })
-  .then(blob => {
-    // Close loading message
-    Swal.close();
-    
-    // Create blob URL and trigger download
-    const url = window.URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.style.display = 'none';
-    a.href = url;
-    
-    // Generate filename
-    const filename = 'Proforma_Invoice_' + orderid + '.pdf';
-    a.download = filename;
-    
-    document.body.appendChild(a);
-    a.click();
-    
-    // Cleanup
-    setTimeout(() => {
-      window.URL.revokeObjectURL(url);
-      document.body.removeChild(a);
-    }, 100);
-    
-    // Show success message
-    Swal.fire({
-      title: 'Downloaded!',
-      text: 'Invoice downloaded successfully',
-      icon: 'success',
-      timer: 2000,
-      showConfirmButton: false
-    });
-  })
-  .catch(error => {
-    console.error('Download error details:', error);
-    
-    Swal.fire({
-      title: 'Download Failed',
-      text: error.message || 'Could not download the invoice. Please try again.',
-      icon: 'error',
-      confirmButtonText: 'OK',
-      footer: 'Check console for more details'
-    });
-  });
-}
-
-// Delete invoice
-function deleteInvoice(event, orderid) {
-  event.preventDefault();
-  event.stopPropagation();
-  
-  // Close dropdown
-  event.target.closest('.action-menu').classList.remove('show');
-  
-  Swal.fire({
-    title: 'Are you sure?',
-    text: "This invoice will be deleted permanently!",
-    icon: 'warning',
-    showCancelButton: true,
-    confirmButtonColor: '#3085d6',
-    cancelButtonColor: '#d33',
-    confirmButtonText: 'Yes, delete it!',
-    allowOutsideClick: false        
-  }).then((result) => {
-    if (result.isConfirmed) {
-      $.ajax({
-        url: base_url + '/proinv/delete/' + orderid,
-        type: 'POST',
-        dataType: 'json'
-      })
-      .done(function(response) {
-        Swal.fire({
-          title: 'Deleted!',
-          text: response.message,
-          icon: 'success',
-          timer: 2000,
-          showConfirmButton: false
-        });
-        loadInvoices(currentPage);
-      })
-      .fail(function() {
-        Swal.fire('Error!', 'Something went wrong. Please try again.', 'error');
-      });
-    }
-  });
+    // Close dropdown
+    document.getElementById("actionsButton").classList.remove("show");
 }
 
 // Function to load invoices based on current filters and page

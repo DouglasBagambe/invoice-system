@@ -561,18 +561,30 @@ $maxItemsPerPage = 12; // Reduced to allow space for other content
 $totalItems = count($itemDetails);
 $pages = ceil($totalItems / $maxItemsPerPage);
 
-// Calculate totals once
+// Calculate totals properly using database values
 $calculatedSubtotal = 0;
 $calculatedTaxAmount = 0;
 
 foreach ($itemDetails as $item) {
-    $itemTotal = $item['quantity'] * $item['price'];
-    $calculatedSubtotal += $itemTotal;
+    // Get base amounts (quantity × price) for subtotal calculation
+    $quantity = floatval($item['quantity']);
+    $price = floatval($item['price']);
+    $baseAmount = $quantity * $price;
+    
+    // Use actual database values for VAT and total
+    $vatAmount = isset($item['vat_amount']) ? floatval($item['vat_amount']) : 0;
+    $itemTotal = isset($item['total']) ? floatval($item['total']) : $baseAmount;
     
     $vatStatus = isset($item['vat_status']) ? $item['vat_status'] : 'taxable';
+    
+    // For subtotal: always use base amount (quantity × price)
+    $calculatedSubtotal += $baseAmount;
+    
+    // For tax: only add VAT for taxable items, not for inclusive/exempt/zero_rated
     if ($vatStatus === 'taxable') {
-        $calculatedTaxAmount += ($itemTotal * 18) / 100;
+        $calculatedTaxAmount += $vatAmount;
     }
+    // For inclusive, exempt, zero_rated: tax amount = 0 (don't add to tax total)
 }
 
 $calculatedGrandTotal = $calculatedSubtotal + $calculatedTaxAmount;
@@ -651,20 +663,19 @@ for ($page = 0; $page < $pages; $page++):
                   <?php 
                   $vatStatus = isset($item['vat_status']) ? $item['vat_status'] : 'taxable';
                   
-                  // Debug: Show what we're getting
-                  // echo "<!-- Debug: vat_status = " . $vatStatus . " -->";
-
-                  if ($vatStatus === 'exempt' || $vatStatus === 'zero_rated') {
-                    echo $vatStatus === 'zero_rated' ? 'Zero Rated' : 'Exempt';
-                  } else if ($vatStatus === '') {
+                  if ($vatStatus === 'exempt') {
+                    echo 'Exempt';
+                  } else if ($vatStatus === 'zero_rated') {
                     echo 'Zero Rated';
+                  } else if ($vatStatus === 'inclusive') {
+                    echo 'Inclusive';
                   } else {
                     echo 'Vat (18%)';
                   }
                   ?>
                 </td>
                 <td><?= number_format($item['price'], 0); ?></td>
-                <td><?= number_format($item['quantity'] * $item['price'], 0); ?></td>
+                <td><?= number_format(isset($item['total']) ? $item['total'] : ($item['quantity'] * $item['price']), 0); ?></td>
             </tr>
             <?php endforeach; ?>
         </tbody>

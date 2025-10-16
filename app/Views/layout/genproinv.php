@@ -1271,53 +1271,78 @@ $(document).ready(function() {
     });
     
     function calculateRowTotal(row) {
+    var quantity = parseFloat(row.find('.quantity').val()) || 0;
+    var price = parseFloat(row.find('.price').val()) || 0;
+    var vatStatus = row.find('.vat_status').val();
+    
+    var subtotal = quantity * price;
+    var vatAmount = 0;
+    var total = subtotal;
+    
+    // Handle different VAT statuses
+    if (vatStatus === 'taxable') {
+        var vatRate = 18;
+        vatAmount = (subtotal * vatRate) / 100;
+        total = subtotal + vatAmount;
+    } else if (vatStatus === 'inclusive') {
+        // VAT is already included in the price
+        var vatRate = 18;
+        total = subtotal;
+        vatAmount = total - (total / (1 + (vatRate / 100)));
+    } else if (vatStatus === 'zero_rated') {
+        // Zero rated - no VAT
+        total = subtotal;
+        vatAmount = 0;
+    } else if (vatStatus === 'exempt') {
+        // Exempt - no VAT
+        total = subtotal;
+        vatAmount = 0;
+    }
+    
+    row.find('.total').val(total.toFixed(2));
+}
+    
+    function calculateTotals() {
+    var totalSubtotal = 0;
+    var totalVatAmount = 0;
+    var totalAmount = 0;
+    
+    $('.datarow').each(function() {
+        var row = $(this);
         var quantity = parseFloat(row.find('.quantity').val()) || 0;
         var price = parseFloat(row.find('.price').val()) || 0;
         var vatStatus = row.find('.vat_status').val();
         
-        var subtotal = quantity * price;
-        var vatAmount = 0;
-        var total = subtotal;
+        var rowSubtotal = quantity * price;
+        var rowVatAmount = 0;
+        var rowTotal = rowSubtotal;
         
+        // Handle different VAT statuses
         if (vatStatus === 'taxable') {
             var vatRate = 18;
-            vatAmount = (subtotal * vatRate) / 100;
-            total = subtotal + vatAmount;
+            rowVatAmount = (rowSubtotal * vatRate) / 100;
+            rowTotal = rowSubtotal + rowVatAmount;
+        } else if (vatStatus === 'inclusive') {
+            // For inclusive: no VAT added to tax total (VAT already included in price)
+            rowTotal = rowSubtotal;
+            rowVatAmount = 0; // Don't add to tax total
+        } else if (vatStatus === 'zero_rated') {
+            rowTotal = rowSubtotal;
+            rowVatAmount = 0;
+        } else if (vatStatus === 'exempt') {
+            rowTotal = rowSubtotal;
+            rowVatAmount = 0;
         }
         
-        row.find('.total').val(total.toFixed(2));
-    }
+        totalSubtotal += rowSubtotal;
+        totalVatAmount += rowVatAmount; // Only taxable items contribute to tax total
+        totalAmount += rowTotal;
+    });
     
-    function calculateTotals() {
-        var totalSubtotal = 0;
-        var totalVatAmount = 0;
-        var totalAmount = 0;
-        
-        $('.datarow').each(function() {
-            var row = $(this);
-            var quantity = parseFloat(row.find('.quantity').val()) || 0;
-            var price = parseFloat(row.find('.price').val()) || 0;
-            var vatStatus = row.find('.vat_status').val();
-            
-            var rowSubtotal = quantity * price;
-            var rowVatAmount = 0;
-            var rowTotal = rowSubtotal;
-            
-            if (vatStatus === 'taxable') {
-                var vatRate = 18;
-                rowVatAmount = (rowSubtotal * vatRate) / 100;
-                rowTotal = rowSubtotal + rowVatAmount;
-            }
-            
-            totalSubtotal += rowSubtotal;
-            totalVatAmount += rowVatAmount;
-            totalAmount += rowTotal;
-        });
-        
-        $('#subTotal').val(totalSubtotal.toFixed(2));
-        $('#taxAmount').val(totalVatAmount.toFixed(2));
-        $('#totalAftertax').val(totalAmount.toFixed(2));
-    }
+    $('#subTotal').val(totalSubtotal.toFixed(2));
+    $('#taxAmount').val(totalVatAmount.toFixed(2));
+    $('#totalAftertax').val(totalAmount.toFixed(2));
+}
     
     // Form submission - MODIFIED TO REDIRECT TO LIST PAGE
     $('#proformaForm').submit(function(e) {
@@ -1378,6 +1403,8 @@ $(document).ready(function() {
             $('#submitbtn').prop('disabled', true).val('Saving...');
             
             var formData = new FormData($('#proformaForm')[0]);
+            
+            // Let the browser submit vat_status[] naturally to keep indexes aligned
             
             $.ajax({
                 url: $('#proformaForm').attr('action'), 

@@ -1242,7 +1242,6 @@ $(document).ready(function() {
         html += '<option value="zero_rated">Zero Rated</option>';
         html += '</select>';
         html += '<input type="hidden" name="vat_rate[]" value="18">';
-        html += '<input type="hidden" name="vat_type[]" value="exclusive">';
         html += '</td>';
         html += '<td><input type="number" name="total[]" id="total_' + rowCount + '" class="form-control total" readonly></td>';
         html += '<td><button type="button" name="remove" class="btn btn-danger btn-sm remove"><span class="glyphicon glyphicon-minus"></span></button></td>';
@@ -1544,7 +1543,6 @@ $(document).ready(function() {
                         html += '<option value="zero_rated" ' + (item.vat_status === 'zero_rated' ? 'selected' : '') + '>Zero Rated</option>';
                         html += '</select>';
                         html += '<input type="hidden" name="vat_rate[]" value="18">';
-                        html += '<input type="hidden" name="vat_type[]" value="exclusive">';
                         html += '</td>';
             html += '<td><input type="number" name="total[]" id="total_' + rowCount + '" value="' + (item.total || 0) + '" class="form-control total" readonly></td>';
             html += '<td><button type="button" name="remove" class="btn btn-danger btn-sm remove"><span class="glyphicon glyphicon-minus"></span></button></td>';

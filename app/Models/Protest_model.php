@@ -10,7 +10,7 @@ class Protest_model extends Model
     
     protected $primaryKey = 'orderno'; // Specify your primary key column       
 
-    protected $allowedFields = ['orderid', 'item_name', 'item_desc','hsn','quantity','unit','price', 'vat_rate', 'vat_type', 'vat_status', 'vat_amount', 'total'];
+    protected $allowedFields = ['orderid', 'item_name', 'item_desc','hsn','quantity','unit','price', 'vat_rate', 'vat_status', 'vat_amount', 'total'];
 
     // public function __construct() {
     //     parent::__construct();

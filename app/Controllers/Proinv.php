@@ -202,17 +202,16 @@ public function updateproinv($orderid = null)
             $formattedDate = date('Y-m-d');
         }
         
-        // Get item arrays (normalize indices to keep arrays aligned)
-        $itemNames = array_values((array)$this->request->getPost('item_name'));
-        $itemDescs = array_values((array)$this->request->getPost('item_desc'));
-        $hsn = array_values((array)$this->request->getPost('hsn'));
-        $quantities = array_values((array)$this->request->getPost('item_quantity'));
-        $prices = array_values((array)$this->request->getPost('price'));
-        $units = array_values((array)$this->request->getPost('unit'));
-        $vatRates = array_values((array)$this->request->getPost('vat_rate'));
-        $vatTypes = array_values((array)$this->request->getPost('vat_type'));
-        $vatStatuses = array_values((array)$this->request->getPost('vat_status'));
-        $totals = array_values((array)$this->request->getPost('total'));
+        // Get item arrays (preserve indexes to keep rows aligned)
+        $itemNames = (array)$this->request->getPost('item_name');
+        $itemDescs = (array)$this->request->getPost('item_desc');
+        $hsn = (array)$this->request->getPost('hsn');
+        $quantities = (array)$this->request->getPost('item_quantity');
+        $prices = (array)$this->request->getPost('price');
+        $units = (array)$this->request->getPost('unit');
+        $vatRates = (array)$this->request->getPost('vat_rate');
+        $vatStatuses = (array)$this->request->getPost('vat_status');
+        $totals = (array)$this->request->getPost('total');
         
         // Debug: Log VAT statuses for update
         error_log('UPDATE - VAT Statuses received: ' . print_r($vatStatuses, true));
@@ -239,36 +238,44 @@ public function updateproinv($orderid = null)
             }
         }
         
-        // Prepare item data
+        // Prepare item data (preserve indexes, remove vat_type)
         $insertData = [];
         if (!empty($itemNames) && is_array($itemNames)) {
-            for ($i = 0; $i < count($itemNames); $i++) {
-                if (!empty($itemNames[$i])) {
-                    $quantity = !empty($quantities[$i]) ? $quantities[$i] : 0;
-                    $price = !empty($prices[$i]) ? $prices[$i] : 0;
-                    $vatRate = !empty($vatRates[$i]) ? $vatRates[$i] : 18;
-                    $vatType = !empty($vatTypes[$i]) ? $vatTypes[$i] : 'exclusive';
-                    $vatStatus = !empty($vatStatuses[$i]) ? $vatStatuses[$i] : 'taxable';
-                    
-                    // Calculate total for this item
+            foreach ($itemNames as $idx => $name) {
+                if (!empty($name)) {
+                    $quantity = (isset($quantities[$idx]) && $quantities[$idx] !== '') ? floatval($quantities[$idx]) : 0;
+                    $price = (isset($prices[$idx]) && $prices[$idx] !== '') ? floatval($prices[$idx]) : 0;
+                    $vatRate = (isset($vatRates[$idx]) && $vatRates[$idx] !== '') ? floatval($vatRates[$idx]) : 18;
+                    $vatStatus = 'taxable';
+                    if (isset($vatStatuses[$idx])) {
+                        $trimmedStatus = trim((string)$vatStatuses[$idx]);
+                        if ($trimmedStatus !== '') {
+                            $vatStatus = $trimmedStatus;
+                        }
+                    }
+
                     $itemTotal = $quantity * $price;
-                    if ($vatStatus === 'taxable' && $vatRate > 0) {
+                    $vatAmount = 0;
+                    if ($vatStatus === 'taxable') {
                         $vatAmount = ($itemTotal * $vatRate) / 100;
                         $itemTotal = $itemTotal + $vatAmount;
+                    } else if ($vatStatus === 'inclusive') {
+                        $vatAmount = $itemTotal - ($itemTotal / (1 + ($vatRate / 100)));
+                    } else if ($vatStatus === 'zero_rated' || $vatStatus === 'exempt') {
+                        $vatAmount = 0;
                     }
-                    
+
                     $insertData[] = [
                         'orderid' => $orderid,
-                        'item_name' => $itemNames[$i],
-                        'item_desc' => !empty($itemDescs[$i]) ? $itemDescs[$i] : null,
-                        'hsn' => !empty($hsn[$i]) ? $hsn[$i] : 8443,
+                        'item_name' => $name,
+                        'item_desc' => (isset($itemDescs[$idx]) && $itemDescs[$idx] !== '') ? $itemDescs[$idx] : null,
+                        'hsn' => (isset($hsn[$idx]) && $hsn[$idx] !== '') ? $hsn[$idx] : 8443,
                         'quantity' => $quantity,
-                        'unit' => isset($units[$i]) && $units[$i] !== '' ? $units[$i] : 'Kgs',
+                        'unit' => (isset($units[$idx]) && $units[$idx] !== '') ? $units[$idx] : 'Kgs',
                         'price' => $price,
                         'vat_rate' => $vatRate,
-                        'vat_type' => $vatType,
                         'vat_status' => $vatStatus,
-                        'vat_amount' => $vatStatus === 'taxable' && $vatRate > 0 ? (($quantity * $price) * $vatRate) / 100 : 0,
+                        'vat_amount' => $vatAmount,
                         'total' => $itemTotal,
                     ];
                 }
@@ -1033,19 +1040,22 @@ public function insert() {
         $formattedDate = $date->format('Y-m-d');
         
         // Get item arrays (normalize indices to keep arrays aligned)
-        $itemNames = array_values((array)$this->request->getPost('item_name'));
-        $itemDescs = array_values((array)$this->request->getPost('item_desc'));
-        $hsn = array_values((array)$this->request->getPost('hsn'));
-        $quantities = array_values((array)$this->request->getPost('item_quantity'));
-        $prices = array_values((array)$this->request->getPost('price'));
-        $vatRates = array_values((array)$this->request->getPost('vat_rate'));
-        $vatTypes = array_values((array)$this->request->getPost('vat_type'));
-        $vatStatuses = array_values((array)$this->request->getPost('vat_status'));
-        $totals = array_values((array)$this->request->getPost('total'));
-        $units = array_values((array)$this->request->getPost('unit'));
-        
-        // Debug: Log VAT statuses specifically
-        error_log('VAT Statuses received: ' . print_r($vatStatuses, true));
+$itemNames = array_values((array)$this->request->getPost('item_name'));
+$itemDescs = array_values((array)$this->request->getPost('item_desc'));
+$hsn = array_values((array)$this->request->getPost('hsn'));
+$quantities = array_values((array)$this->request->getPost('item_quantity'));
+$prices = array_values((array)$this->request->getPost('price'));
+$vatRates = array_values((array)$this->request->getPost('vat_rate'));
+$vatTypes = array_values((array)$this->request->getPost('vat_type'));
+$vatStatuses = array_values((array)$this->request->getPost('vat_status'));
+$totals = array_values((array)$this->request->getPost('total'));
+$units = array_values((array)$this->request->getPost('unit'));
+
+// ADD THIS DEBUG CODE:
+error_log('=== INSERT DEBUG ===');
+error_log('Raw vat_status POST: ' . print_r($this->request->getPost('vat_status'), true));
+error_log('Processed vatStatuses array: ' . print_r($vatStatuses, true));
+error_log('Count: ' . count($vatStatuses));
         
         // Get totals
         $subtotal = $this->request->getPost('subTotal');
@@ -1073,47 +1083,71 @@ public function insert() {
         $orderid = uniqid();
         
         // Prepare item data using working version approach
-        $insertData = [];
-        if (!empty($itemNames) && is_array($itemNames)) {
-            for ($i = 0; $i < count($itemNames); $i++) {
-                if (!empty($itemNames[$i])) {
-                    // Calculate VAT amount for this item
-                    $quantity = !empty($quantities[$i]) ? $quantities[$i] : 0;
-                    $price = !empty($prices[$i]) ? $prices[$i] : 0;
-                    $vatRate = !empty($vatRates[$i]) ? $vatRates[$i] : 0;
-                    $vatType = !empty($vatTypes[$i]) ? $vatTypes[$i] : 'exclusive';
-                    $vatStatus = !empty($vatStatuses[$i]) ? $vatStatuses[$i] : 'taxable';
-                    
-                    $subtotal = $quantity * $price;
-                    $vatAmount = 0;
-                    
-                    if ($vatStatus === 'taxable' && $vatRate > 0) {
-                        if ($vatType === 'exclusive') {
-                            $vatAmount = ($subtotal * $vatRate) / 100;
-                        } else {
-                            // VAT inclusive - extract VAT from total
-                            $total = $subtotal;
-                            $vatAmount = $total - ($total / (1 + ($vatRate / 100)));
-                        }
-                    }
-                    
-                    $insertData[] = [
-                        'orderid' => $orderid,
-                        'item_name' => $itemNames[$i],
-                        'item_desc' => !empty($itemDescs[$i]) ? $itemDescs[$i] : null,
-                        'hsn' => !empty($hsn[$i]) ? $hsn[$i] : 8443, // Default HSN if not provided
-                        'quantity' => $quantity,
-                        'unit' => isset($units[$i]) && $units[$i] !== '' ? $units[$i] : 'Kgs',
-                        'price' => $price,
-                        'vat_rate' => $vatRate,
-                        'vat_type' => $vatType,
-                        'vat_status' => $vatStatus,
-                        'vat_amount' => $vatAmount,
-                        'total' => !empty($totals[$i]) ? $totals[$i] : null,
-                    ];
+$insertData = [];
+if (!empty($itemNames) && is_array($itemNames)) {
+    for ($i = 0; $i < count($itemNames); $i++) {
+        if (!empty($itemNames[$i])) {
+            // Get values with proper defaults
+            $quantity = !empty($quantities[$i]) ? floatval($quantities[$i]) : 0;
+            $price = !empty($prices[$i]) ? floatval($prices[$i]) : 0;
+            $vatRate = !empty($vatRates[$i]) ? floatval($vatRates[$i]) : 18;
+            // Removed vat_type usage
+            
+            // CRITICAL FIX: Check if index exists and has a value
+            $vatStatus = 'taxable'; // Default value
+            if (isset($vatStatuses[$i])) {
+                $trimmedStatus = trim($vatStatuses[$i]);
+                if ($trimmedStatus !== '') {
+                    $vatStatus = $trimmedStatus;
                 }
             }
+            
+            // Debug log for this specific item
+            error_log("Item $i: name={$itemNames[$i]}, vatStatus=$vatStatus (from index: " . (isset($vatStatuses[$i]) ? $vatStatuses[$i] : 'NOT SET') . ")");
+            
+            $subtotal = $quantity * $price;
+            $vatAmount = 0;
+            $itemTotal = $subtotal;
+            
+            // Handle different VAT statuses
+            if ($vatStatus === 'taxable') {
+                // For taxable: VAT is added to the base amount
+                $vatAmount = ($subtotal * $vatRate) / 100;
+                $itemTotal = $subtotal + $vatAmount;
+            } else if ($vatStatus === 'inclusive') {
+                // For inclusive: price already includes VAT, extract VAT amount
+                $itemTotal = $subtotal; // Total stays the same
+                $vatAmount = $itemTotal - ($itemTotal / (1 + ($vatRate / 100)));
+            } else if ($vatStatus === 'zero_rated') {
+                // For zero_rated: no VAT
+                $itemTotal = $subtotal;
+                $vatAmount = 0;
+            } else if ($vatStatus === 'exempt') {
+                // For exempt: no VAT
+                $itemTotal = $subtotal;
+                $vatAmount = 0;
+            }
+            
+            $insertData[] = [
+                'orderid' => $orderid,
+                'item_name' => $itemNames[$i],
+                'item_desc' => !empty($itemDescs[$i]) ? $itemDescs[$i] : null,
+                'hsn' => !empty($hsn[$i]) ? $hsn[$i] : 8443,
+                'quantity' => $quantity,
+                'unit' => isset($units[$i]) && $units[$i] !== '' ? $units[$i] : 'Kgs',
+                'price' => $price,
+                'vat_rate' => $vatRate,
+                // Removed vat_type (column deprecated)
+                'vat_status' => $vatStatus,
+                'vat_amount' => $vatAmount,
+                'total' => $itemTotal,
+            ];
         }
+    }
+}
+
+// Debug log the final data
+error_log('Final insertData: ' . print_r($insertData, true));
         
         // Prepare main invoice data using working version approach
         $insertData2 = [];
@@ -1372,10 +1406,13 @@ public function printproinv(){
             
             if (!$orderid) {
                 log_message('error', 'PDF Download: No orderid provided');
-                return $this->response->setStatusCode(400)->setJSON([
-                    'success' => false,
-                    'message' => 'Order ID is missing'
-                ]);
+                return $this->response
+                    ->setStatusCode(400)
+                    ->setHeader('Content-Type', 'application/json')
+                    ->setBody(json_encode([
+                        'success' => false,
+                        'message' => 'Order ID is missing'
+                    ]));
             }
             
             log_message('info', 'PDF Download: Starting for orderid ' . $orderid);
@@ -1394,10 +1431,13 @@ public function printproinv(){
             
             if (empty($invDetails)) {
                 log_message('error', 'PDF Download: No invoice details found for orderid ' . $orderid);
-                return $this->response->setStatusCode(404)->setJSON([
-                    'success' => false,
-                    'message' => 'Invoice not found'
-                ]);
+                return $this->response
+                    ->setStatusCode(404)
+                    ->setHeader('Content-Type', 'application/json')
+                    ->setBody(json_encode([
+                        'success' => false,
+                        'message' => 'Invoice not found'
+                    ]));
             }
             
             $itemDetails = $this->crudModel->fetchitemdata($orderid);
@@ -1425,20 +1465,23 @@ public function printproinv(){
                 'bankDetails' => $bankDetails,
                 'userSignatures' => $userSignatures,
                 'defaultSignature' => $defaultSignature
-            ]);
+            ], ['saveData' => false]);
             
             log_message('info', 'PDF Download: HTML generated, initializing Dompdf');
             
-            // Initialize Dompdf
+            // Initialize Dompdf with proper options
             $options = new Options();
             $options->set('isRemoteEnabled', true);
             $options->set('isHtml5ParserEnabled', true);
-            $options->set('isFontSubsettingEnabled', true);
+            $options->set('isFontSubsettingEnabled', false); // Disable subsetting for reliability
             $options->set('defaultFont', 'Arial');
-            $options->set('tempDir', WRITEPATH . 'cache/');
+            $options->set('tempDir', sys_get_temp_dir());
             $options->set('fontDir', WRITEPATH . 'fonts/');
             $options->set('fontCache', WRITEPATH . 'fonts/');
             $options->set('chroot', FCPATH);
+            $options->set('logOutputFile', WRITEPATH . 'logs/dompdf.log');
+            $options->set('debugLayout', false);
+            $options->set('debugLayoutLines', false);
             
             $dompdf = new Dompdf($options);
             
@@ -1450,41 +1493,64 @@ public function printproinv(){
             
             log_message('info', 'PDF Download: Rendering PDF');
             
-            // Render PDF
+            // Render PDF (this is where the processing happens)
             $dompdf->render();
             
             // Generate filename
             $invid = isset($invDetails[0]['invid']) ? $invDetails[0]['invid'] : $orderid;
-            $filename = 'Proforma_Invoice_' . str_replace(['/', '\\', ':', '*', '?', '"', '<', '>', '|'], '_', $invid) . '.pdf';
+            $filename = 'Proforma_Invoice_' . preg_replace('/[^a-zA-Z0-9_-]/', '_', $invid) . '.pdf';
             
-            log_message('info', 'PDF Download: PDF rendered successfully, sending response');
+            log_message('info', 'PDF Download: PDF rendered successfully, filename: ' . $filename);
             
-            // Get PDF content
+            // Get PDF output
             $pdfContent = $dompdf->output();
             
-            // Set headers for file download
+            // Verify PDF content
+            if (empty($pdfContent)) {
+                throw new \Exception('PDF generation produced empty output');
+            }
+            
+            log_message('info', 'PDF Download: Generated PDF size: ' . strlen($pdfContent) . ' bytes');
+            
+            // Clear any previous output
+            if (ob_get_level() > 0) {
+                ob_end_clean();
+            }
+            
+            // Set response headers BEFORE sending body
             $this->response->setHeader('Content-Type', 'application/pdf');
             $this->response->setHeader('Content-Disposition', 'attachment; filename="' . $filename . '"');
             $this->response->setHeader('Content-Length', strlen($pdfContent));
-            $this->response->setHeader('Cache-Control', 'private, max-age=0, must-revalidate');
-            $this->response->setHeader('Pragma', 'public');
-            $this->response->setHeader('Expires', '0');
+            $this->response->setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, max-age=0');
+            $this->response->setHeader('Pragma', 'no-cache');
+            $this->response->setHeader('Expires', 'Mon, 26 Jul 1997 05:00:00 GMT');
+            
+            log_message('info', 'PDF Download: Sending PDF response');
             
             // Send the PDF content
             return $this->response->setBody($pdfContent);
             
+        } catch (\Dompdf\Exception $e) {
+            log_message('error', 'PDF Dompdf Error: ' . $e->getMessage());
+            
+            return $this->response
+                ->setStatusCode(500)
+                ->setHeader('Content-Type', 'application/json')
+                ->setBody(json_encode([
+                    'success' => false,
+                    'message' => 'PDF generation failed: ' . $e->getMessage()
+                ]));
+                
         } catch (\Exception $e) {
             log_message('error', 'PDF Download Error: ' . $e->getMessage() . ' in ' . $e->getFile() . ' on line ' . $e->getLine());
             
-            return $this->response->setStatusCode(500)->setJSON([
-                'success' => false,
-                'message' => 'PDF generation failed: ' . $e->getMessage(),
-                'debug' => [
-                    'file' => $e->getFile(),
-                    'line' => $e->getLine(),
-                    'trace' => $e->getTraceAsString()
-                ]
-            ]);
+            return $this->response
+                ->setStatusCode(500)
+                ->setHeader('Content-Type', 'application/json')
+                ->setBody(json_encode([
+                    'success' => false,
+                    'message' => 'PDF generation failed: ' . $e->getMessage()
+                ]));
         }
     }
 
