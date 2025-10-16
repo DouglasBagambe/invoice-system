@@ -51,8 +51,7 @@
     /* Column widths */
     .col-check { width: 40px; }
     .col-item-no { width: 60px; }
-    .col-item-name { width: 300px; } /* Increased width since description column is removed */
-    /* .col-desc { width: 120px; } */ /* Commented out - description column removed */
+    .col-item-name { width: 300px; }
     .col-qty { width: 50px; }
     .col-unit { width: 60px; }
     .col-price { width: 80px; }
@@ -678,7 +677,6 @@
                         <th class="col-check"><input id="checkAll" type="checkbox"></th>
                         <th class="col-item-no">Item No</th>
                         <th class="col-item-name">Item Description <span style="color: red;">*</span></th>
-                        <!-- <th class="col-desc">Description</th> -->
                         <th class="col-qty">Qty <span style="color: red;">*</span></th>
                         <th class="col-unit">Unit</th>
                         <th class="col-price">Price <span style="color: red;">*</span></th>
@@ -701,7 +699,6 @@
                             <div class="item-suggestions" id="suggestions_1"></div>
                           </div>
                         </td>
-                        <!-- <td><input type="text" name="item_desc[]" id="productDesc_1" class="form-control item_desc"></td> -->
                         <td><input type="number" name="item_quantity[]" id="quantity_1" min="1" value="1" class="form-control quantity"></td>
                         <td><input type="text" name="unit[]" id="unit_1" value="Kgs" class="form-control unit" placeholder="Kgs"></td>
                         <td><input type="number" name="price[]" id="price_1" class="form-control price"></td>
@@ -709,6 +706,7 @@
                           <select name="vat_status[]" id="vat_status_1" class="form-control vat_status">
                             <option value="taxable">Vat (18%)</option>
                             <option value="exempt">Exempt</option>
+                            <option value="inclusive">Inclusive</option>
                             <option value="zero_rated">Zero Rated</option>
                           </select>
                         </td>
@@ -731,7 +729,7 @@
                 <div class="row summary-row">
                   <div class="col-md-3 summary-col">
                     <label>Subtotal <span style="color: red;">*</span></label>
-                                          <div class="input-group">
+                    <div class="input-group">
                       <div class="input-group-addon">USH</div>
                       <input value="" type="number" class="form-control" name="subTotal" id="subTotal" readonly>
                     </div>
@@ -893,8 +891,6 @@ $(document).ready(function() {
             cache: true
         }
     });
-    
-    // Removed jQuery datepicker to rely on native input[type="date"] which uses YYYY-MM-DD
     
     // Item name autocomplete functionality
     $(document).on('input', '.item_name', function() {
@@ -1249,11 +1245,10 @@ $(document).ready(function() {
         html += '<div class="item-suggestions" id="suggestions_' + rowCount + '"></div>';
         html += '</div>';
         html += '</td>';
-        // html += '<td><input type="text" name="item_desc[]" id="productDesc_' + rowCount + '" class="form-control item_desc"></td>';
         html += '<td><input type="number" name="item_quantity[]" id="quantity_' + rowCount + '" min="1" value="1" class="form-control quantity"></td>';
         html += '<td><input type="text" name="unit[]" id="unit_' + rowCount + '" value="Kgs" class="form-control unit"></td>';
         html += '<td><input type="number" name="price[]" id="price_' + rowCount + '" class="form-control price"></td>';
-        html += '<td><select name="vat_status[]" id="vat_status_' + rowCount + '" class="form-control vat_status"><option value="taxable">Vat (18%)</option><option value="exempt">Exempt</option><option value="zero_rated">Zero Rated</option></select></td>';
+        html += '<td><select name="vat_status[]" id="vat_status_1' + rowCount + '" class="form-control vat_status"><option value="taxable">Vat (18%)</option><option value="exempt">Exempt</option><option value="inclusive">Inclusive</option><option value="zero_rated">Zero Rated</option></select></td>';
         html += '<td><input type="number" name="total[]" id="total_' + rowCount + '" class="form-control total" readonly></td>';
         html += '<td><button type="button" name="remove" class="btn btn-danger btn-sm remove"><span class="glyphicon glyphicon-minus"></span></button></td>';
         html += '</tr>';
@@ -1324,7 +1319,7 @@ $(document).ready(function() {
         $('#totalAftertax').val(totalAmount.toFixed(2));
     }
     
-    // Form submission with retry mechanism
+    // Form submission - MODIFIED TO REDIRECT TO LIST PAGE
     $('#proformaForm').submit(function(e) {
         e.preventDefault();
         var isValid = true;
@@ -1400,13 +1395,10 @@ $(document).ready(function() {
                             message += '\n\nNote: Invoice ID was automatically changed from ' + response.original_invid + ' to ' + response.invid + ' to avoid conflicts.';
                         }
                         
-                        alert(message);
+                        alert(message + '\n\nRedirect to invoice list?');
                         
-                        if (response.orderid) { 
-                            window.open(base_url + '/proinv/printproinv?orderid=' + response.orderid, '_blank'); 
-                        }
-                        $('#proformaForm')[0].reset(); 
-                        location.reload();
+                        // CHANGED: Redirect to list page instead of opening print window
+                        window.location.href = base_url + '/proinv/showprodata';
                     } else { 
                         alert('Error: ' + (response.message || 'Failed to create invoice')); 
                         $('#submitbtn').prop('disabled', false).val('Save Invoice');

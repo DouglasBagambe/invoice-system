@@ -1,0 +1,67 @@
+CRITICAL - 2025-10-07 13:25:38 --> Maximum execution time of 120 seconds exceeded
+#0 [internal function]: CodeIgniter\Debug\Exceptions->shutdownHandler()
+#1 {main}
+CRITICAL - 2025-10-07 14:02:16 --> syntax error, unexpected 'public' (T_PUBLIC), expecting end of file
+#0 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\system\Autoloader\Autoloader.php(265): CodeIgniter\Autoloader\Autoloader->includeFile('C:\\WORK\\BIITEEK...')
+#1 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\system\Autoloader\Autoloader.php(228): CodeIgniter\Autoloader\Autoloader->loadInNamespace('App\\Controllers...')
+#2 [internal function]: CodeIgniter\Autoloader\Autoloader->loadClass('App\\Controllers...')
+#3 [internal function]: spl_autoload_call('App\\Controllers...')
+#4 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\system\CodeIgniter.php(893): class_exists('\\App\\Controller...', true)
+#5 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\system\CodeIgniter.php(417): CodeIgniter\CodeIgniter->startController()
+#6 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\system\CodeIgniter.php(333): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#7 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\index.php(44): CodeIgniter\CodeIgniter->run()
+#8 {main}
+CRITICAL - 2025-10-07 14:03:40 --> syntax error, unexpected 'public' (T_PUBLIC), expecting end of file
+#0 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\system\Autoloader\Autoloader.php(265): CodeIgniter\Autoloader\Autoloader->includeFile('C:\\WORK\\BIITEEK...')
+#1 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\system\Autoloader\Autoloader.php(228): CodeIgniter\Autoloader\Autoloader->loadInNamespace('App\\Controllers...')
+#2 [internal function]: CodeIgniter\Autoloader\Autoloader->loadClass('App\\Controllers...')
+#3 [internal function]: spl_autoload_call('App\\Controllers...')
+#4 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\system\CodeIgniter.php(893): class_exists('\\App\\Controller...', true)
+#5 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\system\CodeIgniter.php(417): CodeIgniter\CodeIgniter->startController()
+#6 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\system\CodeIgniter.php(333): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#7 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\index.php(44): CodeIgniter\CodeIgniter->run()
+#8 {main}
+CRITICAL - 2025-10-07 14:04:01 --> syntax error, unexpected 'public' (T_PUBLIC), expecting end of file
+#0 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\system\Autoloader\Autoloader.php(265): CodeIgniter\Autoloader\Autoloader->includeFile('C:\\WORK\\BIITEEK...')
+#1 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\system\Autoloader\Autoloader.php(228): CodeIgniter\Autoloader\Autoloader->loadInNamespace('App\\Controllers...')
+#2 [internal function]: CodeIgniter\Autoloader\Autoloader->loadClass('App\\Controllers...')
+#3 [internal function]: spl_autoload_call('App\\Controllers...')
+#4 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\system\CodeIgniter.php(893): class_exists('\\App\\Controller...', true)
+#5 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\system\CodeIgniter.php(417): CodeIgniter\CodeIgniter->startController()
+#6 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\system\CodeIgniter.php(333): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#7 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\index.php(44): CodeIgniter\CodeIgniter->run()
+#8 {main}
+CRITICAL - 2025-10-07 14:07:35 --> Call to undefined method App\Controllers\Proinv::generateInvoicePDF()
+#0 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\system\CodeIgniter.php(936): App\Controllers\Proinv->downloadpdf()
+#1 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\system\CodeIgniter.php(432): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Proinv))
+#2 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\system\CodeIgniter.php(333): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#3 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\index.php(44): CodeIgniter\CodeIgniter->run()
+#4 {main}
+CRITICAL - 2025-10-07 14:07:48 --> Call to undefined method App\Controllers\Proinv::generateInvoicePDF()
+#0 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\system\CodeIgniter.php(936): App\Controllers\Proinv->downloadpdf()
+#1 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\system\CodeIgniter.php(432): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Proinv))
+#2 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\system\CodeIgniter.php(333): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#3 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\index.php(44): CodeIgniter\CodeIgniter->run()
+#4 {main}
+CRITICAL - 2025-10-07 14:11:37 --> Class 'Dompdf\Options' not found
+#0 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\system\CodeIgniter.php(936): App\Controllers\Proinv->downloadpdf()
+#1 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\system\CodeIgniter.php(432): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Proinv))
+#2 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\system\CodeIgniter.php(333): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#3 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\index.php(44): CodeIgniter\CodeIgniter->run()
+#4 {main}
+CRITICAL - 2025-10-07 15:41:02 --> Maximum execution time of 120 seconds exceeded
+#0 [internal function]: CodeIgniter\Debug\Exceptions->shutdownHandler()
+#1 {main}
+CRITICAL - 2025-10-07 17:26:41 --> Column 'total' cannot be null
+#0 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\system\Database\MySQLi\Connection.php(314): mysqli->query('INSERT INTO `pr...')
+#1 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\system\Database\BaseConnection.php(713): CodeIgniter\Database\MySQLi\Connection->execute('INSERT INTO `pr...')
+#2 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\system\Database\BaseConnection.php(641): CodeIgniter\Database\BaseConnection->simpleQuery('INSERT INTO `pr...')
+#3 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\system\Database\BaseBuilder.php(2107): CodeIgniter\Database\BaseConnection->query('INSERT INTO `pr...', Array, false)
+#4 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\system\Model.php(323): CodeIgniter\Database\BaseBuilder->insertBatch(Array, NULL, 100)
+#5 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\system\BaseModel.php(843): CodeIgniter\Model->doInsertBatch(Array, NULL, 100, false)
+#6 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\app\Controllers\Proinv.php(1141): CodeIgniter\BaseModel->insertBatch(Array)
+#7 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\system\CodeIgniter.php(936): App\Controllers\Proinv->insert()
+#8 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\system\CodeIgniter.php(432): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Proinv))
+#9 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\system\CodeIgniter.php(333): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#10 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\index.php(44): CodeIgniter\CodeIgniter->run()
+#11 {main}

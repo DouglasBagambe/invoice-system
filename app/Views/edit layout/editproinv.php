@@ -1238,6 +1238,7 @@ $(document).ready(function() {
         html += '<select name="vat_status[]" id="vat_status_' + rowCount + '" class="form-control vat_status">';
         html += '<option value="taxable">Vat (18%)</option>';
         html += '<option value="exempt">Exempt</option>';
+        html += '<option value="inclusive">Inclusive</option>';
         html += '<option value="zero_rated">Zero Rated</option>';
         html += '</select>';
         html += '<input type="hidden" name="vat_rate[]" value="18">';
@@ -1401,12 +1402,10 @@ $(document).ready(function() {
                             message += '\n\nNote: Invoice ID was automatically changed from ' + response.original_invid + ' to ' + response.invid + ' to avoid conflicts.';
                         }
                         
-                        alert(message);
+                        alert(message + '\n\nRedirect to invoice list?');
                         
-                        if (response.orderid) { 
-                            window.open(base_url + '/proinv/printproinv?orderid=' + response.orderid, '_blank'); 
-                        }
-                        location.reload();
+                        // CHANGED: Redirect to list page instead of opening print window
+                        window.location.href = base_url + '/proinv/showprodata';
                     } else { 
                         alert('Error: ' + (response.message || 'Failed to update invoice')); 
                         $('#submitbtn').prop('disabled', false).val('Update Invoice');
@@ -1541,6 +1540,7 @@ $(document).ready(function() {
                         html += '<select name="vat_status[]" id="vat_status_' + rowCount + '" class="form-control vat_status">';
                         html += '<option value="taxable" ' + (item.vat_status === 'taxable' ? 'selected' : '') + '>Vat (18%)</option>';
                         html += '<option value="exempt" ' + (item.vat_status === 'exempt' ? 'selected' : '') + '>Exempt</option>';
+                        html += '<option value="inclusive" ' + (item.vat_status === 'inclusive' ? 'selected' : '') + '>Inclusive</option>';
                         html += '<option value="zero_rated" ' + (item.vat_status === 'zero_rated' ? 'selected' : '') + '>Zero Rated</option>';
                         html += '</select>';
                         html += '<input type="hidden" name="vat_rate[]" value="18">';

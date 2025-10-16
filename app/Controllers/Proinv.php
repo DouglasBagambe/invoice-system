@@ -3,22 +3,19 @@
 namespace App\Controllers;
 
 use App\Models\Purchaseinv_model;
-
-
 use App\Models\Purchaseinv_model2;
-
 use App\Models\Protest_model2;
 use App\Models\Protest_model;
-
 use App\Models\Client_model;
-
 use App\Models\Product_model;
- // Ensure you have the correct namespace for your model
 use CodeIgniter\Controller;
-
 use CodeIgniter\Database\Database;
 use App\Models\Admin_model;
 use App\Models\Bank_model;
+
+// Add Dompdf dependencies
+use Dompdf\Dompdf;
+use Dompdf\Options;
 
 class Proinv extends Controller
 {
@@ -1367,5 +1364,128 @@ public function printproinv(){
                                             'defaultSignature' => $defaultSignature]);
     }
     
+
+
+    public function downloadpdf() {
+        try {
+            $orderid = $this->request->getGet('orderid');
+            
+            if (!$orderid) {
+                log_message('error', 'PDF Download: No orderid provided');
+                return $this->response->setStatusCode(400)->setJSON([
+                    'success' => false,
+                    'message' => 'Order ID is missing'
+                ]);
+            }
+            
+            log_message('info', 'PDF Download: Starting for orderid ' . $orderid);
+            
+            helper('number_to_words_helper');
+            
+            // Load required models
+            $this->adminModel = new Admin_model();
+            $companyDetails = $this->adminModel->first();
+            
+            $this->crudModel = new Protest_model();
+            $this->crudModel2 = new Protest_model2();
+            $this->crudModel3 = new Bank_model();
+            
+            $invDetails = $this->crudModel2->printprodata($orderid);
+            
+            if (empty($invDetails)) {
+                log_message('error', 'PDF Download: No invoice details found for orderid ' . $orderid);
+                return $this->response->setStatusCode(404)->setJSON([
+                    'success' => false,
+                    'message' => 'Invoice not found'
+                ]);
+            }
+            
+            $itemDetails = $this->crudModel->fetchitemdata($orderid);
+            
+            // Fetch selected bank details
+            $selectedBankId = isset($invDetails[0]['bank_id']) ? $invDetails[0]['bank_id'] : null;
+            if ($selectedBankId) {
+                $bankDetails = $this->crudModel3->where('bid', $selectedBankId)->findAll();
+            } else {
+                $bankDetails = $this->crudModel3->findAll();
+            }
+            
+            // Get user signatures
+            $userSignatureModel = new \App\Models\User_signature_model();
+            $userSignatures = $userSignatureModel->getUserSignatures(session()->get('user_id'));
+            $defaultSignature = $userSignatureModel->getDefaultSignature(session()->get('user_id'));
+            
+            log_message('info', 'PDF Download: Data loaded successfully, generating HTML');
+            
+            // Generate HTML content
+            $html = view('print/print proinv', [
+                'companyDetails' => $companyDetails,
+                'invDetails' => $invDetails,
+                'itemDetails' => $itemDetails,
+                'bankDetails' => $bankDetails,
+                'userSignatures' => $userSignatures,
+                'defaultSignature' => $defaultSignature
+            ]);
+            
+            log_message('info', 'PDF Download: HTML generated, initializing Dompdf');
+            
+            // Initialize Dompdf
+            $options = new Options();
+            $options->set('isRemoteEnabled', true);
+            $options->set('isHtml5ParserEnabled', true);
+            $options->set('isFontSubsettingEnabled', true);
+            $options->set('defaultFont', 'Arial');
+            $options->set('tempDir', WRITEPATH . 'cache/');
+            $options->set('fontDir', WRITEPATH . 'fonts/');
+            $options->set('fontCache', WRITEPATH . 'fonts/');
+            $options->set('chroot', FCPATH);
+            
+            $dompdf = new Dompdf($options);
+            
+            // Load HTML
+            $dompdf->loadHtml($html);
+            
+            // Set paper size and orientation
+            $dompdf->setPaper('A4', 'portrait');
+            
+            log_message('info', 'PDF Download: Rendering PDF');
+            
+            // Render PDF
+            $dompdf->render();
+            
+            // Generate filename
+            $invid = isset($invDetails[0]['invid']) ? $invDetails[0]['invid'] : $orderid;
+            $filename = 'Proforma_Invoice_' . str_replace(['/', '\\', ':', '*', '?', '"', '<', '>', '|'], '_', $invid) . '.pdf';
+            
+            log_message('info', 'PDF Download: PDF rendered successfully, sending response');
+            
+            // Get PDF content
+            $pdfContent = $dompdf->output();
+            
+            // Set headers for file download
+            $this->response->setHeader('Content-Type', 'application/pdf');
+            $this->response->setHeader('Content-Disposition', 'attachment; filename="' . $filename . '"');
+            $this->response->setHeader('Content-Length', strlen($pdfContent));
+            $this->response->setHeader('Cache-Control', 'private, max-age=0, must-revalidate');
+            $this->response->setHeader('Pragma', 'public');
+            $this->response->setHeader('Expires', '0');
+            
+            // Send the PDF content
+            return $this->response->setBody($pdfContent);
+            
+        } catch (\Exception $e) {
+            log_message('error', 'PDF Download Error: ' . $e->getMessage() . ' in ' . $e->getFile() . ' on line ' . $e->getLine());
+            
+            return $this->response->setStatusCode(500)->setJSON([
+                'success' => false,
+                'message' => 'PDF generation failed: ' . $e->getMessage(),
+                'debug' => [
+                    'file' => $e->getFile(),
+                    'line' => $e->getLine(),
+                    'trace' => $e->getTraceAsString()
+                ]
+            ]);
+        }
+    }
+
 }
-?>

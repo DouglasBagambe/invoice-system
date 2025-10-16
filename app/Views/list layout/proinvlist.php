@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>EMAX | Advanced form elements</title>
+  <title>EMAX | Proforma Invoice List</title>
   <link rel="icon" type="image/jpeg" href="<?= base_url(); ?>/Emax_logo.jpg">
 
 <?= $this->include('Include/links.php');?>
@@ -24,19 +24,56 @@
     border-left: 4px solid #3c8dbc;
   }
   
+  .filter-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+  
   .filter-title {
     color: #2c3e50;
     font-size: 18px;
     font-weight: 700;
-    margin-bottom: 20px;
     display: flex;
     align-items: center;
     gap: 10px;
+    margin: 0;
   }
   
   .filter-title i {
     color: #3c8dbc;
     font-size: 20px;
+  }
+  
+  .create-invoice-btn {
+    background: linear-gradient(135deg, #00c853 0%, #00e676 100%);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 20px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    text-decoration: none;
+    white-space: nowrap;
+  }
+  
+  .create-invoice-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 200, 83, 0.3);
+    color: white;
+    text-decoration: none;
+  }
+  
+  .create-invoice-btn i {
+    font-size: 16px;
   }
   
   .filter-row {
@@ -110,53 +147,7 @@
     box-shadow: 0 6px 20px rgba(243, 156, 18, 0.3);
   }
   
-  /* View Toggle */
-  .view-controls {
-    background: white;
-    border-radius: 12px;
-    padding: 20px;
-    margin-bottom: 25px;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 15px;
-  }
-  
-  .view-toggle {
-    display: flex;
-    background: #f8f9fa;
-    border-radius: 10px;
-    padding: 4px;
-    border: 2px solid #e9ecef;
-  }
-  
-  .view-btn {
-    padding: 10px 16px;
-    border: none;
-    background: transparent;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    font-weight: 600;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    color: #6c757d;
-  }
-  
-  .view-btn.active {
-    background: #3c8dbc;
-    color: white;
-    box-shadow: 0 2px 8px rgba(60, 141, 188, 0.2);
-  }
-  
-  .view-btn:hover:not(.active) {
-    background: #e9ecef;
-    color: #495057;
-  }
-  
+  /* Results Info */
   .results-info {
     background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);
     border: none;
@@ -167,132 +158,7 @@
     display: flex;
     align-items: center;
     gap: 10px;
-  }
-  
-  /* Enhanced Card View */
-  .card-view .invoice-card {
-    background: white;
-    border-radius: 12px;
-    box-shadow: 0 3px 15px rgba(0,0,0,0.08);
-    transition: all 0.3s ease;
-    border: none;
-    overflow: hidden;
-    margin-bottom: 20px;
-    height: 320px; /* Fixed height for consistent card sizing */
-    display: flex;
-    flex-direction: column;
-  }
-  
-  .card-view .invoice-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 8px 25px rgba(0,0,0,0.15);
-  }
-  
-  .clickable-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 8px 25px rgba(0,0,0,0.15);
-    background-color: #f8f9fa;
-  }
-  
-  .clickable-row:hover {
-    background-color: #f8f9fa;
-  }
-  
-  .card-view .invoice-card .card-header {
-    background: linear-gradient(135deg, #3c8dbc 0%, #5bc0de 100%);
-    color: white;
-    padding: 15px 20px;
-    border-bottom: none;
-  }
-  
-  .card-view .invoice-card .card-header h3 {
-    margin: 0;
-    font-weight: 700;
-    font-size: 16px;
-  }
-  
-  .card-view .invoice-card .card-body {
-    padding: 20px;
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-  }
-  
-  .card-view .invoice-info {
-    margin-bottom: 15px;
-    flex: 1;
-    overflow: hidden;
-  }
-  
-  .card-view .invoice-info p {
-    margin: 6px 0;
-    font-size: 13px;
-    color: #495057;
-    line-height: 1.4;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-  
-  .card-view .invoice-info strong {
-    color: #2c3e50;
-    font-weight: 600;
-  }
-  
-  .card-view .card-actions {
-    display: flex;
-    gap: 8px;
-    justify-content: center;
-    padding-top: 15px;
-    border-top: 1px solid #e9ecef;
-    flex-shrink: 0;
-    margin-top: auto;
-  }
-  
-  .card-view .btn-action {
-    padding: 6px 12px;
-    border: none;
-    border-radius: 6px;
-    font-size: 12px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    text-decoration: none;
-    display: inline-flex;
-    align-items: center;
-    gap: 4px;
-  }
-  
-  /* Card View Grid */
-  .card-view .row {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 20px;
-    margin: 0;
-  }
-  
-  .card-view .col-md-4 {
-    width: 100%;
-    padding: 0;
-  }
-
-  /* List View */
-  .list-view {
-    display: none;
-  }
-  
-  .list-view.active {
-    display: block;
-  }
-
-  /* Card View */
-  .card-view {
-    display: none;
-  }
-  
-  .card-view.active {
-    display: block;
+    margin-bottom: 25px;
   }
   
   .invoice-table {
@@ -321,6 +187,7 @@
   
   .invoice-table tbody tr {
     transition: all 0.2s ease;
+    cursor: pointer;
   }
   
   .invoice-table tbody tr:hover {
@@ -338,52 +205,115 @@
     border-bottom: none;
   }
   
-  .table-actions {
-    display: flex;
-    gap: 8px;
+  /* Action Dropdown */
+  .action-dropdown {
+    position: relative;
+    display: inline-block;
   }
-  
-  .table-actions .btn-action {
-    padding: 4px 8px;
+
+  .action-trigger {
+    background: transparent;
     border: none;
-    border-radius: 4px;
-    font-size: 11px;
+    padding: 8px 12px;
     cursor: pointer;
+    border-radius: 6px;
     transition: all 0.3s ease;
-    text-decoration: none;
-    display: inline-flex;
+    display: flex;
     align-items: center;
-    gap: 4px;
+    justify-content: center;
+    color: #6c757d;
   }
-  
-  .btn-print {
-    background: #17a2b8;
-    color: white;
+
+  .action-trigger:hover {
+    background: #f8f9fa;
+    color: #495057;
   }
-  
-  .btn-print:hover {
-    background: #138496;
-    color: white;
+
+  .action-trigger i {
+    font-size: 18px;
   }
-  
-  .btn-edit {
-    background: #007bff;
-    color: white;
+
+  .action-menu {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.15);
+    border: 1px solid #e9ecef;
+    min-width: 180px;
+    z-index: 1000;
+    display: none;
+    margin-top: 4px;
+    overflow: hidden;
   }
-  
-  .btn-edit:hover {
-    background: #0056b3;
-    color: white;
+
+  .action-menu.show {
+    display: block;
+    animation: dropdownFadeIn 0.2s ease;
   }
-  
-  .btn-delete {
-    background: #dc3545;
-    color: white;
+
+  @keyframes dropdownFadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(-8px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
   }
-  
-  .btn-delete:hover {
-    background: #c82333;
-    color: white;
+
+  .action-menu-item {
+    padding: 12px 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border: none;
+    background: none;
+    width: 100%;
+    text-align: left;
+    color: #495057;
+    font-size: 14px;
+    font-weight: 500;
+    text-decoration: none;
+  }
+
+  .action-menu-item:hover {
+    background: #f8f9fa;
+  }
+
+  .action-menu-item i {
+    width: 18px;
+    font-size: 16px;
+    color: #6c757d;
+  }
+
+  .action-menu-item.print-action:hover i {
+    color: #17a2b8;
+  }
+
+  .action-menu-item.download-action:hover i {
+    color: #28a745;
+  }
+
+  .action-menu-item.edit-action:hover i {
+    color: #007bff;
+  }
+
+  .action-menu-item.delete-action {
+    border-top: 1px solid #e9ecef;
+    color: #dc3545;
+  }
+
+  .action-menu-item.delete-action:hover {
+    background: #ffebee;
+  }
+
+  .action-menu-item.delete-action i {
+    color: #dc3545;
   }
   
   /* Enhanced Pagination */
@@ -456,45 +386,6 @@
     opacity: 1;
   }
   
-  /* Responsive Design */
-  @media (max-width: 768px) {
-    .filter-row {
-      grid-template-columns: 1fr;
-    }
-    
-    .view-controls {
-      flex-direction: column;
-      align-items: stretch;
-    }
-    
-    .view-toggle {
-      width: 100%;
-      justify-content: center;
-    }
-    
-    .invoice-table {
-      overflow-x: auto;
-    }
-    
-    .card-view .row {
-      grid-template-columns: 1fr;
-    }
-    
-    .card-view .col-md-4 {
-      width: 100%;
-    }
-    
-    .card-view .invoice-card {
-      height: 280px;
-    }
-  }
-  
-  @media (min-width: 769px) and (max-width: 1200px) {
-    .card-view .row {
-      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    }
-  }
-  
   /* Loading State */
   .loading-state {
     display: flex;
@@ -542,6 +433,27 @@
     color: #6c757d;
     margin: 0;
   }
+
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .filter-header {
+      flex-direction: column;
+      align-items: stretch;
+    }
+    
+    .create-invoice-btn {
+      width: 100%;
+      justify-content: center;
+    }
+    
+    .filter-row {
+      grid-template-columns: 1fr;
+    }
+    
+    .invoice-table {
+      overflow-x: auto;
+    }
+  }
 </style>
 </head>
 <body class="hold-transition skin-blue sidebar-mini">
@@ -571,9 +483,15 @@
 
       <!-- Enhanced Filter Section -->
       <div class="filter-card">
-        <div class="filter-title">
-          <i class="fa fa-filter"></i>
-          Smart Filters
+        <div class="filter-header">
+          <div class="filter-title">
+            <i class="fa fa-filter"></i>
+            Smart Filters
+          </div>
+          <a href="<?= base_url('/proinv/genproinv'); ?>" class="create-invoice-btn">
+            <i class="fa fa-plus"></i>
+            <span>New Invoice</span>
+          </a>
         </div>
         
         <form id="filterForm">
@@ -630,50 +548,30 @@
         </form>
       </div>
 
-      <!-- View Controls -->
-      <div class="view-controls">
-        <div class="results-info" id="resultsInfo" style="display: none;">
-          <i class="fa fa-info-circle"></i>
-          <span id="resultsText"></span>
-        </div>
-        
-        <div class="view-toggle">
-          <button class="view-btn active" id="listViewBtn">
-            <i class="fa fa-list"></i>
-          </button>
-          <button class="view-btn" id="cardViewBtn">
-            <i class="fa fa-th-large"></i>
-          </button>
-        </div>
+      <!-- Results Info -->
+      <div class="results-info" id="resultsInfo" style="display: none;">
+        <i class="fa fa-info-circle"></i>
+        <span id="resultsText"></span>
       </div>
 
       <!-- List View -->
-      <div class="list-view active" id="listView">
-        <div class="invoice-table">
-          <table>
-            <thead>
-              <tr>
-                <th>Invoice ID</th>
-                <th>Client</th>
-                <th>Location</th>
-                <th>Product</th>
-                <th>Total Amount</th>
-                <th>Date</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-            <tbody id="invoiceTableBody">
-              <!-- Table rows will be populated here -->
-            </tbody>
-          </table>
-        </div>
-      </div>
-
-      <!-- Card View -->
-      <div class="card-view" id="cardView">
-        <div class="row" id="tinvoices">
-          <!-- Invoice cards will be loaded here -->
-        </div>
+      <div class="invoice-table">
+        <table>
+          <thead>
+            <tr>
+              <th>Invoice ID</th>
+              <th>Client</th>
+              <th>Location</th>
+              <th>Product</th>
+              <th>Total Amount</th>
+              <th>Date</th>
+              <th style="text-align: center;">Actions</th>
+            </tr>
+          </thead>
+          <tbody id="invoiceTableBody">
+            <!-- Table rows will be populated here -->
+          </tbody>
+        </table>
       </div>
 
       <!-- Pagination -->
@@ -684,6 +582,8 @@
       </div>
       
     </section>
+    
+  </div>
 
 <?= $this->include('Include/footer.php');?>
 <?= $this->include('Include/settings.php');?>
@@ -702,37 +602,237 @@ let currentFilters = {
   date_to: ''
 };
 let currentPage = 1;
-let currentView = 'list'; // 'list' or 'card'
+
+// Close dropdown when clicking outside
+document.addEventListener('click', function(e) {
+  if (!e.target.closest('.action-dropdown')) {
+    document.querySelectorAll('.action-menu').forEach(menu => {
+      menu.classList.remove('show');
+    });
+  }
+});
+
+// Function to generate action dropdown HTML
+function getActionDropdown(orderid) {
+  return `
+    <div class="action-dropdown">
+      <button class="action-trigger" onclick="toggleActionMenu(event, this)">
+        <i class="fa fa-ellipsis-v"></i>
+      </button>
+      <div class="action-menu">
+        <button class="action-menu-item print-action" onclick="printInvoice(event, '${orderid}')">
+          <i class="fa fa-print"></i>
+          <span>Print</span>
+        </button>
+        <button class="action-menu-item download-action" onclick="downloadInvoice(event, '${orderid}')">
+          <i class="fa fa-download"></i>
+          <span>Download PDF</span>
+        </button>        
+        <a href="editproinv?orderid=${orderid}" class="action-menu-item edit-action" onclick="event.stopPropagation()">
+          <i class="fa fa-pencil"></i>
+          <span>Edit</span>
+        </a>
+        <button class="action-menu-item delete-action" onclick="deleteInvoice(event, '${orderid}')">
+          <i class="fa fa-trash"></i>
+          <span>Delete</span>
+        </button>
+      </div>
+    </div>
+  `;
+}
+
+// Toggle action menu
+function toggleActionMenu(event, button) {
+  event.preventDefault();
+  event.stopPropagation();
+  
+  // Close all other menus
+  document.querySelectorAll('.action-menu').forEach(menu => {
+    if (menu !== button.nextElementSibling) {
+      menu.classList.remove('show');
+    }
+  });
+  
+  // Toggle current menu
+  button.nextElementSibling.classList.toggle('show');
+}
+
+// Print invoice
+function printInvoice(event, orderid) {
+  event.preventDefault();
+  event.stopPropagation();
+  
+  // Close dropdown
+  event.target.closest('.action-menu').classList.remove('show');
+  
+  // Open print page in new window
+  window.open(base_url + '/proinv/printproinv?orderid=' + orderid, '_blank');
+}
+
+// Download invoice as PDF - Fixed version
+function downloadInvoice(event, orderid) {
+  event.preventDefault();
+  event.stopPropagation();
+  
+  // Close dropdown
+  event.target.closest('.action-menu').classList.remove('show');
+  
+  // Show loading notification
+  Swal.fire({
+    title: 'Preparing Download...',
+    text: 'Your invoice is being generated',
+    icon: 'info',
+    allowOutsideClick: false,
+    showConfirmButton: false,
+    didOpen: () => {
+      Swal.showLoading();
+    }
+  });
+  
+  // Create a temporary link for download
+  const downloadUrl = base_url + '/proinv/downloadpdf?orderid=' + orderid;
+  
+  // Try using fetch first to check if the request is successful
+  fetch(downloadUrl, {
+    method: 'GET',
+    headers: {
+      'Accept': 'application/pdf',
+      'Content-Type': 'application/pdf'
+    }
+  })
+  .then(response => {
+    console.log('Response status:', response.status);
+    console.log('Response headers:', response.headers);
+    
+    if (!response.ok) {
+      // If response is not ok, try to parse as JSON for error message
+      return response.text().then(text => {
+        try {
+          const errorData = JSON.parse(text);
+          throw new Error(errorData.message || 'Download failed');
+        } catch (e) {
+          throw new Error('Server error: ' + response.status + ' - ' + text);
+        }
+      });
+    }
+    
+    // Check if response is actually a PDF
+    const contentType = response.headers.get('content-type');
+    if (!contentType || !contentType.includes('application/pdf')) {
+      return response.text().then(text => {
+        console.log('Non-PDF response:', text);
+        try {
+          const errorData = JSON.parse(text);
+          throw new Error(errorData.message || 'Invalid response format');
+        } catch (e) {
+          throw new Error('Expected PDF but got: ' + contentType);
+        }
+      });
+    }
+    
+    return response.blob();
+  })
+  .then(blob => {
+    // Close loading message
+    Swal.close();
+    
+    // Create blob URL and trigger download
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.style.display = 'none';
+    a.href = url;
+    
+    // Generate filename
+    const filename = 'Proforma_Invoice_' + orderid + '.pdf';
+    a.download = filename;
+    
+    document.body.appendChild(a);
+    a.click();
+    
+    // Cleanup
+    setTimeout(() => {
+      window.URL.revokeObjectURL(url);
+      document.body.removeChild(a);
+    }, 100);
+    
+    // Show success message
+    Swal.fire({
+      title: 'Downloaded!',
+      text: 'Invoice downloaded successfully',
+      icon: 'success',
+      timer: 2000,
+      showConfirmButton: false
+    });
+  })
+  .catch(error => {
+    console.error('Download error details:', error);
+    
+    Swal.fire({
+      title: 'Download Failed',
+      text: error.message || 'Could not download the invoice. Please try again.',
+      icon: 'error',
+      confirmButtonText: 'OK',
+      footer: 'Check console for more details'
+    });
+  });
+}
+
+// Delete invoice
+function deleteInvoice(event, orderid) {
+  event.preventDefault();
+  event.stopPropagation();
+  
+  // Close dropdown
+  event.target.closest('.action-menu').classList.remove('show');
+  
+  Swal.fire({
+    title: 'Are you sure?',
+    text: "This invoice will be deleted permanently!",
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#3085d6',
+    cancelButtonColor: '#d33',
+    confirmButtonText: 'Yes, delete it!',
+    allowOutsideClick: false        
+  }).then((result) => {
+    if (result.isConfirmed) {
+      $.ajax({
+        url: base_url + '/proinv/delete/' + orderid,
+        type: 'POST',
+        dataType: 'json'
+      })
+      .done(function(response) {
+        Swal.fire({
+          title: 'Deleted!',
+          text: response.message,
+          icon: 'success',
+          timer: 2000,
+          showConfirmButton: false
+        });
+        loadInvoices(currentPage);
+      })
+      .fail(function() {
+        Swal.fire('Error!', 'Something went wrong. Please try again.', 'error');
+      });
+    }
+  });
+}
 
 // Function to load invoices based on current filters and page
 function loadInvoices(page = 1) {
     currentPage = page;
     
     // Show loading state
-    if (currentView === 'list') {
-        $('#invoiceTableBody').html(`
-            <tr>
-                <td colspan="7" class="text-center">
-                    <div class="loading-state">
-                        <i class="fa fa-spinner fa-spin fa-2x"></i>
-                        <p>Loading invoices...</p>
-                    </div>
-                </td>
-            </tr>
-        `);
-    } else {
-        $('#tinvoices').html(`
-            <div class="col-md-12">
+    $('#invoiceTableBody').html(`
+        <tr>
+            <td colspan="7" class="text-center">
                 <div class="loading-state">
-                    <i class="fa fa-spinner fa-spin fa-3x"></i>
+                    <i class="fa fa-spinner fa-spin fa-2x"></i>
                     <p>Loading invoices...</p>
                 </div>
-            </div>
-        `);
-    }
-    
-    console.log("Loading invoices for page: " + page);
-    console.log("Current filters:", currentFilters);
+            </td>
+        </tr>
+    `);
     
     $.ajax({
         url: base_url + '/proinv/showprodata',
@@ -746,31 +846,20 @@ function loadInvoices(page = 1) {
         },
         dataType: 'json',
         success: function(response) {
-            console.log("Response received:", response);
             if (response.invoices && Array.isArray(response.invoices)) {
-                // Sort invoices by created date (latest first) as additional safety
+                // Sort invoices by created date (latest first)
                 response.invoices.sort(function(a, b) {
                     const dateA = new Date(a.created);
                     const dateB = new Date(b.created);
                     
-                    // First sort by date (latest first)
                     if (dateA.getTime() !== dateB.getTime()) {
                         return dateB - dateA;
                     }
                     
-                    // If dates are the same, sort by invoice ID (highest first)
                     return (b.invid || '').localeCompare(a.invid || '');
                 });
                 
-                console.log("Sorted invoices:", response.invoices.map(inv => ({id: inv.invid, created: inv.created})));
-                
-                if (currentView === 'list') {
-                    populateListView(response.invoices);
-                } else {
-                    populateCardView(response.invoices);
-                }
-
-                // Update pagination and results info
+                populateListView(response.invoices);
                 updatePagination(response.total_records, response.results_per_page, response.current_page);
                 updateResultsInfo(response.total_records, response.current_page, response.results_per_page);
             } else {
@@ -780,7 +869,6 @@ function loadInvoices(page = 1) {
             }
         },
         error: function(xhr, status, error) {
-            console.log('Error:', error);
             showErrorState();
             $('#pagination').empty();
         } 
@@ -793,25 +881,15 @@ function populateListView(invoices) {
 
     invoices.forEach(function(invoice) {
         const row = `
-            <tr class="clickable-row" data-orderid="${invoice.orderid}" style="cursor: pointer;">
+            <tr class="clickable-row" data-orderid="${invoice.orderid}">
                 <td><strong>${invoice.invid}</strong></td>
                 <td>${invoice.c_name}</td>
                 <td>${invoice.location}</td>
                 <td>${invoice.item_name}</td>
                 <td><strong>${invoice.totalamount}</strong></td>
                 <td>${invoice.created}</td>
-                <td>
-                    <div class="table-actions">
-                        <button class="btn-action btn-print" data-orderid="${invoice.orderid}" title="Print Invoice">
-                            <i class="fa fa-print"></i> Print
-                        </button>
-                        <a href="editproinv?orderid=${invoice.orderid}" class="btn-action btn-edit" title="Edit Invoice">
-                            <i class="fa fa-pencil"></i> Edit
-                        </a>
-                        <button class="btn-action btn-delete" data-id="${invoice.orderid}" title="Delete Invoice">
-                            <i class="fa fa-trash"></i> Delete
-                        </button>
-                    </div>
+                <td style="text-align: center;">
+                    ${getActionDropdown(invoice.orderid)}
                 </td>
             </tr>
         `;
@@ -819,94 +897,34 @@ function populateListView(invoices) {
     });
 }
 
-function populateCardView(invoices) {
-    $('#tinvoices').empty();
-
-    invoices.forEach(function(invoice) {
-        // Truncate long text to prevent card overflow
-        const truncateText = (text, maxLength = 20) => {
-            return text && text.length > maxLength ? text.substring(0, maxLength) + '...' : text;
-        };
-
-        const card = `
-            <div class="col-md-4">
-                <div class="invoice-card clickable-card" data-orderid="${invoice.orderid}" style="cursor: pointer;">
-                    <div class="card-header">
-                        <h3>${invoice.invid || 'N/A'}</h3>
-                    </div>
-                    <div class="card-body">
-                        <div class="invoice-info">
-                            <p><strong>Client:</strong> ${truncateText(invoice.c_name || 'N/A', 25)}</p>
-                            <p><strong>Location:</strong> ${truncateText(invoice.location || 'N/A', 25)}</p>
-                            <p><strong>Product:</strong> ${truncateText(invoice.item_name || 'N/A', 25)}</p>
-                            <p><strong>Total Amount:</strong> ${invoice.totalamount || 'N/A'}</p>
-                            <p><strong>Invoice Date:</strong> ${invoice.created || 'N/A'}</p>
-                        </div>
-                        <div class="card-actions">
-                            <button class="btn-action btn-print" data-orderid="${invoice.orderid}" title="Print Invoice">
-                                <i class="fa fa-print"></i> Print
-                            </button>
-                            <a href="editproinv?orderid=${invoice.orderid}" class="btn-action btn-edit" title="Edit Invoice">
-                                <i class="fa fa-pencil"></i> Edit
-                            </a>
-                            <button class="btn-action btn-delete" data-id="${invoice.orderid}" title="Delete Invoice">
-                                <i class="fa fa-trash"></i> Delete
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        `;
-        $('#tinvoices').append(card);
-    });
-}
-
 function showEmptyState() {
     const emptyHTML = `
-        <div class="col-md-12">
-            <div class="empty-state">
-                <i class="fa fa-file-text-o"></i>
-                <h3>No Invoices Found</h3>
-                <p>No invoices match your current filter criteria. Try adjusting your filters or clearing them to see all invoices.</p>
-            </div>
-        </div>
+        <tr>
+            <td colspan="7">
+                <div class="empty-state">
+                    <i class="fa fa-file-text-o"></i>
+                    <h3>No Invoices Found</h3>
+                    <p>No invoices match your current filter criteria. Try adjusting your filters or clearing them to see all invoices.</p>
+                </div>
+            </td>
+        </tr>
     `;
-    
-    if (currentView === 'list') {
-        $('#invoiceTableBody').html(`
-            <tr>
-                <td colspan="7">
-                    ${emptyHTML}
-                </td>
-            </tr>
-        `);
-    } else {
-        $('#tinvoices').html(emptyHTML);
-    }
+    $('#invoiceTableBody').html(emptyHTML);
 }
 
 function showErrorState() {
     const errorHTML = `
-        <div class="col-md-12">
-            <div class="empty-state">
-                <i class="fa fa-exclamation-triangle" style="color: #dc3545;"></i>
-                <h3>Error Loading Invoices</h3>
-                <p>There was a problem loading the invoices. Please try again later.</p>
-            </div>
-        </div>
+        <tr>
+            <td colspan="7">
+                <div class="empty-state">
+                    <i class="fa fa-exclamation-triangle" style="color: #dc3545;"></i>
+                    <h3>Error Loading Invoices</h3>
+                    <p>There was a problem loading the invoices. Please try again later.</p>
+                </div>
+            </td>
+        </tr>
     `;
-    
-    if (currentView === 'list') {
-        $('#invoiceTableBody').html(`
-            <tr>
-                <td colspan="7">
-                    ${errorHTML}
-                </td>
-            </tr>
-        `);
-    } else {
-        $('#tinvoices').html(errorHTML);
-    }
+    $('#invoiceTableBody').html(errorHTML);
 }
 
 function updatePagination(totalRecords, resultsPerPage, currentPage) {
@@ -1068,35 +1086,6 @@ $(document).ready(function() {
         }
     });
 
-    // View Toggle Functionality
-    $('#listViewBtn').click(function() {
-        if (currentView !== 'list') {
-            currentView = 'list';
-            $('.view-btn').removeClass('active');
-            $(this).addClass('active');
-            
-            $('#cardView').removeClass('active');
-            $('#listView').addClass('active');
-            
-            // Reload data for list view
-            loadInvoices(currentPage);
-        }
-    });
-
-    $('#cardViewBtn').click(function() {
-        if (currentView !== 'card') {
-            currentView = 'card';
-            $('.view-btn').removeClass('active');
-            $(this).addClass('active');
-            
-            $('#listView').removeClass('active');
-            $('#cardView').addClass('active');
-            
-            // Reload data for card view
-            loadInvoices(currentPage);
-        }
-    });
-
     // Apply filters button
     $('#applyFilters').click(function() {
         currentFilters.client = $('#client').val() || '';
@@ -1145,73 +1134,16 @@ $(document).ready(function() {
         }
     });
 
-    // Delete functionality
-    $(document).on('click', '.btn-delete', function(e) {
-        e.preventDefault();
-        e.stopPropagation();
-
-        var productId = $(this).data('id');
-
-        Swal.fire({
-            title: 'Are you sure?',
-            text: "This invoice will be deleted permanently!",
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'Yes, delete it!',
-            allowOutsideClick: false        
-        }).then((result) => {
-            if (result.isConfirmed) {
-                $.ajax({
-                    url: base_url + '/proinv/delete/' + productId,
-                    type: 'POST',
-                    dataType: 'json'
-                })
-                .done(function(response) {
-                    Swal.fire({
-                        title: 'Deleted!',
-                        text: response.message,
-                        icon: 'success',
-                        timer: 2000,
-                        showConfirmButton: false
-                    });
-                    loadInvoices(currentPage);
-                })
-                .fail(function() {
-                    Swal.fire('Error!', 'Something went wrong. Please try again.', 'error');
-                });
-            }
-        });
-    });
-
-    // Clickable card/row functionality - navigate to print page
-    $(document).on('click', '.clickable-card, .clickable-row', function(e) {
-        // Don't trigger if clicking on action buttons or links
-        if ($(e.target).closest('.card-actions, .table-actions, .btn-action, a').length > 0) {
+    // Clickable row functionality - navigate to print page
+    $(document).on('click', '.clickable-row', function(e) {
+        // Don't trigger if clicking on action dropdown
+        if ($(e.target).closest('.action-dropdown, .action-menu').length > 0) {
             return;
         }
         
         const orderId = $(this).data('orderid');
         if (orderId) {
-            window.open('printproinv?orderid=' + orderId, '_blank');
-        }
-    });
-
-    // Print button functionality - trigger browser print dialog
-    $(document).on('click', '.btn-print', function(e) {
-        e.preventDefault();
-        e.stopPropagation();
-        
-        const orderId = $(this).data('orderid');
-        if (orderId) {
-            // Open print page in new window and trigger print dialog
-            const printWindow = window.open('printproinv?orderid=' + orderId, '_blank');
-            
-            // Wait for the page to load, then trigger print
-            printWindow.onload = function() {
-                printWindow.print();
-            };
+            window.open(base_url + '/proinv/printproinv?orderid=' + orderId, '_blank');
         }
     });
 

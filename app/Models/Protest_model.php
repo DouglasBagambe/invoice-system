@@ -8,21 +8,15 @@ class Protest_model extends Model
 {
     protected $table = 'protest';
     
-    protected $primaryKey = 'orderno'; // Specify your primary key column
+    protected $primaryKey = 'orderno'; // Specify your primary key column       
 
-        
-
-    protected $allowedFields = ['orderid', 'item_name', 'item_desc','hsn','quantity','unit','price', 'vat_rate', 'vat_type', 'vat_status', 'vat_amount', 'total']; // Specify allowed fields
-
-    
-
+    protected $allowedFields = ['orderid', 'item_name', 'item_desc','hsn','quantity','unit','price', 'vat_rate', 'vat_type', 'vat_status', 'vat_amount', 'total'];
 
     // public function __construct() {
     //     parent::__construct();
     //     $this->load->database(); // Load the database
     // }
 
-    
     public function saverecords(array $data)
     {
 

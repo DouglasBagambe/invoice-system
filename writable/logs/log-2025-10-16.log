@@ -1,0 +1,48 @@
+CRITICAL - 2025-10-16 17:44:53 --> Class 'Dompdf\Options' not found
+#0 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\system\CodeIgniter.php(936): App\Controllers\Proinv->downloadpdf()
+#1 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\system\CodeIgniter.php(432): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Proinv))
+#2 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\system\CodeIgniter.php(333): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#3 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\index.php(44): CodeIgniter\CodeIgniter->run()
+#4 {main}
+CRITICAL - 2025-10-16 17:45:08 --> Class 'Dompdf\Options' not found
+#0 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\system\CodeIgniter.php(936): App\Controllers\Proinv->downloadpdf()
+#1 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\system\CodeIgniter.php(432): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Proinv))
+#2 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\system\CodeIgniter.php(333): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#3 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\index.php(44): CodeIgniter\CodeIgniter->run()
+#4 {main}
+CRITICAL - 2025-10-16 17:47:00 --> Class 'Dompdf\Options' not found
+#0 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\system\CodeIgniter.php(936): App\Controllers\Proinv->downloadpdf()
+#1 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\system\CodeIgniter.php(432): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Proinv))
+#2 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\system\CodeIgniter.php(333): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#3 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\index.php(44): CodeIgniter\CodeIgniter->run()
+#4 {main}
+CRITICAL - 2025-10-16 18:00:48 --> Class 'Dompdf\Options' not found
+#0 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\system\CodeIgniter.php(936): App\Controllers\Proinv->downloadpdf()
+#1 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\system\CodeIgniter.php(432): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Proinv))
+#2 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\system\CodeIgniter.php(333): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#3 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\index.php(44): CodeIgniter\CodeIgniter->run()
+#4 {main}
+CRITICAL - 2025-10-16 18:01:28 --> Class 'Dompdf\Options' not found
+#0 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\system\CodeIgniter.php(936): App\Controllers\Proinv->downloadpdf()
+#1 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\system\CodeIgniter.php(432): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Proinv))
+#2 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\system\CodeIgniter.php(333): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#3 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\index.php(44): CodeIgniter\CodeIgniter->run()
+#4 {main}
+CRITICAL - 2025-10-16 18:01:42 --> Class 'Dompdf\Options' not found
+#0 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\system\CodeIgniter.php(936): App\Controllers\Proinv->downloadpdf()
+#1 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\system\CodeIgniter.php(432): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Proinv))
+#2 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\system\CodeIgniter.php(333): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#3 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\index.php(44): CodeIgniter\CodeIgniter->run()
+#4 {main}
+CRITICAL - 2025-10-16 18:03:32 --> Class 'Dompdf\Options' not found
+#0 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\system\CodeIgniter.php(936): App\Controllers\Proinv->downloadpdf()
+#1 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\system\CodeIgniter.php(432): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Proinv))
+#2 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\system\CodeIgniter.php(333): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#3 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\index.php(44): CodeIgniter\CodeIgniter->run()
+#4 {main}
+CRITICAL - 2025-10-16 18:33:15 --> Class 'Dompdf\Options' not found
+#0 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\system\CodeIgniter.php(936): App\Controllers\Proinv->downloadpdf()
+#1 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\system\CodeIgniter.php(432): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Proinv))
+#2 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\system\CodeIgniter.php(333): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#3 C:\WORK\BIITEEK\Projects\Forked\Codeignitor-PHP-based-Tax-Invoice-Quotation-Proforma-QuickQuote-Purchase-invoice-management-System\index.php(44): CodeIgniter\CodeIgniter->run()
+#4 {main}
